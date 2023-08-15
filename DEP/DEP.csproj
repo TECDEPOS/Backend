@@ -14,4 +14,9 @@
     <Folder Include="Controllers\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\DEP.Repository\DEP.Repository.csproj" />
+    <ProjectReference Include="..\DEP.Service\DEP.Service.csproj" />
+  </ItemGroup>
+
 </Project>

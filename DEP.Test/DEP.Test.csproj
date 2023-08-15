@@ -22,4 +22,10 @@
     </PackageReference>
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\DEP.Repository\DEP.Repository.csproj" />
+    <ProjectReference Include="..\DEP.Service\DEP.Service.csproj" />
+    <ProjectReference Include="..\DEP\DEP.csproj" />
+  </ItemGroup>
+
 </Project>
