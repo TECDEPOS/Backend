@@ -3,6 +3,7 @@
     public class File
     {
         public int FileId { get; set; }
+        public string FileName { get; set; } = string.Empty;
         public string FileUrl { get; set; } = string.Empty;
         //public int TagId { get; set; }
         //public int PersonId { get; set; }
