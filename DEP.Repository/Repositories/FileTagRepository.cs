@@ -1,10 +1,11 @@
 ﻿using DEP.Repository.Context;
+using DEP.Repository.Interfaces;
 using DEP.Repository.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace DEP.Repository.Repositories
 {
-    public class FileTagRepository
+    public class FileTagRepository : IFileTagRepository
     {
         private readonly DatabaseContext context;
 
@@ -12,6 +13,7 @@ namespace DEP.Repository.Repositories
 
         public async Task<FileTag> AddFileTag(FileTag fileTag)
         {
+            context.FileTags.Add(fileTag);
             await context.SaveChangesAsync();
             return fileTag;
         }
