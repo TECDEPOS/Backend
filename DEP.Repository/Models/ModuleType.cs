@@ -1,6 +1,6 @@
 ﻿namespace DEP.Repository.Models
 {
-    public enum TimeProgram
+    public enum ModuleType
     {
         FullTime,
         FlexTime,
