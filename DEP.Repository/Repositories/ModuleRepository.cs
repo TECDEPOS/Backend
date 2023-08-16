@@ -8,7 +8,7 @@ namespace DEP.Repository.Repositories
     public class ModuleRepository : IModuleRepository
     {
         private readonly DatabaseContext context;
-        public ModuleRepository(DatabaseContext context) { }
+        public ModuleRepository(DatabaseContext context) { this.context = context; }
 
         public async Task<Module> AddModule(Module module)
         {
