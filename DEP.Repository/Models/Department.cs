@@ -1,6 +1,6 @@
 ﻿namespace DEP.Repository.Models
 {
-    public class Departments
+    public class Department
     {
         public int DepartmentId { get; set; }
         public string Name { get; set; }

@@ -2,8 +2,8 @@
 {
     public class FileTag
     {
-        public int TagId { get; set; }
-        public string TagName { get; set; }
+        public int FileTagId { get; set; }
+        public string TagName { get; set; } = string.Empty;
 
     }
 }
