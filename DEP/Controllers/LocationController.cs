@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace DEP.Controllers
 {
+    [Route("api/[controller]")]
+    [ApiController]
     public class LocationController : ControllerBase
     {
         private readonly ILocationService service;
