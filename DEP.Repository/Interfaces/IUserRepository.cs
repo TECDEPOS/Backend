@@ -1,12 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using DEP.Repository.Models;
 
 namespace DEP.Repository.Interfaces
 {
-    internal interface IUserRepository
+    public interface IUserRepository
     {
+        Task<List<User>> GetUsers();
+        Task<User> GetUserById(int id);
+        Task<User> GetUserByUsername(string username);
+        Task<User> GetUserByName(string name);
+        Task<User> GetUserByRefreshToken(string refreshToken);
+        Task<bool> AddUser(User addRequest);
+        Task<User> UpdateUser(User user);
+        Task<bool> DeleteUser(int id);
     }
 }
