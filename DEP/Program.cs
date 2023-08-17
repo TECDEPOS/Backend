@@ -16,6 +16,9 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<DatabaseContext>();
 builder.Services.AddScoped<IFileTagRepository, FileTagRepository>();
 builder.Services.AddScoped<IFileTagService, FileTagService>();
+builder.Services.AddScoped<IFileRepository, FileRepository>();
+builder.Services.AddScoped<IFileService, FileService>();
+
 
 var app = builder.Build();
 

@@ -4,11 +4,11 @@ namespace DEP.Service.Interfaces
 {
     public interface IFileTagService
     {
-        public Task<FileTag> AddFileTag(FileTag filetag);
-        public Task<FileTag> UpdateFileTag(FileTag filetag);
-        public Task<FileTag> DeleteFileTag(int id);
-        public Task<List<FileTag>> GetFileTags();
-        public Task<FileTag> GetFileTagById(int id);
-        public Task<FileTag> GetFileTagByName(string name);
+        Task<FileTag> AddFileTag(FileTag filetag);
+        Task<FileTag> UpdateFileTag(FileTag filetag);
+        Task<FileTag> DeleteFileTag(int id);
+        Task<List<FileTag>> GetFileTags();
+        Task<FileTag> GetFileTagById(int id);
+        Task<FileTag> GetFileTagByName(string name);
     }
 }

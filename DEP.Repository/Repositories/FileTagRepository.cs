@@ -11,13 +11,6 @@ namespace DEP.Repository.Repositories
 
         public FileTagRepository(DatabaseContext context) { this.context = context; }
 
-        public async Task<FileTag> AddFileTag(FileTag fileTag)
-        {
-            context.FileTags.Add(fileTag);
-            await context.SaveChangesAsync();
-            return fileTag;
-        }
-
         public async Task<List<FileTag>> GetAllFileTag()
         {
             var filetags = await context.FileTags.ToListAsync();
@@ -28,14 +21,26 @@ namespace DEP.Repository.Repositories
         {
             var filetag = await context.FileTags.FindAsync(id);
             return filetag;
-            
         }
 
         public async Task<FileTag> GetFileTagByname(string name)
         {
             var filetag = await context.FileTags.FirstOrDefaultAsync(x => x.TagName == name);
             return filetag;
-            
+        }
+
+        public async Task<FileTag> AddFileTag(FileTag fileTag)
+        {
+            context.FileTags.Add(fileTag);
+            await context.SaveChangesAsync();
+            return fileTag;
+        }
+
+        public async Task<FileTag> UpdateFileTag(FileTag fileTag)
+        {
+            context.Entry(fileTag).State = EntityState.Modified;
+            await context.SaveChangesAsync();
+            return fileTag;
         }
 
         public async Task<FileTag> DeleteFileTagById(int id)
@@ -46,11 +51,6 @@ namespace DEP.Repository.Repositories
             return filetag;
         }
 
-        public async Task<FileTag> UpdateFileTag( FileTag fileTag)
-        {
-            context.Entry(fileTag).State = EntityState.Modified;
-            await context.SaveChangesAsync();
-            return fileTag;
-        }
+
     }
 }

@@ -33,10 +33,17 @@ namespace DEP.Repository.Context
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-
             modelBuilder.Entity<PersonModule>(entity =>
             {
                 entity.HasKey(x => new { x.PersonId, x.ModuleId, x.StartDate });
+            });
+
+            modelBuilder.Entity<Models.File>(entity =>
+            {
+                entity
+                .HasOne(x => x.FileTag)
+                .WithMany(x => x.Files)
+                .IsRequired(false);
             });
         }
 
