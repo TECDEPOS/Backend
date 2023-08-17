@@ -34,5 +34,11 @@ namespace DEP.Controllers
         {
             return Ok(await service.AddPersonModule(personModule));
         }
+
+        [HttpPut]
+        public async Task<IActionResult> UpdatePersonModule(PersonModule personModule)
+        {
+            return Ok(await service.UpdatePersonModule(personModule));
+        }
     }
 }
