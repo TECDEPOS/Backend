@@ -1,3 +1,4 @@
+using DEP.Repository.Context;
 using DEP.Repository.Interfaces;
 using DEP.Repository.Repositories;
 using DEP.Service.Interfaces;
@@ -12,8 +13,10 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddDbContext<DatabaseContext>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IAuthService, AuthService>();
 
 var app = builder.Build();
 

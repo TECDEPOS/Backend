@@ -24,16 +24,32 @@ namespace DEP.Repository.Repositories
             return await context.Users.FirstOrDefaultAsync(x => x.UserId == id);
         }
 
-        public async Task<User> GetUserByName(string username)
+        public async Task<User> GetUserByUsername(string username)
         {
-            return await context.Users.FirstOrDefaultAsync(x => x.Name == username);
+            return await context.Users.FirstOrDefaultAsync(x => x.UserName == username);
         }
 
-        public async Task<User> AddUser(User addRequest)
+        public async Task<User> GetUserByName(string name)
+        {
+            return await context.Users.FirstOrDefaultAsync(x => x.Name == name);
+        }
+
+        public async Task<User> GetUserByRefreshToken(string refreshToken)
+        {
+            return await context.Users.FirstOrDefaultAsync(x => x.RefreshToken == refreshToken);
+        }
+
+        public async Task<bool> AddUser(User addRequest)
         {
             context.Users.Add(addRequest);
-            await context.SaveChangesAsync();
-            return addRequest;
+            int result = await context.SaveChangesAsync();
+
+            //Return false if a user was not saved to the DB
+            if (result < 1)
+            {
+                return false;
+            }
+            return true;
         }
 
         public async Task<User> UpdateUser(User user)

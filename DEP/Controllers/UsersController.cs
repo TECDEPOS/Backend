@@ -1,6 +1,5 @@
 ﻿using DEP.Service.Interfaces;
 using DEP.Service.ViewModels;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DEP.Controllers
@@ -54,9 +53,9 @@ namespace DEP.Controllers
 
             var newUser = await service.AddUser(viewModel);
 
-            if (newUser == null)
+            if (newUser is null)
             {
-                return BadRequest("An error has occurred.");
+                return BadRequest("An error has occurred, user could not be created");
             }
 
             return Ok(newUser);
