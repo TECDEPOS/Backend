@@ -19,8 +19,6 @@ builder.Services.AddScoped<ILocationRepository, LocationRepository>();
 builder.Services.AddScoped<ILocationService, LocationService>();
 builder.Services.AddScoped<IModuleRepository, ModuleRepository>();
 builder.Services.AddScoped<IModuleService, ModuleService>();
-
-
 builder.Services.AddScoped<IPersonModuleRepository, PersonModuleRepository>();
 builder.Services.AddScoped<IPersonModuleService, PersonModuleService>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
