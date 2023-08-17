@@ -4,6 +4,7 @@ using DEP.Repository.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DEP.Repository.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20230816114248_Test")]
+    partial class Test
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -264,8 +267,10 @@ namespace DEP.Repository.Migrations
             modelBuilder.Entity("DEP.Repository.Models.File", b =>
                 {
                     b.HasOne("DEP.Repository.Models.FileTag", "FileTag")
-                        .WithMany("Files")
-                        .HasForeignKey("FileTagId");
+                        .WithMany()
+                        .HasForeignKey("FileTagId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("DEP.Repository.Models.Person", "Person")
                         .WithMany("Files")
@@ -322,11 +327,6 @@ namespace DEP.Repository.Migrations
                     b.Navigation("Module");
 
                     b.Navigation("Person");
-                });
-
-            modelBuilder.Entity("DEP.Repository.Models.FileTag", b =>
-                {
-                    b.Navigation("Files");
                 });
 
             modelBuilder.Entity("DEP.Repository.Models.Module", b =>
