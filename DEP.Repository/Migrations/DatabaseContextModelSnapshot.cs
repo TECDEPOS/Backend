@@ -269,9 +269,7 @@ namespace DEP.Repository.Migrations
 
                     b.HasOne("DEP.Repository.Models.Person", "Person")
                         .WithMany("Files")
-                        .HasForeignKey("PersonId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("PersonId");
 
                     b.Navigation("FileTag");
 

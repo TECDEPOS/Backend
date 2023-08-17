@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DEP.Repository.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20230817065902_FileTagV2")]
-    partial class FileTagV2
+    [Migration("20230817073845_FileTag")]
+    partial class FileTag
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

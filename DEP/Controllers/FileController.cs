@@ -66,7 +66,7 @@ namespace DEP.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddFile(AddFileViewModel file)
+        public async Task<IActionResult> AddFile(File file)
         {
             try
             {

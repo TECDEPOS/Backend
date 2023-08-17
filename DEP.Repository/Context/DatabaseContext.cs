@@ -44,6 +44,11 @@ namespace DEP.Repository.Context
                 .HasOne(x => x.FileTag)
                 .WithMany(x => x.Files)
                 .IsRequired(false);
+
+                entity
+                .HasOne(x=> x.Person)
+                .WithMany(x => x.Files)
+                .IsRequired(false);
             });
         }
 

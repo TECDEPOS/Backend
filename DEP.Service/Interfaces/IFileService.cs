@@ -7,7 +7,7 @@ namespace DEP.Service.Interfaces
 {
     public interface IFileService
     {
-        Task<File> AddFile(AddFileViewModel file);
+        Task<File> AddFile(File file);
         Task<File> UpdateFile(AddFileViewModel file);
         Task<File> DeleteFile(int id);
         Task<List<File>> GetFile();

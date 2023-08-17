@@ -9,9 +9,9 @@ namespace DEP.Service.Services
     {
         private readonly IFileRepository repo;
         public FileService(IFileRepository repo) { this.repo = repo; }
-        public async Task<File> AddFile(AddFileViewModel file)
+        public async Task<File> AddFile(File file)
         {
-            return await repo.AddFile(ViewModelconverter(file));
+            return await repo.AddFile(file);
         }
 
         public async Task<File> DeleteFile(int id)

@@ -5,7 +5,7 @@
 namespace DEP.Repository.Migrations
 {
     /// <inheritdoc />
-    public partial class FileTagV2 : Migration
+    public partial class FileTag : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

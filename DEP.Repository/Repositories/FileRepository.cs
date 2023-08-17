@@ -15,9 +15,9 @@ namespace DEP.Repository.Repositories
 
         public async Task<Models.File> CreateFile(Models.File file)
         {
-            context.Files.Add(file);
-            await context.SaveChangesAsync();
-            return file;
+                context.Files.Add(file);
+                await context.SaveChangesAsync();
+                return file;
         }
 
         public async Task<List<Models.File>> GetFiles()
@@ -84,12 +84,11 @@ namespace DEP.Repository.Repositories
                 context.Files.Add(file);
                 await context.SaveChangesAsync();
                 return file;
-
             }
             catch (Exception e)
             {
 
-                return null;
+                return file;
             }
         }
 
