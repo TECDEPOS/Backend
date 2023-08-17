@@ -7,7 +7,7 @@
         //public int TagId { get; set; }
         //public int PersonId { get; set; }
         public DateTime UploadDate { get; set; }
-        public FileTag? FileTag { get; set; }
+        public FileTag FileTag { get; set; }
         public Person Person { get; set; }
     }
 }
