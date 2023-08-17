@@ -83,8 +83,8 @@ namespace DEP.Controllers
             }
         }
 
-        [HttpPut]
-        public async Task<IActionResult> UpdateFile(AddFileViewModel file)
+        /*[HttpPut]
+        public async Task<IActionResult> UpdateFile(File file)
         {
             try
             {
@@ -99,7 +99,7 @@ namespace DEP.Controllers
 
                 return BadRequest(e.Message);
             }
-        }
+        } */
 
         [HttpDelete("{id:int}")]
         public async Task<IActionResult> Deletefile(int id)

@@ -265,11 +265,15 @@ namespace DEP.Repository.Migrations
                 {
                     b.HasOne("DEP.Repository.Models.FileTag", "FileTag")
                         .WithMany("Files")
-                        .HasForeignKey("FileTagId");
+                        .HasForeignKey("FileTagId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("DEP.Repository.Models.Person", "Person")
                         .WithMany("Files")
-                        .HasForeignKey("PersonId");
+                        .HasForeignKey("PersonId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("FileTag");
 

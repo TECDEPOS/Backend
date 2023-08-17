@@ -79,17 +79,9 @@ namespace DEP.Repository.Repositories
 
         public async Task<Models.File> AddFile(Models.File file)
         {
-            try
-            {
                 context.Files.Add(file);
                 await context.SaveChangesAsync();
                 return file;
-            }
-            catch (Exception e)
-            {
-
-                return file;
-            }
         }
 
         public async Task<Models.File> UpdateFile(Models.File file)

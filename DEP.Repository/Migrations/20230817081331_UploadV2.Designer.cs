@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DEP.Repository.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20230817073845_FileTag")]
-    partial class FileTag
+    [Migration("20230817081331_UploadV2")]
+    partial class UploadV2
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -74,7 +74,7 @@ namespace DEP.Repository.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("FileTagId")
+                    b.Property<int>("FileTagId")
                         .HasColumnType("int");
 
                     b.Property<string>("FileUrl")
@@ -268,7 +268,9 @@ namespace DEP.Repository.Migrations
                 {
                     b.HasOne("DEP.Repository.Models.FileTag", "FileTag")
                         .WithMany("Files")
-                        .HasForeignKey("FileTagId");
+                        .HasForeignKey("FileTagId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("DEP.Repository.Models.Person", "Person")
                         .WithMany("Files")

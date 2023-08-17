@@ -38,18 +38,20 @@ namespace DEP.Repository.Context
                 entity.HasKey(x => new { x.PersonId, x.ModuleId, x.StartDate });
             });
 
-            modelBuilder.Entity<Models.File>(entity =>
-            {
-                entity
-                .HasOne(x => x.FileTag)
-                .WithMany(x => x.Files)
-                .IsRequired(false);
+            //modelBuilder.Entity<Models.File>(entity =>
+            //{
+            //    entity
+            //    .HasOne(x => x.FileTag)
+            //    .WithMany(x => x.Files)
+            //    .HasForeignKey(x => x.FileTagId)
+            //    .IsRequired(false);
 
-                entity
-                .HasOne(x=> x.Person)
-                .WithMany(x => x.Files)
-                .IsRequired(false);
-            });
+            //    entity
+            //    .HasOne(x=> x.Person)
+            //    .WithMany(x => x.Files)
+            //    .HasForeignKey(x => x.PersonId)
+            //    .IsRequired(false);
+            //});
         }
 
     }

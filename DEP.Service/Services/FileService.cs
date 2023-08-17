@@ -34,10 +34,13 @@ namespace DEP.Service.Services
             return await repo.GetFileByName(name);
         }
 
-        public async Task<File> UpdateFile(AddFileViewModel file)
+
+        //Could be used? Dont see why :) 
+        //Haven't tested for bug, or if it even works
+        public async Task<File> UpdateFile(File file)
         {
 
-            return await repo.UpdateFile(ViewModelconverter(file));
+            return await repo.UpdateFile(file);
         }
 
         private File ViewModelconverter(AddFileViewModel file)
