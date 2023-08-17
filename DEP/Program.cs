@@ -17,10 +17,6 @@ builder.Services.AddScoped<IFileTagRepository, FileTagRepository>();
 builder.Services.AddScoped<IFileTagService, FileTagService>();
 builder.Services.AddScoped<IModuleRepository, ModuleRepository>();
 builder.Services.AddScoped<IModuleService, ModuleService>();
-
-
-
-builder.Services.AddDbContext<DatabaseContext>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
