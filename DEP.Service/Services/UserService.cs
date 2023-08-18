@@ -34,6 +34,11 @@ namespace DEP.Service.Services
             return await userRepository.GetUserByName(name);
         }
 
+        public async Task<User> GetUserByUsername(string username)
+        {
+            return await userRepository.GetUserByUsername(username);
+        }
+
         public async Task<AddUserViewModel> AddUser(AddUserViewModel viewModel)
         {
             //Gets the default password appsettings.json

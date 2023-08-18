@@ -1,4 +1,5 @@
 ﻿using DEP.Repository.Interfaces;
+using DEP.Repository.Models;
 using DEP.Service.Interfaces;
 using DEP.Service.ViewModels;
 using Microsoft.Extensions.Configuration;
@@ -36,7 +37,7 @@ namespace DEP.Service.Services
                 return null;
             }
 
-            string newAccessToken = CreateJwtToken();
+            string newAccessToken = CreateJwtToken(user);
             string newRefreshToken = await CreateRefreshToken();
             user.RefreshToken = newRefreshToken;
             user.RefreshTokenExpiryDate = DateTime.Now.AddDays(1);
@@ -98,12 +99,17 @@ namespace DEP.Service.Services
             }
         }
 
-        public string CreateJwtToken()
+        public string CreateJwtToken(User user)
         {
+            List<Claim> claims = new List<Claim>
+            {
+                new Claim(ClaimTypes.Role, user.UserRole.ToString()),
+                new Claim("userId", user.UserId.ToString())
+            };
             var secretKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration.GetSection("AppSettings:Token").Value));
             var signInCredentials = new SigningCredentials(secretKey, SecurityAlgorithms.HmacSha256);
             var tokeOptions = new JwtSecurityToken(
-                claims: new List<Claim>(),
+                claims: claims,
                 expires: DateTime.Now.AddMinutes(10),
                 signingCredentials: signInCredentials
                 );
