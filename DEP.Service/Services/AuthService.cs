@@ -101,6 +101,7 @@ namespace DEP.Service.Services
 
         public string CreateJwtToken(User user)
         {
+            // Adding claims, claims are Key-Value pairs that can be used after the token is decoded.
             List<Claim> claims = new List<Claim>
             {
                 new Claim(ClaimTypes.Role, user.UserRole.ToString()),
