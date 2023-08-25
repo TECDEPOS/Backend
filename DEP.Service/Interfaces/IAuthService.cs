@@ -1,4 +1,5 @@
-﻿using DEP.Service.ViewModels;
+﻿using DEP.Repository.Models;
+using DEP.Service.ViewModels;
 
 namespace DEP.Service.Interfaces
 {
@@ -8,7 +9,7 @@ namespace DEP.Service.Interfaces
         Task<bool> ChangePassword(ChangePasswordViewModel viewModel);
         void CreatePasswordHash(string password, out byte[] passwordHash, out byte[] passwordSalt);
         bool VerifyPasswordHash(string password, byte[] passwordHash, byte[] passwordSalt);
-        string CreateJwtToken();
+        string CreateJwtToken(User user);
         Task<string> CreateRefreshToken();
     }
 }

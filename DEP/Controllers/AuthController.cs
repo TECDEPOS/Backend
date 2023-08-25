@@ -60,7 +60,7 @@ namespace DEP.Controllers
                 return BadRequest("Invalid Request");
             }
 
-            var newAccessToken = authService.CreateJwtToken();
+            var newAccessToken = authService.CreateJwtToken(user);
             var newRefreshToken = await authService.CreateRefreshToken();
 
             user.RefreshToken = newRefreshToken;

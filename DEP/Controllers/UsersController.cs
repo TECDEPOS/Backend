@@ -1,5 +1,6 @@
 ﻿using DEP.Service.Interfaces;
 using DEP.Service.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DEP.Controllers
@@ -47,10 +48,15 @@ namespace DEP.Controllers
             return Ok(user);
         }
 
-        [HttpPost]
+        [HttpPost, Authorize(Roles = "SuperAdmin,PkAdmin,HrAdmin,DkAdmin")]
         public async Task<IActionResult> AddUser(AddUserViewModel viewModel)
         {
+            var user = await service.GetUserByUsername(viewModel.Username);
 
+            if (user is not null)
+            {
+                return BadRequest("An account with that username already exists.");
+            }
             var newUser = await service.AddUser(viewModel);
 
             if (newUser is null)
@@ -59,6 +65,19 @@ namespace DEP.Controllers
             }
 
             return Ok(newUser);
+        }
+
+        [HttpDelete("{id:int}")]
+        public async Task<IActionResult> DeleteUser(int id)
+        {
+            var userDeleted = await service.DeleteUser(id);
+
+            if (userDeleted == false)
+            {
+                return BadRequest($"Something went wrong, user with ID={id} was not deleted.");
+            }
+
+            return NoContent();
         }
     }
 }

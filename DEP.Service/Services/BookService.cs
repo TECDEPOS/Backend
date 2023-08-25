@@ -4,10 +4,10 @@ using DEP.Service.Interfaces;
 
 namespace DEP.Service.Services
 {
-    public class BookServie : IBookService
+    public class BookService : IBookService
     {
         private readonly IBookRepository repo;
-        public BookServie(IBookRepository repo) {  this.repo = repo; }
+        public BookService(IBookRepository repo) {  this.repo = repo; }
 
         public async Task<Book> AddBook(Book book)
         {
