@@ -24,6 +24,16 @@ namespace DEP.Service.Services
             return await repo.GetLocations();
         }
 
+        public async Task<Location> GetLocationById(int id)
+        {
+            return await repo.GetLocationById(id);
+        }
+
+        public async Task<Location> GetLocationByName(string name)
+        {
+            return await repo.GetLocationByName(name);
+        }
+
         public async Task<Location> UpdateLocation(Location location)
         {
             return await repo.UpdateLocation(location);

@@ -13,6 +13,6 @@ namespace DEP.Repository.Interfaces
 
         Task<Models.File> GetFileById(int id);
 
-        Task<Models.File> GetFileByName(string name);
+        Task<List<Models.File>> GetFileByName(string name);
     }
 }

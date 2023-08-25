@@ -17,13 +17,13 @@ namespace DEP.Controllers
             return Ok(await service.GetModuleById(id));
         }
 
-        [HttpGet("posts")]
+        [HttpGet]
         public async Task<IActionResult> GetModules()
         {
             return Ok(await service.GetModules());
         }
 
-        [HttpGet("posts/{type:int}")]
+        [HttpGet("Type/{type:int}")]
         public async Task<IActionResult> GetModulesByType(int type)
         {
             return Ok(await service.GetModulesByType(type));

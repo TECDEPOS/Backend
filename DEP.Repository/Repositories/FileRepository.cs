@@ -13,14 +13,14 @@ namespace DEP.Repository.Repositories
 
         public FileRepository(DatabaseContext context) { this.context = context; }
 
-        public async Task<Models.File> CreateFile(Models.File file)
+        public async Task<File> CreateFile(File file)
         {
                 context.Files.Add(file);
                 await context.SaveChangesAsync();
                 return file;
         }
 
-        public async Task<List<Models.File>> GetFiles()
+        public async Task<List<File>> GetFiles()
         {
             var files = await context.Files.
                 Select(x => new
@@ -65,33 +65,33 @@ namespace DEP.Repository.Repositories
             return dummyfiles;
         }
 
-        public async Task<Models.File> GetFileById(int id)
+        public async Task<File> GetFileById(int id)
         {
             var file = await context.Files.Include(x => x.FileTag).Include(x => x.Person).FirstOrDefaultAsync(x => x.FileId == id);
             return file;
         }
 
-        public async Task<Models.File> GetFileByName(string name)
+        public async Task<List<File>> GetFileByName(string name)
         {
-            var file = await context.Files.Include(x => x.FileTag).Include(x => x.Person).FirstOrDefaultAsync(x => x.FileName == name);
+            var file = await context.Files.Include(x => x.FileTag).Include(x => x.Person).Where(x => x.FileName.Contains(name.ToLower())).ToListAsync();
             return file;
         }
 
-        public async Task<Models.File> AddFile(Models.File file)
+        public async Task<File> AddFile(File file)
         {
                 context.Files.Add(file);
                 await context.SaveChangesAsync();
                 return file;
         }
 
-        public async Task<Models.File> UpdateFile(Models.File file)
+        public async Task<File> UpdateFile(File file)
         {
             context.Entry(file).State = EntityState.Modified;
             await context.SaveChangesAsync();
             return file;
         }
 
-        public async Task<Models.File> DeleteFile(int id)
+        public async Task<File> DeleteFile(int id)
         {
             var file = await context.Files.FindAsync(id);
             context.Files.Remove(file);

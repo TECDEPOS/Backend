@@ -7,7 +7,7 @@ namespace DEP.Repository.Interfaces
         Task<List<User>> GetUsers();
         Task<User> GetUserById(int id);
         Task<User> GetUserByUsername(string username);
-        Task<User> GetUserByName(string name);
+        Task<List<User>> GetUserByName(string name);
         Task<User> GetUserByRefreshToken(string refreshToken);
         Task<bool> AddUser(User addRequest);
         Task<User> UpdateUser(User user);

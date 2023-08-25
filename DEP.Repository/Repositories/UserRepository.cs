@@ -29,9 +29,9 @@ namespace DEP.Repository.Repositories
             return await context.Users.FirstOrDefaultAsync(x => x.UserName == username);
         }
 
-        public async Task<User> GetUserByName(string name)
+        public async Task<List<User>> GetUserByName(string name)
         {
-            return await context.Users.FirstOrDefaultAsync(x => x.Name == name);
+            return await context.Users.Where(x => x.Name.Contains(name.ToLower())).ToListAsync();
         }
 
         public async Task<User> GetUserByRefreshToken(string refreshToken)

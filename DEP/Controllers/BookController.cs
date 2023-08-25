@@ -17,7 +17,7 @@ namespace DEP.Controllers
             return Ok(await service.GetBook(Id));
         }
 
-        [HttpGet("books")]
+        [HttpGet()]
         public async Task<IActionResult> GetBooks()
         {
             return Ok(await service.GetBooks());

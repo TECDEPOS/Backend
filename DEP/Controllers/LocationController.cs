@@ -12,9 +12,21 @@ namespace DEP.Controllers
         public LocationController(ILocationService service) { this.service = service; }
 
         [HttpGet]
-        public async Task<IActionResult> GetLocations() 
+        public async Task<IActionResult> GetLocations()
         {
             return Ok(await service.GetLocations());
+        }
+
+        [HttpGet("{id:int}")]
+        public async Task<IActionResult> GetLocationById(int id)
+        {
+            return Ok(await service.GetLocationById(id));
+        }
+
+        [HttpGet("{name}")]
+        public async Task<IActionResult> GetLocationByName(string name)
+        {
+            return Ok(await service.GetLocationByName(name));
         }
 
         [HttpDelete("{id:int}")]

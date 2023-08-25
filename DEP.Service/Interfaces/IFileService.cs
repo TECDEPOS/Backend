@@ -12,6 +12,6 @@ namespace DEP.Service.Interfaces
         Task<File> DeleteFile(int id);
         Task<List<File>> GetFile();
         Task<File> GetFileById(int id);
-        Task<File> GetFileByName(string name);
+        Task<List<File>> GetFileByName(string name);
     }
 }

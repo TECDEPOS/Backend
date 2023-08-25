@@ -25,7 +25,7 @@ namespace DEP.Repository.Repositories
 
         public async Task<FileTag> GetFileTagByname(string name)
         {
-            var filetag = await context.FileTags.FirstOrDefaultAsync(x => x.TagName == name);
+            var filetag = await context.FileTags.FirstOrDefaultAsync(x => x.TagName.Contains(name.ToLower()));
             return filetag;
         }
 

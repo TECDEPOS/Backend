@@ -38,6 +38,20 @@ namespace DEP.Repository.Repositories
             return locations;
         }
 
+        public async Task<Location> GetLocationById(int id)
+        {
+            var location = await context.Locations.FindAsync(id);
+
+            return location;
+        }
+
+        public async Task<Location> GetLocationByName(string name)
+        {
+            var location = await context.Locations.FirstOrDefaultAsync(x => x.Name.Contains(name.ToLower()));
+
+            return location;
+        }
+
         public async Task<Location> UpdateLocation(Location location)
         {
             context.Entry(location).State = EntityState.Modified;

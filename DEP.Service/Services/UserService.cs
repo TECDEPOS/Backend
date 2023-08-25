@@ -29,7 +29,7 @@ namespace DEP.Service.Services
             return await userRepository.GetUserById(id);
         }
 
-        public async Task<User> GetUserByName(string name)
+        public async Task<List<User>> GetUserByName(string name)
         {
             return await userRepository.GetUserByName(name);
         }

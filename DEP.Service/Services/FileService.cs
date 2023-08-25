@@ -29,7 +29,7 @@ namespace DEP.Service.Services
             return await repo.GetFileById(id);
         }
 
-        public async Task<File> GetFileByName(string name)
+        public async Task<List<File>> GetFileByName(string name)
         {
             return await repo.GetFileByName(name);
         }
