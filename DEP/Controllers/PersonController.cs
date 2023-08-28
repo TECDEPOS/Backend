@@ -1,5 +1,6 @@
 ﻿using DEP.Repository.Models;
 using DEP.Service.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DEP.Controllers
@@ -12,7 +13,7 @@ namespace DEP.Controllers
 
         public PersonController(IPersonService service) { this.service = service; }
 
-        [HttpGet]
+        [HttpGet, Authorize]
         public async Task<IActionResult> GetPersons()
         {
             try
@@ -25,7 +26,7 @@ namespace DEP.Controllers
             }
         }
 
-        [HttpGet("{id:int}")]
+        [HttpGet("{id:int}"), Authorize]
         public async Task<IActionResult> GetPersonById(int id)
         {
             try
@@ -38,7 +39,7 @@ namespace DEP.Controllers
             }
         }
 
-        [HttpGet("name")]
+        [HttpGet("{name}"), Authorize]
         public async Task<IActionResult> GetPersonByName(string name)
         {
             try
@@ -51,7 +52,7 @@ namespace DEP.Controllers
             }
         }
 
-        [HttpPost]
+        [HttpPost, Authorize]
         public async Task<IActionResult> AddPerson(Person person)
         {
             try
@@ -68,7 +69,7 @@ namespace DEP.Controllers
             }
         }
 
-        [HttpPut]
+        [HttpPut, Authorize]
         public async Task<IActionResult> UpdatePerson(Person person)
         {
             try
@@ -85,7 +86,7 @@ namespace DEP.Controllers
             }
         }
 
-        [HttpDelete("id")]
+        [HttpDelete("{id:int}"), Authorize]
         public async Task<IActionResult> DeletePerson(int id)
         {
             try

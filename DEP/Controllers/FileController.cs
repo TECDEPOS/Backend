@@ -1,6 +1,7 @@
 ﻿using DEP.Service.Interfaces;
 using DEP.Service.Services;
 using DEP.Service.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using File = DEP.Repository.Models.File;
@@ -15,7 +16,7 @@ namespace DEP.Controllers
 
         public FileController(IFileService service) { this.service = service; }
 
-        [HttpGet]
+        [HttpGet, Authorize]
         public async Task<IActionResult> GetFile()
         {
             try
@@ -28,7 +29,7 @@ namespace DEP.Controllers
             }
         }
 
-        [HttpGet("{Id:int}")]
+        [HttpGet("{id:int}"), Authorize]
         public async Task<IActionResult> GetFileById(int id)
         {
             try
@@ -47,7 +48,7 @@ namespace DEP.Controllers
             }
         }
 
-        [HttpGet("{name}")]
+        [HttpGet("{name}"), Authorize]
         public async Task<IActionResult> GetFileByName(string name)
         {
             try
@@ -66,7 +67,7 @@ namespace DEP.Controllers
             }
         }
 
-        [HttpPost]
+        [HttpPost, Authorize]
         public async Task<IActionResult> AddFile(File file)
         {
             try
@@ -102,7 +103,7 @@ namespace DEP.Controllers
             }
         } */
 
-        [HttpDelete("{id:int}")]
+        [HttpDelete("{id:int}"), Authorize]
         public async Task<IActionResult> Deletefile(int id)
         {
             try

@@ -31,7 +31,7 @@ namespace DEP.Controllers
             return Ok(auth);
         }
 
-        [HttpPut("changepassword")]
+        [HttpPut("changepassword"), Authorize]
         public async Task<IActionResult> ChangePassword(ChangePasswordViewModel viewModel)
         {
             var success = await authService.ChangePassword(viewModel);
