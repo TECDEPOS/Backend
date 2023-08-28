@@ -1,5 +1,6 @@
 ﻿using DEP.Repository.Models;
 using DEP.Service.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -13,13 +14,13 @@ namespace DEP.Controllers
 
         public FileTagController(IFileTagService service) { this.service = service; }
 
-        [HttpGet]
+        [HttpGet, Authorize]
         public async Task<IActionResult> GetFileTag()
         {
             return Ok(await service.GetFileTags());
         }
 
-        [HttpGet("{id:int}")]
+        [HttpGet("{id:int}"), Authorize]
         public async Task<IActionResult> GetFileTagById(int id)
         {
             try
@@ -38,7 +39,7 @@ namespace DEP.Controllers
             }
         }
 
-        [HttpGet("{name}")]
+        [HttpGet("{name}"), Authorize]
         public async Task<IActionResult> GetFileTagByName(string name)
         {
             try
@@ -58,7 +59,7 @@ namespace DEP.Controllers
             }
         }
 
-        [HttpPost]
+        [HttpPost, Authorize]
         public async Task<IActionResult> AddFileTag(FileTag fileTag)
         {
             try
@@ -76,7 +77,7 @@ namespace DEP.Controllers
             }
         }
 
-        [HttpPut]
+        [HttpPut, Authorize]
         public async Task<IActionResult> UpdateFileTag(FileTag fileTag)
         {
             try
@@ -93,7 +94,7 @@ namespace DEP.Controllers
             }
         }
 
-        [HttpDelete("{id:int}")]
+        [HttpDelete("{id:int}"), Authorize]
         public async Task<IActionResult> DeleteFileTag(int id)
         {
             try

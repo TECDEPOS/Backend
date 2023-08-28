@@ -16,13 +16,13 @@ namespace DEP.Controllers
             this.service = service;
         }
 
-        [HttpGet]
+        [HttpGet, Authorize]
         public async Task<IActionResult> GetUsers()
         {
             return Ok(await service.GetUsers());
         }
 
-        [HttpGet("{id:int}")]
+        [HttpGet("{id:int}"), Authorize]
         public async Task<IActionResult> GetUserById(int id)
         {
             var user = await service.GetUserById(id);
@@ -35,7 +35,7 @@ namespace DEP.Controllers
             return Ok(user);
         }
 
-        [HttpGet("{name}")]
+        [HttpGet("{name}"), Authorize]
         public async Task<IActionResult> GetUserByName(string name)
         {
             var user = await service.GetUserByName(name);
@@ -67,7 +67,7 @@ namespace DEP.Controllers
             return Ok(newUser);
         }
 
-        [HttpDelete("{id:int}")]
+        [HttpDelete("{id:int}"), Authorize(Roles = "SuperAdmin,PkAdmin,HrAdmin,DkAdmin")]
         public async Task<IActionResult> DeleteUser(int id)
         {
             var userDeleted = await service.DeleteUser(id);
