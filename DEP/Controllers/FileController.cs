@@ -128,6 +128,7 @@ namespace DEP.Controllers
 
         [HttpDelete("{id:int}")]
         public async Task<IActionResult> Deletefile(int id)
+        {
             try
             {
                 return Ok(await service.DeleteFile(id));
