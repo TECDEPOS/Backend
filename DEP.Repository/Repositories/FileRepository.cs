@@ -6,35 +6,46 @@ using Microsoft.EntityFrameworkCore;
 using System.Text.RegularExpressions;
 using System.IO;
 using File = DEP.Repository.Models.File;
+using System.Net;
+using Microsoft.Extensions.Configuration;
 
 namespace DEP.Repository.Repositories
 {
-    public class FileRepository: IFileRepository
+    public class FileRepository : IFileRepository
     {
-        private readonly string AppDirectory = "C:\\FileServer";
         private readonly DatabaseContext context;
+        private readonly IConfiguration configuration;
 
-        public FileRepository(DatabaseContext context) { this.context = context; }
+        public FileRepository(DatabaseContext context, IConfiguration configuration) { this.context = context; this.configuration = configuration; }
 
 
         public async Task<File> UploadFile(IFormFile myFile)
         {
             File file = new File();
 
-            string time = Regex.Replace(DateTime.Now.ToString(), "[/.]", " ") + (".");
+            string time = Regex.Replace(DateTime.Now.ToString(), "[/.:-]", " ") + (".");
             List<string> name = myFile.FileName.Split('.').ToList();
             name.Insert(1, time);
             var fileName = string.Join("", name);
-            var path = Path.Combine(AppDirectory, fileName);
+            var path = Path.Combine(configuration.GetSection("Appsettings:AppDirectory").Value, fileName);
+
+            NetworkCredential credential = new NetworkCredential(
+                configuration.GetSection("Appsettings:Username").Value,
+                configuration.GetSection("Appsettings:Password").Value);
 
             file.FileName = myFile.FileName;
             file.FileUrl = path;
 
-            using (var stream = new FileStream(path, FileMode.Create))
-            {
-            await myFile.CopyToAsync(stream);
-            }
+            DirectoryInfo dir = new DirectoryInfo(path);
 
+
+            using (new NetworkConnection(configuration.GetSection("Appsettings:AppDirectory").Value, credential))
+            {
+                using (var stream = new FileStream(path, FileMode.Create))
+                {
+                    await myFile.CopyToAsync(stream);
+                }
+            }
             return file;
         }
 
@@ -104,9 +115,9 @@ namespace DEP.Repository.Repositories
 
         public async Task<File> AddFile(File file)
         {
-                context.Files.Add(file);
-                await context.SaveChangesAsync();
-                return file;
+            context.Files.Add(file);
+            await context.SaveChangesAsync();
+            return file;
         }
 
         public async Task<File> UpdateFile(File file)

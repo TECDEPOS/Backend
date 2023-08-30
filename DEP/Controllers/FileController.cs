@@ -13,11 +13,12 @@ namespace DEP.Controllers
     [ApiController]
     public class FileController : ControllerBase
     {
-        private readonly string AppDirectory = "C:\\FileServer";
+        private readonly IConfiguration configuration;
         private readonly DatabaseContext context;
         private readonly IFileService service;
 
-        public FileController(IFileService service, DatabaseContext context) { this.service = service; this.context = context; }
+        public FileController(IFileService service, DatabaseContext context, IConfiguration configuration) 
+        { this.service = service; this.context = context; this.configuration = configuration; }
 
         [HttpGet, Authorize]
         public async Task<IActionResult> GetFile()
@@ -75,7 +76,7 @@ namespace DEP.Controllers
         {
             var file = context.Files.Where(f => f.FileId == id).FirstOrDefault();
 
-            var path = Path.Combine(AppDirectory, file.FileUrl);
+            var path = Path.Combine(configuration.GetSection("Appsettings:AppDirectory").Value, file.FileUrl);
 
             var memory = new MemoryStream();
             using (var stream = new FileStream(path, FileMode.Open))
@@ -125,22 +126,8 @@ namespace DEP.Controllers
             }
         } */
 
-        [HttpDelete("{id:int}"), Authorize]
+        [HttpDelete("{id:int}")]
         public async Task<IActionResult> Deletefile(int id)
-        {
-            var file = context.Files.Where(f => f.FileId == id).FirstOrDefault();
-
-            var path = Path.Combine(AppDirectory, file.FileUrl);
-
-            var memory = new MemoryStream();
-            using (var stream = new FileStream(path, FileMode.Open))
-            {
-                await stream.CopyToAsync(memory);
-            }
-            memory.Position = 0;
-            var contentType = "APPLICATION/octet-stream";
-            var fileName = file.FileName;
-
             try
             {
                 return Ok(await service.DeleteFile(id));
