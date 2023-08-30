@@ -1,6 +1,7 @@
 ﻿using DEP.Repository.Interfaces;
 using DEP.Service.Interfaces;
 using DEP.Service.ViewModels;
+using Microsoft.AspNetCore.Http;
 using File = DEP.Repository.Models.File;
 
 namespace DEP.Service.Services
@@ -9,9 +10,14 @@ namespace DEP.Service.Services
     {
         private readonly IFileRepository repo;
         public FileService(IFileRepository repo) { this.repo = repo; }
-        public async Task<File> AddFile(File file)
+        public async Task<File> AddFile(IFormFile file, int personId, int tagId)
         {
-            return await repo.AddFile(file);
+            File newfile = await repo.UploadFile(file);
+            newfile.PersonId = personId;
+            newfile.FileTagId = tagId;
+            newfile.UploadDate = DateTime.Now;
+
+            return await repo.AddFile(newfile);
         }
 
         public async Task<File> DeleteFile(int id)
@@ -39,7 +45,6 @@ namespace DEP.Service.Services
         //Haven't tested for bug, or if it even works
         public async Task<File> UpdateFile(File file)
         {
-
             return await repo.UpdateFile(file);
         }
 
