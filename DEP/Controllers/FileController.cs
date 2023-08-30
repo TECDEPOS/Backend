@@ -5,6 +5,8 @@ using DEP.Service.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Identity.Client.Platforms.Features.DesktopOs.Kerberos;
+using System.Net;
 using File = DEP.Repository.Models.File;
 
 namespace DEP.Controllers
@@ -71,17 +73,24 @@ namespace DEP.Controllers
             }
         }
 
-        [HttpGet("DownloadFile"), Authorize]
+        [HttpGet("DownloadFile")]
         public async Task<IActionResult> DownloadFile(int id)
         {
             var file = context.Files.Where(f => f.FileId == id).FirstOrDefault();
 
             var path = Path.Combine(configuration.GetSection("Appsettings:AppDirectory").Value, file.FileUrl);
 
+            NetworkCredential credential = new NetworkCredential(
+                configuration.GetSection("Appsettings:Username").Value,
+                configuration.GetSection("Appsettings:Password").Value);
+
             var memory = new MemoryStream();
-            using (var stream = new FileStream(path, FileMode.Open))
+            using (new NetworkConnection(configuration.GetSection("Appsettings:AppDirectory").Value, credential))
             {
-                await stream.CopyToAsync(memory);
+                using (var stream = new FileStream(path, FileMode.Open))
+                {
+                    await stream.CopyToAsync(memory);
+                }
             }
             memory.Position = 0;
             var contentType = "APPLICATION/octet-stream";
