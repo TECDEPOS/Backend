@@ -23,10 +23,8 @@ namespace DEP.Repository.Repositories
         {
             File file = new File();
 
-            string time = Regex.Replace(DateTime.Now.ToString(), "[/.:-]", " ") + (".");
-            List<string> name = myFile.FileName.Split('.').ToList();
-            name.Insert(1, time);
-            var fileName = string.Join("", name);
+            string time = Regex.Replace(DateTime.Now.ToString(), "[/.:-]", " ");
+            var fileName = time + myFile.FileName;
             var path = Path.Combine(configuration.GetSection("Appsettings:AppDirectory").Value, fileName);
 
             NetworkCredential credential = new NetworkCredential(
@@ -35,9 +33,6 @@ namespace DEP.Repository.Repositories
 
             file.FileName = myFile.FileName;
             file.FileUrl = path;
-
-            DirectoryInfo dir = new DirectoryInfo(path);
-
 
             using (new NetworkConnection(configuration.GetSection("Appsettings:AppDirectory").Value, credential))
             {

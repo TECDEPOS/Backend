@@ -71,7 +71,7 @@ namespace DEP.Controllers
             }
         }
 
-        [HttpGet("DownloadFile")]
+        [HttpGet("DownloadFile"), Authorize]
         public async Task<IActionResult> DownloadFile(int id)
         {
             var file = context.Files.Where(f => f.FileId == id).FirstOrDefault();
@@ -126,7 +126,7 @@ namespace DEP.Controllers
             }
         } */
 
-        [HttpDelete("{id:int}")]
+        [HttpDelete("{id:int}"), Authorize]
         public async Task<IActionResult> Deletefile(int id)
         {
             try
