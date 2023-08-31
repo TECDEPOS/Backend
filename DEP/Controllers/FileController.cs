@@ -1,6 +1,8 @@
-﻿using DEP.Service.Interfaces;
+﻿using DEP.Repository.Context;
+using DEP.Service.Interfaces;
 using DEP.Service.Services;
 using DEP.Service.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using File = DEP.Repository.Models.File;
@@ -11,11 +13,13 @@ namespace DEP.Controllers
     [ApiController]
     public class FileController : ControllerBase
     {
+        private readonly string AppDirectory = "C:\\FileServer";
+        private readonly DatabaseContext context;
         private readonly IFileService service;
 
-        public FileController(IFileService service) { this.service = service; }
+        public FileController(IFileService service, DatabaseContext context) { this.service = service; this.context = context; }
 
-        [HttpGet]
+        [HttpGet, Authorize]
         public async Task<IActionResult> GetFile()
         {
             try
@@ -28,7 +32,7 @@ namespace DEP.Controllers
             }
         }
 
-        [HttpGet("{Id:int}")]
+        [HttpGet("{id:int}"), Authorize]
         public async Task<IActionResult> GetFileById(int id)
         {
             try
@@ -47,7 +51,7 @@ namespace DEP.Controllers
             }
         }
 
-        [HttpGet("{name}")]
+        [HttpGet("{name}"), Authorize]
         public async Task<IActionResult> GetFileByName(string name)
         {
             try
@@ -66,16 +70,35 @@ namespace DEP.Controllers
             }
         }
 
-        [HttpPost]
-        public async Task<IActionResult> AddFile(File file)
+        [HttpGet("DownloadFile")]
+        public async Task<IActionResult> DownloadFile(int id)
+        {
+            var file = context.Files.Where(f => f.FileId == id).FirstOrDefault();
+
+            var path = Path.Combine(AppDirectory, file.FileUrl);
+
+            var memory = new MemoryStream();
+            using (var stream = new FileStream(path, FileMode.Open))
+            {
+                await stream.CopyToAsync(memory);
+            }
+            memory.Position = 0;
+            var contentType = "APPLICATION/octet-stream";
+            var fileName = file.FileName;
+
+            return File(memory, contentType, fileName);
+        }
+
+        [HttpPost("{userId:int}/{tagId:int}")]
+        public async Task<IActionResult> AddFile(IFormFile file, int userId, int tagId)
         {
             try
             {
-                if(file == null)
+                if (file == null)
                 {
                     return NotFound("File not Given? Be better than that!");
                 }
-                return Created("File", await service.AddFile(file));
+                return Created("File", await service.AddFile(file, userId, tagId));
             }
             catch (Exception e)
             {
@@ -102,9 +125,22 @@ namespace DEP.Controllers
             }
         } */
 
-        [HttpDelete("{id:int}")]
+        [HttpDelete("{id:int}"), Authorize]
         public async Task<IActionResult> Deletefile(int id)
         {
+            var file = context.Files.Where(f => f.FileId == id).FirstOrDefault();
+
+            var path = Path.Combine(AppDirectory, file.FileUrl);
+
+            var memory = new MemoryStream();
+            using (var stream = new FileStream(path, FileMode.Open))
+            {
+                await stream.CopyToAsync(memory);
+            }
+            memory.Position = 0;
+            var contentType = "APPLICATION/octet-stream";
+            var fileName = file.FileName;
+
             try
             {
                 return Ok(await service.DeleteFile(id));

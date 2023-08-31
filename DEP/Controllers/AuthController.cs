@@ -31,7 +31,7 @@ namespace DEP.Controllers
             return Ok(auth);
         }
 
-        [HttpPut("changepassword")]
+        [HttpPut("changepassword"), Authorize]
         public async Task<IActionResult> ChangePassword(ChangePasswordViewModel viewModel)
         {
             var success = await authService.ChangePassword(viewModel);
@@ -55,7 +55,13 @@ namespace DEP.Controllers
             string refreshToken = authResponse.RefreshToken;
 
             var user = await userService.GetUserById(authResponse.UserId);
-            if (user is null || user.RefreshToken != refreshToken || user.RefreshTokenExpiryDate <= DateTime.Now)
+
+            if (user.RefreshTokenExpiryDate <= DateTime.Now)
+            {
+                return BadRequest("Your session has expired, please log in again.");
+            }
+
+            if (user is null || user.RefreshToken != refreshToken)
             {
                 return BadRequest("Invalid Request");
             }
