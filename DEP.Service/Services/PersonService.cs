@@ -47,6 +47,7 @@ namespace DEP.Service.Services
                 PersonToTabelsViewModel peps = new PersonToTabelsViewModel()
                 {
                     Name = item.Name,
+                    Initials = item.Initials,
                     HiringDate = item.HiringDate,
                     EndDate = item.EndDate,
                     SvuEligible = item.SvuEligible,
