@@ -25,7 +25,7 @@ namespace DEP.Controllers
 
             if (auth is null)
             {
-                return Unauthorized("Bad login");
+                return Unauthorized("Invalid login");
             }
 
             return Ok(auth);
