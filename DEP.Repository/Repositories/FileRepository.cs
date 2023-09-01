@@ -33,6 +33,8 @@ namespace DEP.Repository.Repositories
 
             file.FileName = myFile.FileName;
             file.FileUrl = path;
+            file.FileFormat = Path.GetExtension(myFile.FileName);
+            file.ContentType = myFile.ContentType;
 
             using (new NetworkConnection(configuration.GetSection("Appsettings:AppDirectory").Value, credential))
             {
@@ -41,13 +43,6 @@ namespace DEP.Repository.Repositories
                     await myFile.CopyToAsync(stream);
                 }
             }
-            return file;
-        }
-
-        public async Task<File> CreateFileInDB(File file)
-        {
-            context.Files.Add(file);
-            await context.SaveChangesAsync();
             return file;
         }
 
@@ -60,6 +55,8 @@ namespace DEP.Repository.Repositories
                     FileName = x.FileName,
                     FileUrl = x.FileUrl,
                     UploadDate = x.UploadDate,
+                    ContentType = x.ContentType,
+                    FileFormat = x.FileFormat,
                     FileTag =
                     new
                     {
@@ -82,6 +79,8 @@ namespace DEP.Repository.Repositories
                     FileName = x.FileName,
                     FileUrl = x.FileUrl,
                     UploadDate = x.UploadDate,
+                    ContentType = x.ContentType,
+                    FileFormat = x.FileFormat,
                     FileTag = new FileTag()
                     {
                         FileTagId = x.FileTag.FileTagId,
@@ -111,7 +110,16 @@ namespace DEP.Repository.Repositories
         public async Task<File> AddFile(File file)
         {
             context.Files.Add(file);
-            await context.SaveChangesAsync();
+            try
+            {
+                await context.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                // Log or print the exception details for debugging
+                Console.WriteLine(ex.ToString());
+                throw; // Rethrow the exception to handle it at a higher level
+            }
             return file;
         }
 

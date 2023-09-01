@@ -73,7 +73,7 @@ namespace DEP.Controllers
             }
         }
 
-        [HttpGet("DownloadFile")]
+        [HttpGet("DownloadFile/{id:int}")]
         public async Task<IActionResult> DownloadFile(int id)
         {
             var file = context.Files.Where(f => f.FileId == id).FirstOrDefault();

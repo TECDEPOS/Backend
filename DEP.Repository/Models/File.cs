@@ -5,6 +5,8 @@
         public int FileId { get; set; }
         public string FileName { get; set; } = string.Empty;
         public string FileUrl { get; set; } = string.Empty;
+        public string FileFormat { get; set; }
+        public string ContentType { get; set; }
         public int FileTagId { get; set; }
         public int PersonId { get; set; }
         public DateTime UploadDate { get; set; }
