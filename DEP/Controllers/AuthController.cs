@@ -25,7 +25,7 @@ namespace DEP.Controllers
 
             if (auth is null)
             {
-                return Unauthorized("Bad login");
+                return Unauthorized("Invalid login");
             }
 
             return Ok(auth);
@@ -66,8 +66,7 @@ namespace DEP.Controllers
                 return BadRequest("Invalid Request");
             }
 
-            var newAccessToken = authService.CreateJwt
-                Token(user);
+            var newAccessToken = authService.CreateJwtToken(user);
             var newRefreshToken = await authService.CreateRefreshToken();
 
             user.RefreshToken = newRefreshToken;
