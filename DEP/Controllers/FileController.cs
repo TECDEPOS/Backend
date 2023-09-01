@@ -78,7 +78,7 @@ namespace DEP.Controllers
         {
             var file = context.Files.Where(f => f.FileId == id).FirstOrDefault();
 
-            var path = Path.Combine(configuration.GetSection("Appsettings:AppDirectory").Value, file.FileUrl);
+            var path = Path.Combine(configuration.GetSection("Appsettings:AppDirectory").Value, file.FilePath);
 
             NetworkCredential credential = new NetworkCredential(
                 configuration.GetSection("Appsettings:Username").Value,

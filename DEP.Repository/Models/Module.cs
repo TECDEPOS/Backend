@@ -8,5 +8,6 @@
         public ModuleType ModuleType { get; set; }
 
         public List<PersonModule> PersonModules { get; set; } = new List<PersonModule>();
+        public List<Book> Books { get; set; } = new List<Book>();
     }
 }

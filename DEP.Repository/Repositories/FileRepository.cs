@@ -32,7 +32,7 @@ namespace DEP.Repository.Repositories
                 configuration.GetSection("Appsettings:Password").Value);
 
             file.FileName = myFile.FileName;
-            file.FileUrl = path;
+            file.FilePath = path;
             file.FileFormat = Path.GetExtension(myFile.FileName);
             file.ContentType = myFile.ContentType;
 
@@ -53,7 +53,7 @@ namespace DEP.Repository.Repositories
                 {
                     FileId = x.FileId,
                     FileName = x.FileName,
-                    FileUrl = x.FileUrl,
+                    FileUrl = x.FilePath,
                     UploadDate = x.UploadDate,
                     ContentType = x.ContentType,
                     FileFormat = x.FileFormat,
@@ -77,7 +77,7 @@ namespace DEP.Repository.Repositories
                 {
                     FileId = x.FileId,
                     FileName = x.FileName,
-                    FileUrl = x.FileUrl,
+                    FilePath = x.FileUrl,
                     UploadDate = x.UploadDate,
                     ContentType = x.ContentType,
                     FileFormat = x.FileFormat,
@@ -134,7 +134,7 @@ namespace DEP.Repository.Repositories
         {
             var file = await context.Files.FindAsync(id);
 
-            System.IO.File.Delete(file.FileUrl);
+            System.IO.File.Delete(file.FilePath);
             context.Files.Remove(file);
             await context.SaveChangesAsync();
             return file;
