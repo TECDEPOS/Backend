@@ -61,9 +61,14 @@ namespace DEP.Controllers
                 return BadRequest("Your session has expired, please log in again.");
             }
 
-            if (user is null || user.RefreshToken != refreshToken)
+            if (user is null)
             {
                 return BadRequest("Invalid Request");
+            }
+
+            if (user.RefreshToken != refreshToken)
+            {
+                return BadRequest("User is logged in on another device, please log in again.");
             }
 
             var newAccessToken = authService.CreateJwtToken(user);

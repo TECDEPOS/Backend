@@ -6,7 +6,7 @@ namespace DEP.Service.ViewModels
     {
         public int PersonId { get; set; }
         public string Name { get; set; } = string.Empty;
-        public string Initials { get; set; }
+        public string Initials { get; set; } = string.Empty;
         //Ayo what the fuck check this out later. -Sebastian
         //public int DepartmentId { get; set; }
         //public int LocationId { get; set; }
