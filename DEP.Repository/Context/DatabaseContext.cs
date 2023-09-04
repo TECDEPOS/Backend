@@ -52,6 +52,19 @@ namespace DEP.Repository.Context
             //    .HasForeignKey(x => x.PersonId)
             //    .IsRequired(false);
             //});
+
+            modelBuilder.Entity<Person>(entity =>
+            {
+                entity.HasOne(x => x.EducationalConsultant)
+                .WithMany(x => x.EducationalConsultantPersons)
+                .HasForeignKey(x => x.EducationalConsultantId)
+                .OnDelete(DeleteBehavior.ClientSetNull);
+
+                entity.HasOne(x => x.OperationCoordinator)
+                .WithMany(x => x.OperationCoordinatorPersons)
+                .HasForeignKey(x => x.OperationCoordinatorId)
+                .OnDelete(DeleteBehavior.ClientSetNull);
+            });
         }
 
     }

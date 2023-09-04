@@ -6,42 +6,43 @@ using Microsoft.EntityFrameworkCore;
 using System.Text.RegularExpressions;
 using System.IO;
 using File = DEP.Repository.Models.File;
+using System.Net;
+using Microsoft.Extensions.Configuration;
 
 namespace DEP.Repository.Repositories
 {
-    public class FileRepository: IFileRepository
+    public class FileRepository : IFileRepository
     {
-        private readonly string AppDirectory = "C:\\FileServer";
         private readonly DatabaseContext context;
+        private readonly IConfiguration configuration;
 
-        public FileRepository(DatabaseContext context) { this.context = context; }
+        public FileRepository(DatabaseContext context, IConfiguration configuration) { this.context = context; this.configuration = configuration; }
 
 
         public async Task<File> UploadFile(IFormFile myFile)
         {
             File file = new File();
 
-            string time = Regex.Replace(DateTime.Now.ToString(), "[/.]", " ") + (".");
-            List<string> name = myFile.FileName.Split('.').ToList();
-            name.Insert(1, time);
-            var fileName = string.Join("", name);
-            var path = Path.Combine(AppDirectory, fileName);
+            string time = Regex.Replace(DateTime.Now.ToString(), "[/.:-]", " ");
+            var fileName = time + myFile.FileName;
+            var path = Path.Combine(configuration.GetSection("Appsettings:AppDirectory").Value, fileName);
+
+            NetworkCredential credential = new NetworkCredential(
+                configuration.GetSection("Appsettings:Username").Value,
+                configuration.GetSection("Appsettings:Password").Value);
 
             file.FileName = myFile.FileName;
-            file.FileUrl = path;
+            file.FilePath = path;
+            file.FileFormat = Path.GetExtension(myFile.FileName);
+            file.ContentType = myFile.ContentType;
 
-            using (var stream = new FileStream(path, FileMode.Create))
+            using (new NetworkConnection(configuration.GetSection("Appsettings:AppDirectory").Value, credential))
             {
-            await myFile.CopyToAsync(stream);
+                using (var stream = new FileStream(path, FileMode.Create))
+                {
+                    await myFile.CopyToAsync(stream);
+                }
             }
-
-            return file;
-        }
-
-        public async Task<File> CreateFileInDB(File file)
-        {
-            context.Files.Add(file);
-            await context.SaveChangesAsync();
             return file;
         }
 
@@ -52,8 +53,10 @@ namespace DEP.Repository.Repositories
                 {
                     FileId = x.FileId,
                     FileName = x.FileName,
-                    FileUrl = x.FileUrl,
+                    FileUrl = x.FilePath,
                     UploadDate = x.UploadDate,
+                    ContentType = x.ContentType,
+                    FileFormat = x.FileFormat,
                     FileTag =
                     new
                     {
@@ -74,8 +77,10 @@ namespace DEP.Repository.Repositories
                 {
                     FileId = x.FileId,
                     FileName = x.FileName,
-                    FileUrl = x.FileUrl,
+                    FilePath = x.FileUrl,
                     UploadDate = x.UploadDate,
+                    ContentType = x.ContentType,
+                    FileFormat = x.FileFormat,
                     FileTag = new FileTag()
                     {
                         FileTagId = x.FileTag.FileTagId,
@@ -104,9 +109,18 @@ namespace DEP.Repository.Repositories
 
         public async Task<File> AddFile(File file)
         {
-                context.Files.Add(file);
+            context.Files.Add(file);
+            try
+            {
                 await context.SaveChangesAsync();
-                return file;
+            }
+            catch (Exception ex)
+            {
+                // Log or print the exception details for debugging
+                Console.WriteLine(ex.ToString());
+                throw; // Rethrow the exception to handle it at a higher level
+            }
+            return file;
         }
 
         public async Task<File> UpdateFile(File file)
@@ -120,7 +134,7 @@ namespace DEP.Repository.Repositories
         {
             var file = await context.Files.FindAsync(id);
 
-            System.IO.File.Delete(file.FileUrl);
+            System.IO.File.Delete(file.FilePath);
             context.Files.Remove(file);
             await context.SaveChangesAsync();
             return file;
