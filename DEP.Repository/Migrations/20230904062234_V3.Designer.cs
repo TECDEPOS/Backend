@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DEP.Repository.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20230817081331_UploadV2")]
-    partial class UploadV2
+    [Migration("20230904062234_V3")]
+    partial class V3
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -36,11 +36,16 @@ namespace DEP.Repository.Migrations
                     b.Property<int>("Amount")
                         .HasColumnType("int");
 
+                    b.Property<int?>("ModuleId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("BookId");
+
+                    b.HasIndex("ModuleId");
 
                     b.ToTable("Books");
                 });
@@ -70,16 +75,24 @@ namespace DEP.Repository.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("FileId"));
 
+                    b.Property<string>("ContentType")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FileFormat")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("FileName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FilePath")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("FileTagId")
                         .HasColumnType("int");
-
-                    b.Property<string>("FileUrl")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("PersonId")
                         .HasColumnType("int");
@@ -121,8 +134,9 @@ namespace DEP.Repository.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("LocationId"));
 
-                    b.Property<int>("Name")
-                        .HasColumnType("int");
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("LocationId");
 
@@ -161,10 +175,10 @@ namespace DEP.Repository.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PersonId"));
 
-                    b.Property<int?>("DepartmentId")
+                    b.Property<int>("DepartmentId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("EducationalConsultantUserId")
+                    b.Property<int?>("EducationalConsultantId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("EndDate")
@@ -173,14 +187,18 @@ namespace DEP.Repository.Migrations
                     b.Property<DateTime>("HiringDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int?>("LocationId")
+                    b.Property<string>("Initials")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("LocationId")
                         .HasColumnType("int");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("OperationCoordinatorUserId")
+                    b.Property<int?>("OperationCoordinatorId")
                         .HasColumnType("int");
 
                     b.Property<bool>("SvuEligible")
@@ -190,11 +208,11 @@ namespace DEP.Repository.Migrations
 
                     b.HasIndex("DepartmentId");
 
-                    b.HasIndex("EducationalConsultantUserId");
+                    b.HasIndex("EducationalConsultantId");
 
                     b.HasIndex("LocationId");
 
-                    b.HasIndex("OperationCoordinatorUserId");
+                    b.HasIndex("OperationCoordinatorId");
 
                     b.ToTable("Persons");
                 });
@@ -264,10 +282,17 @@ namespace DEP.Repository.Migrations
                     b.ToTable("Users");
                 });
 
+            modelBuilder.Entity("DEP.Repository.Models.Book", b =>
+                {
+                    b.HasOne("DEP.Repository.Models.Module", null)
+                        .WithMany("Books")
+                        .HasForeignKey("ModuleId");
+                });
+
             modelBuilder.Entity("DEP.Repository.Models.File", b =>
                 {
                     b.HasOne("DEP.Repository.Models.FileTag", "FileTag")
-                        .WithMany("Files")
+                        .WithMany()
                         .HasForeignKey("FileTagId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -287,19 +312,23 @@ namespace DEP.Repository.Migrations
                 {
                     b.HasOne("DEP.Repository.Models.Department", "Department")
                         .WithMany()
-                        .HasForeignKey("DepartmentId");
+                        .HasForeignKey("DepartmentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("DEP.Repository.Models.User", "EducationalConsultant")
-                        .WithMany()
-                        .HasForeignKey("EducationalConsultantUserId");
+                        .WithMany("EducationalConsultantPersons")
+                        .HasForeignKey("EducationalConsultantId");
 
                     b.HasOne("DEP.Repository.Models.Location", "Location")
                         .WithMany()
-                        .HasForeignKey("LocationId");
+                        .HasForeignKey("LocationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("DEP.Repository.Models.User", "OperationCoordinator")
-                        .WithMany()
-                        .HasForeignKey("OperationCoordinatorUserId");
+                        .WithMany("OperationCoordinatorPersons")
+                        .HasForeignKey("OperationCoordinatorId");
 
                     b.Navigation("Department");
 
@@ -329,13 +358,10 @@ namespace DEP.Repository.Migrations
                     b.Navigation("Person");
                 });
 
-            modelBuilder.Entity("DEP.Repository.Models.FileTag", b =>
-                {
-                    b.Navigation("Files");
-                });
-
             modelBuilder.Entity("DEP.Repository.Models.Module", b =>
                 {
+                    b.Navigation("Books");
+
                     b.Navigation("PersonModules");
                 });
 
@@ -344,6 +370,13 @@ namespace DEP.Repository.Migrations
                     b.Navigation("Files");
 
                     b.Navigation("PersonModules");
+                });
+
+            modelBuilder.Entity("DEP.Repository.Models.User", b =>
+                {
+                    b.Navigation("EducationalConsultantPersons");
+
+                    b.Navigation("OperationCoordinatorPersons");
                 });
 #pragma warning restore 612, 618
         }

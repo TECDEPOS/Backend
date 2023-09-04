@@ -11,5 +11,8 @@
         public DateTime PasswordExpiryDate { get; set; }
         public string? RefreshToken { get; set; }
         public DateTime RefreshTokenExpiryDate { get; set; }
+
+        public List<Person> EducationalConsultantPersons { get; set; } = new List<Person>();
+        public List<Person> OperationCoordinatorPersons { get; set; } = new List<Person>();
     }
 }

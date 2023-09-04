@@ -6,25 +6,11 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace DEP.Repository.Migrations
 {
     /// <inheritdoc />
-    public partial class UploadV2 : Migration
+    public partial class initial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.CreateTable(
-                name: "Books",
-                columns: table => new
-                {
-                    BookId = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Amount = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Books", x => x.BookId);
-                });
-
             migrationBuilder.CreateTable(
                 name: "Departments",
                 columns: table => new
@@ -57,7 +43,7 @@ namespace DEP.Repository.Migrations
                 {
                     LocationId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<int>(type: "int", nullable: false)
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -100,19 +86,40 @@ namespace DEP.Repository.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Books",
+                columns: table => new
+                {
+                    BookId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Amount = table.Column<int>(type: "int", nullable: false),
+                    ModuleId = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Books", x => x.BookId);
+                    table.ForeignKey(
+                        name: "FK_Books_Modules_ModuleId",
+                        column: x => x.ModuleId,
+                        principalTable: "Modules",
+                        principalColumn: "ModuleId");
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Persons",
                 columns: table => new
                 {
                     PersonId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Initials = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    DepartmentId = table.Column<int>(type: "int", nullable: false),
+                    LocationId = table.Column<int>(type: "int", nullable: false),
+                    EducationalConsultantId = table.Column<int>(type: "int", nullable: false),
+                    OperationCoordinatorId = table.Column<int>(type: "int", nullable: false),
                     HiringDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     EndDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    SvuEligible = table.Column<bool>(type: "bit", nullable: false),
-                    EducationalConsultantUserId = table.Column<int>(type: "int", nullable: true),
-                    OperationCoordinatorUserId = table.Column<int>(type: "int", nullable: true),
-                    DepartmentId = table.Column<int>(type: "int", nullable: true),
-                    LocationId = table.Column<int>(type: "int", nullable: true)
+                    SvuEligible = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -121,20 +128,22 @@ namespace DEP.Repository.Migrations
                         name: "FK_Persons_Departments_DepartmentId",
                         column: x => x.DepartmentId,
                         principalTable: "Departments",
-                        principalColumn: "DepartmentId");
+                        principalColumn: "DepartmentId",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Persons_Locations_LocationId",
                         column: x => x.LocationId,
                         principalTable: "Locations",
-                        principalColumn: "LocationId");
+                        principalColumn: "LocationId",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Persons_Users_EducationalConsultantUserId",
-                        column: x => x.EducationalConsultantUserId,
+                        name: "FK_Persons_Users_EducationalConsultantId",
+                        column: x => x.EducationalConsultantId,
                         principalTable: "Users",
                         principalColumn: "UserId");
                     table.ForeignKey(
-                        name: "FK_Persons_Users_OperationCoordinatorUserId",
-                        column: x => x.OperationCoordinatorUserId,
+                        name: "FK_Persons_Users_OperationCoordinatorId",
+                        column: x => x.OperationCoordinatorId,
                         principalTable: "Users",
                         principalColumn: "UserId");
                 });
@@ -146,7 +155,9 @@ namespace DEP.Repository.Migrations
                     FileId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     FileName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    FileUrl = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    FilePath = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    FileFormat = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ContentType = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     FileTagId = table.Column<int>(type: "int", nullable: false),
                     PersonId = table.Column<int>(type: "int", nullable: false),
                     UploadDate = table.Column<DateTime>(type: "datetime2", nullable: false)
@@ -196,6 +207,11 @@ namespace DEP.Repository.Migrations
                 });
 
             migrationBuilder.CreateIndex(
+                name: "IX_Books_ModuleId",
+                table: "Books",
+                column: "ModuleId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Files_FileTagId",
                 table: "Files",
                 column: "FileTagId");
@@ -216,9 +232,9 @@ namespace DEP.Repository.Migrations
                 column: "DepartmentId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Persons_EducationalConsultantUserId",
+                name: "IX_Persons_EducationalConsultantId",
                 table: "Persons",
-                column: "EducationalConsultantUserId");
+                column: "EducationalConsultantId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Persons_LocationId",
@@ -226,9 +242,9 @@ namespace DEP.Repository.Migrations
                 column: "LocationId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Persons_OperationCoordinatorUserId",
+                name: "IX_Persons_OperationCoordinatorId",
                 table: "Persons",
-                column: "OperationCoordinatorUserId");
+                column: "OperationCoordinatorId");
         }
 
         /// <inheritdoc />

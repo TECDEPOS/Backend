@@ -5,6 +5,8 @@ using DEP.Service.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Identity.Client.Platforms.Features.DesktopOs.Kerberos;
+using System.Net;
 using File = DEP.Repository.Models.File;
 
 namespace DEP.Controllers
@@ -13,11 +15,12 @@ namespace DEP.Controllers
     [ApiController]
     public class FileController : ControllerBase
     {
-        private readonly string AppDirectory = "C:\\FileServer";
+        private readonly IConfiguration configuration;
         private readonly DatabaseContext context;
         private readonly IFileService service;
 
-        public FileController(IFileService service, DatabaseContext context) { this.service = service; this.context = context; }
+        public FileController(IFileService service, DatabaseContext context, IConfiguration configuration) 
+        { this.service = service; this.context = context; this.configuration = configuration; }
 
         [HttpGet, Authorize]
         public async Task<IActionResult> GetFile()
@@ -70,17 +73,24 @@ namespace DEP.Controllers
             }
         }
 
-        [HttpGet("DownloadFile")]
+        [HttpGet("DownloadFile/{id:int}")]
         public async Task<IActionResult> DownloadFile(int id)
         {
             var file = context.Files.Where(f => f.FileId == id).FirstOrDefault();
 
-            var path = Path.Combine(AppDirectory, file.FileUrl);
+            var path = Path.Combine(configuration.GetSection("Appsettings:AppDirectory").Value, file.FilePath);
+
+            NetworkCredential credential = new NetworkCredential(
+                configuration.GetSection("Appsettings:Username").Value,
+                configuration.GetSection("Appsettings:Password").Value);
 
             var memory = new MemoryStream();
-            using (var stream = new FileStream(path, FileMode.Open))
+            using (new NetworkConnection(configuration.GetSection("Appsettings:AppDirectory").Value, credential))
             {
-                await stream.CopyToAsync(memory);
+                using (var stream = new FileStream(path, FileMode.Open))
+                {
+                    await stream.CopyToAsync(memory);
+                }
             }
             memory.Position = 0;
             var contentType = "APPLICATION/octet-stream";
@@ -128,19 +138,6 @@ namespace DEP.Controllers
         [HttpDelete("{id:int}"), Authorize]
         public async Task<IActionResult> Deletefile(int id)
         {
-            var file = context.Files.Where(f => f.FileId == id).FirstOrDefault();
-
-            var path = Path.Combine(AppDirectory, file.FileUrl);
-
-            var memory = new MemoryStream();
-            using (var stream = new FileStream(path, FileMode.Open))
-            {
-                await stream.CopyToAsync(memory);
-            }
-            memory.Position = 0;
-            var contentType = "APPLICATION/octet-stream";
-            var fileName = file.FileName;
-
             try
             {
                 return Ok(await service.DeleteFile(id));

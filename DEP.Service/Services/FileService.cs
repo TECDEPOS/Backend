@@ -54,7 +54,7 @@ namespace DEP.Service.Services
             newFile.FileId = file.FileId;
             newFile.FileName = file.FileName;
             //newFile.FileTagId = file.FileTagId;
-            newFile.FileUrl = file.FileUrl;
+            newFile.FilePath = file.FileUrl;
             newFile.UploadDate = file.UploadDate;
 
             return newFile;
