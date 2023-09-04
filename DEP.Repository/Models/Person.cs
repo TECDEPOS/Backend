@@ -7,8 +7,8 @@
         public string Initials { get; set; }
         public int DepartmentId { get; set; }
         public int LocationId { get; set; }
-        public int EducationalConsultantId { get; set; }
-        public int OperationCoordinatorId { get; set; }
+        public int? EducationalConsultantId { get; set; }
+        public int? OperationCoordinatorId { get; set; }
         public DateTime HiringDate { get; set; }
         public DateTime EndDate { get; set; }
         public bool SvuEligible { get; set; }
