@@ -58,11 +58,13 @@ namespace DEP.Repository.Context
                 entity.HasOne(x => x.EducationalConsultant)
                 .WithMany(x => x.EducationalConsultantPersons)
                 .HasForeignKey(x => x.EducationalConsultantId)
+                .IsRequired(false)
                 .OnDelete(DeleteBehavior.ClientSetNull);
 
                 entity.HasOne(x => x.OperationCoordinator)
                 .WithMany(x => x.OperationCoordinatorPersons)
                 .HasForeignKey(x => x.OperationCoordinatorId)
+                .IsRequired(false)
                 .OnDelete(DeleteBehavior.ClientSetNull);
             });
         }
