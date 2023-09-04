@@ -4,11 +4,11 @@
     {
         public int PersonId { get; set; }
         public string Name { get; set; } = string.Empty;
-        //Ayo what the fuck check this out later. -Sebastian
-        //public int DepartmentId { get; set; }
-        //public int LocationId { get; set; }
-        //public int EducationalConsultantId { get; set; }
-        //public int OperationCoordinatorId { get; set; }
+        public string Initials { get; set; }
+        public int DepartmentId { get; set; }
+        public int LocationId { get; set; }
+        public int EducationalConsultantId { get; set; }
+        public int OperationCoordinatorId { get; set; }
         public DateTime HiringDate { get; set; }
         public DateTime EndDate { get; set; }
         public bool SvuEligible { get; set; }
