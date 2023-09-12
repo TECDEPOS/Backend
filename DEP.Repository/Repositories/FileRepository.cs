@@ -134,7 +134,25 @@ namespace DEP.Repository.Repositories
         {
             var file = await context.Files.FindAsync(id);
 
-            System.IO.File.Delete(file.FilePath);
+            try
+            {
+                System.IO.File.Delete(file.FilePath);
+            }
+            catch (UnauthorizedAccessException ex)
+            {
+                // Handle unauthorized access (permissions) error here
+                Console.WriteLine($"Unauthorized access error: {ex.Message}");
+            }
+            catch (IOException ex)
+            {
+                // Handle other IO-related errors here
+                Console.WriteLine($"IO error: {ex.Message}");
+            }
+            catch (Exception ex)
+            {
+                // Handle any other exceptions here
+                Console.WriteLine($"An error occurred: {ex.Message}");
+            }
             context.Files.Remove(file);
             await context.SaveChangesAsync();
             return file;
