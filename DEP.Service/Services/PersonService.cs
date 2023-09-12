@@ -65,6 +65,10 @@ namespace DEP.Service.Services
 
         public async Task<Person> UpdatePerson(Person person)
         {
+            person.EducationalConsultantId = person.EducationalConsultant?.UserId;
+            person.OperationCoordinatorId = person.OperationCoordinator?.UserId;
+            person.LocationId = person.Location?.LocationId;
+            person.DepartmentId = person.Department?.DepartmentId;
             return await repo.UpdatePerson(person);
         }
     }
