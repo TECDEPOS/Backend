@@ -66,6 +66,18 @@ namespace DEP.Repository.Context
                 .HasForeignKey(x => x.OperationCoordinatorId)
                 .IsRequired(false)
                 .OnDelete(DeleteBehavior.ClientSetNull);
+
+                //entity.HasOne(x => x.Location)
+                //.WithMany(x => x.Persons)
+                //.HasForeignKey(x => x.LocationId)
+                //.IsRequired(false)
+                //.OnDelete(DeleteBehavior.ClientSetNull);
+
+                //entity.HasOne(x => x.Location)
+                //.WithMany(x => x.Persons)
+                //.HasForeignKey(x => x.LocationId)
+                //.IsRequired(false)
+                //.OnDelete(DeleteBehavior.ClientSetNull);
             });
         }
 
