@@ -111,12 +111,12 @@ namespace DEP.Repository.Repositories
 
         public async Task<File> AddFile(File file)
         {
-            //context.Files.Add(file);
             context.Files.Add(file);
             var tt = new File();
             try
             {
                 await context.SaveChangesAsync();
+                // Getting the full file from DB so FileTag object is included
                 tt = await context.Files.Include(x => x.FileTag).FirstOrDefaultAsync(x => x.FileId == file.FileId);
             }
             catch (Exception ex)
