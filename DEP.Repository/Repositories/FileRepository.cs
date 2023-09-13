@@ -65,6 +65,7 @@ namespace DEP.Repository.Repositories
                     },
                     Person = new
                     {
+                        PersonId = x.Person.PersonId,
                         Name = x.Person.Name
 
                     }
@@ -88,6 +89,7 @@ namespace DEP.Repository.Repositories
                     },
                     Person = new Person()
                     {
+                        PersonId = x.Person.PersonId,
                         Name = x.Person.Name
                     }
                 });
@@ -110,9 +112,12 @@ namespace DEP.Repository.Repositories
         public async Task<File> AddFile(File file)
         {
             context.Files.Add(file);
+            var tt = new File();
             try
             {
                 await context.SaveChangesAsync();
+                // Getting the full file from DB so FileTag object is included
+                tt = await context.Files.Include(x => x.FileTag).FirstOrDefaultAsync(x => x.FileId == file.FileId);
             }
             catch (Exception ex)
             {
@@ -120,7 +125,7 @@ namespace DEP.Repository.Repositories
                 Console.WriteLine(ex.ToString());
                 throw; // Rethrow the exception to handle it at a higher level
             }
-            return file;
+            return tt;
         }
 
         public async Task<File> UpdateFile(File file)
@@ -134,7 +139,22 @@ namespace DEP.Repository.Repositories
         {
             var file = await context.Files.FindAsync(id);
 
-            System.IO.File.Delete(file.FilePath);
+            if (file is null)
+            {
+                return null;
+            }
+
+            NetworkCredential credential = new NetworkCredential(
+                configuration.GetSection("Appsettings:Username").Value,
+                configuration.GetSection("Appsettings:Password").Value);
+
+            using (new NetworkConnection(configuration.GetSection("Appsettings:AppDirectory").Value, credential))
+            {
+                if (System.IO.File.Exists(file.FilePath))
+                {
+                    System.IO.File.Delete(file.FilePath);
+                }
+            }
             context.Files.Remove(file);
             await context.SaveChangesAsync();
             return file;

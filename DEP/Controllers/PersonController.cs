@@ -31,7 +31,12 @@ namespace DEP.Controllers
         {
             try
             {
-                return Ok(await service.GetPersonById(id));
+                var person = await service.GetPersonById(id);
+                if (person is null)
+                {
+                    return NotFound($"Unable to find person with ID = {id}");
+                }
+                return Ok(person);
             }
             catch (Exception e)
             {
