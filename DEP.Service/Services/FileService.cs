@@ -20,6 +20,12 @@ namespace DEP.Service.Services
             return await repo.AddFile(newfile);
         }
 
+        public async Task<List<File>> AddMultipleFiles(IFormCollection formData)
+        {
+            var fileList = await repo.UploadMultipleFiles(formData);
+            return fileList;
+        }
+
         public async Task<File> DeleteFile(int id)
         {
             return await repo.DeleteFile(id);

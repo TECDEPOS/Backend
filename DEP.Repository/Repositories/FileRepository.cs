@@ -4,10 +4,10 @@ using DEP.Repository.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using System.Text.RegularExpressions;
-using System.IO;
 using File = DEP.Repository.Models.File;
 using System.Net;
 using Microsoft.Extensions.Configuration;
+using System.Text.Json;
 
 namespace DEP.Repository.Repositories
 {
@@ -44,6 +44,65 @@ namespace DEP.Repository.Repositories
                 }
             }
             return file;
+        }
+
+        public async Task<List<File>> UploadMultipleFiles(IFormCollection formData)
+        {
+            // Create list for returning once files are uploaded
+            List<File> filesToReturn = new List<File>();
+
+            // Sets the Network Credentials to authenticate to the server
+            NetworkCredential credential = new NetworkCredential(
+                configuration.GetSection("Appsettings:Username").Value,
+                configuration.GetSection("Appsettings:Password").Value);
+
+
+            var files = formData.Files;
+            // Get the FileTags as stringified and Deserialize them into a list of FileTag objects.
+            var fileTags = formData["fileTags"];
+            var options = new JsonSerializerOptions() { PropertyNameCaseInsensitive = true };
+            var fileTagList = JsonSerializer.Deserialize<List<FileTag>>(fileTags, options);
+
+
+            // path and time variables declared outside of for-loop, values will be changed in every iteration of the loop.
+            var time = string.Empty;
+            var path = string.Empty;
+            var fileName = string.Empty;
+
+            for (int i = 0; i < formData.Files.Count; i++)
+            {
+                // Set time format and path for file
+                time = Regex.Replace(DateTime.Now.ToString(), "[/.:-]", " ");
+                fileName = time + files[i].FileName;
+                path = Path.Combine(configuration.GetSection("Appsettings:AppDirectory").Value, fileName);
+
+                // Create File object, set values and add it to the list of files to return
+                File tempFile = new File();
+                tempFile.FileName = files[i].FileName;
+                tempFile.FilePath = path;
+                tempFile.FileFormat = Path.GetExtension(files[i].FileName);
+                tempFile.ContentType = files[i].ContentType;
+                tempFile.PersonId = Convert.ToInt32(formData["personId"][0]);
+                // FileTagId explodes if it's null due to the property not being nullable in the DB and on the model
+                tempFile.FileTagId = fileTagList[i].FileTagId;
+                tempFile.UploadDate = DateTime.Now;
+
+
+                // Use NetworkConnection to gain access to server directory
+                using (new NetworkConnection(configuration.GetSection("Appsettings:AppDirectory").Value, credential))
+                {
+                    // Upload file to server directory
+                    using (var stream = new FileStream(path, FileMode.Create))
+                    {
+                        await files[i].CopyToAsync(stream);
+                    }
+                }
+                // Add to DB and add it to the returnList
+                var newFile = await AddFile(tempFile);
+                filesToReturn.Add(newFile);
+            }
+
+            return filesToReturn;
         }
 
         public async Task<List<File>> GetFiles()
