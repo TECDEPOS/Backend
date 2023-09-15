@@ -1,13 +1,8 @@
 ﻿using DEP.Repository.Context;
 using DEP.Service.Interfaces;
-using DEP.Service.Services;
-using DEP.Service.ViewModels;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Identity.Client.Platforms.Features.DesktopOs.Kerberos;
 using System.Net;
-using File = DEP.Repository.Models.File;
 
 namespace DEP.Controllers
 {
@@ -109,6 +104,26 @@ namespace DEP.Controllers
                     return NotFound("File not Given? Be better than that!");
                 }
                 return Created("File", await service.AddFile(file, userId, tagId));
+            }
+            catch (Exception e)
+            {
+
+                return BadRequest(e.Message);
+            }
+        }
+
+        [HttpPost("multiple")]
+        public async Task<IActionResult> AddMultipleFiles()
+        {
+            var formData = Request.Form;
+
+            try
+            {
+                if (formData == null)
+                {
+                    return NotFound("Form is null");
+                }
+                return Created("File", await service.AddMultipleFiles(formData));
             }
             catch (Exception e)
             {

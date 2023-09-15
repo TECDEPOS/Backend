@@ -6,6 +6,7 @@ namespace DEP.Repository.Interfaces
     public interface IFileRepository
     {
         Task<Models.File> UploadFile(IFormFile myFile);
+        Task<List<Models.File>> UploadMultipleFiles(IFormCollection formData);
         Task<Models.File> AddFile(Models.File file);
         Task<Models.File> UpdateFile(Models.File file);
         Task<Models.File> DeleteFile(int id);
