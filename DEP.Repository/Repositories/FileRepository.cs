@@ -83,8 +83,13 @@ namespace DEP.Repository.Repositories
                 tempFile.FileFormat = Path.GetExtension(files[i].FileName);
                 tempFile.ContentType = files[i].ContentType;
                 tempFile.PersonId = Convert.ToInt32(formData["personId"][0]);
+
+
                 // FileTagId explodes if it's null due to the property not being nullable in the DB and on the model
-                tempFile.FileTagId = fileTagList![i].FileTagId;
+                if (fileTagList![i] is not null)
+                {
+                    tempFile.FileTagId = fileTagList![i].FileTagId;
+                }
                 tempFile.UploadDate = DateTime.Now;
 
 
@@ -107,53 +112,9 @@ namespace DEP.Repository.Repositories
 
         public async Task<List<File>> GetFiles()
         {
-            var files = await context.Files.
-                Select(x => new
-                {
-                    FileId = x.FileId,
-                    FileName = x.FileName,
-                    FileUrl = x.FilePath,
-                    UploadDate = x.UploadDate,
-                    ContentType = x.ContentType,
-                    FileFormat = x.FileFormat,
-                    FileTag =
-                    new
-                    {
-                        FileTagId = x.FileTag.FileTagId,
-                        TagName = x.FileTag.TagName,
-                    },
-                    Person = new
-                    {
-                        PersonId = x.Person.PersonId,
-                        Name = x.Person.Name
+            var files = await context.Files.Include(x => x.FileTag).Include(x => x.Person).ToListAsync();
 
-                    }
-                }).ToListAsync();
-
-            var dummyfiles = new List<File>();
-            foreach (var x in files)
-            {
-                dummyfiles.Add(new File()
-                {
-                    FileId = x.FileId,
-                    FileName = x.FileName,
-                    FilePath = x.FileUrl,
-                    UploadDate = x.UploadDate,
-                    ContentType = x.ContentType,
-                    FileFormat = x.FileFormat,
-                    FileTag = new FileTag()
-                    {
-                        FileTagId = x.FileTag.FileTagId,
-                        TagName = x.FileTag.TagName,
-                    },
-                    Person = new Person()
-                    {
-                        PersonId = x.Person.PersonId,
-                        Name = x.Person.Name
-                    }
-                });
-            }
-            return dummyfiles;
+            return files;
         }
 
         public async Task<File> GetFileById(int id)
