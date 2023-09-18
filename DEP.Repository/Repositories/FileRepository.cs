@@ -61,7 +61,7 @@ namespace DEP.Repository.Repositories
             // Get the FileTags as stringified and Deserialize them into a list of FileTag objects.
             var fileTags = formData["fileTags"];
             var options = new JsonSerializerOptions() { PropertyNameCaseInsensitive = true };
-            var fileTagList = JsonSerializer.Deserialize<List<FileTag>>(fileTags, options);
+            var fileTagList = JsonSerializer.Deserialize<List<FileTag>>(fileTags!, options);
 
 
             // path and time variables declared outside of for-loop, values will be changed in every iteration of the loop.
@@ -73,7 +73,7 @@ namespace DEP.Repository.Repositories
             {
                 // Set time format and path for file
                 time = Regex.Replace(DateTime.Now.ToString(), "[/.:-]", " ");
-                fileName = time + files[i].FileName;
+                fileName = i + " " + time + files[i].FileName;
                 path = Path.Combine(configuration.GetSection("Appsettings:AppDirectory").Value, fileName);
 
                 // Create File object, set values and add it to the list of files to return
@@ -84,7 +84,7 @@ namespace DEP.Repository.Repositories
                 tempFile.ContentType = files[i].ContentType;
                 tempFile.PersonId = Convert.ToInt32(formData["personId"][0]);
                 // FileTagId explodes if it's null due to the property not being nullable in the DB and on the model
-                tempFile.FileTagId = fileTagList[i].FileTagId;
+                tempFile.FileTagId = fileTagList![i].FileTagId;
                 tempFile.UploadDate = DateTime.Now;
 
 
