@@ -46,6 +46,8 @@ namespace DEP.Service.Services
             AuthenticatedResponse auth = new AuthenticatedResponse()
             {
                 UserId = user.UserId,
+                Name = user.Name,
+                UserRole = user.UserRole,
                 Username = loginRequest.Username,
                 AccessToken = newAccessToken,
                 RefreshToken = newRefreshToken,
@@ -105,7 +107,9 @@ namespace DEP.Service.Services
             List<Claim> claims = new List<Claim>
             {
                 new Claim(ClaimTypes.Role, user.UserRole.ToString()),
-                new Claim("userId", user.UserId.ToString())
+                new Claim("userId", user.UserId.ToString()),
+                new Claim("name", user.Name.ToString()),
+                new Claim("role", user.UserRole.ToString())
             };
             var secretKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration.GetSection("AppSettings:Token").Value));
             var signInCredentials = new SigningCredentials(secretKey, SecurityAlgorithms.HmacSha256);
