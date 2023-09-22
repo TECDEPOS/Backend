@@ -1,4 +1,5 @@
-﻿using DEP.Service.Interfaces;
+﻿using DEP.Repository.Models;
+using DEP.Service.Interfaces;
 using DEP.Service.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -78,6 +79,12 @@ namespace DEP.Controllers
             }
 
             return NoContent();
+        }
+
+        [HttpPut, Authorize]
+        public async Task<IActionResult> EditUser(User user)
+        {
+            return Ok(await service.UpdateUser(user));
         }
     }
 }
