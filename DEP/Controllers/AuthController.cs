@@ -75,6 +75,7 @@ namespace DEP.Controllers
             var newRefreshToken = await authService.CreateRefreshToken();
 
             user.RefreshToken = newRefreshToken;
+            user.RefreshTokenExpiryDate = DateTime.Now.AddDays(1);
             await userService.UpdateUser(user);
 
             authResponse.AccessToken = newAccessToken;
