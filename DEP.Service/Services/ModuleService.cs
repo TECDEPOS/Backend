@@ -29,10 +29,10 @@ namespace DEP.Service.Services
             return await repo.GetModules();
         }
 
-        public async Task<List<Module>> GetModulesByType(int type)
-        {
-            return await repo.GetModulesByType(type);
-        }
+        //public async Task<List<Module>> GetModulesByType(int type)
+        //{
+        //    return await repo.GetModulesByType(type);
+        //}
 
         public async Task<Module> UpdateModule(Module module)
         {
