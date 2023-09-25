@@ -83,6 +83,28 @@ namespace DEP.Service.Services
             return true;
         }
 
+        public async Task<bool> ResetPassword(int userId)
+        {
+            var user = await userRepo.GetUserById(userId);
+
+            if (user is null)
+            {
+                return false;
+            }
+
+            var newPassword = configuration.GetSection("AppSettings:Password").Value;
+
+            //Create new passwordHash and passwordSalt for the new password
+            CreatePasswordHash(newPassword, out byte[] passwordHash, out byte[] passwordSalt);
+
+            user.PasswordHash = passwordHash;
+            user.PasswordSalt = passwordSalt;
+
+
+            await userRepo.UpdateUser(user);
+            return true;
+        }
+
         public void CreatePasswordHash(string password, out byte[] passwordHash, out byte[] passwordSalt)
         {
             using (var hmac = new HMACSHA512())

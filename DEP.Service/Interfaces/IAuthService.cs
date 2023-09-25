@@ -7,6 +7,7 @@ namespace DEP.Service.Interfaces
     {
         Task<AuthenticatedResponse> Login(LoginViewModel loginRequest);
         Task<bool> ChangePassword(ChangePasswordViewModel viewModel);
+        Task<bool> ResetPassword(int userId);
         void CreatePasswordHash(string password, out byte[] passwordHash, out byte[] passwordSalt);
         bool VerifyPasswordHash(string password, byte[] passwordHash, byte[] passwordSalt);
         string CreateJwtToken(User user);

@@ -44,6 +44,19 @@ namespace DEP.Controllers
             return Ok(success);
         }
 
+        [HttpPut("resetpassword"), Authorize]
+        public async Task<IActionResult> ResetPassword(int userId)
+        {
+            var success = await authService.ResetPassword(userId);
+
+            if (!success)
+            {
+                return BadRequest("Change Password failed.");
+            }
+
+            return Ok(success);
+        }
+
         [HttpPost("refresh")]
         public async Task<IActionResult> RefreshToken(AuthenticatedResponse authResponse)
         {
