@@ -47,12 +47,12 @@ namespace DEP.Repository.Repositories
             return modules;
         }
 
-        public async Task<List<Module>> GetModulesByType(int type)
-        {
-            var modules = await context.Modules.Where(m => m.ModuleType == (ModuleType)type).ToListAsync();
+        //public async Task<List<Module>> GetModulesByType(int type)
+        //{
+        //    var modules = await context.Modules.Where(m => m.ModuleType == (ModuleType)type).ToListAsync();
 
-            return modules;
-        }
+        //    return modules;
+        //}
 
         public async Task<Module> UpdateModule(Module module)
         {

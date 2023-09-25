@@ -7,6 +7,7 @@
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
         public Status Status { get; set; }
+        public ModuleType ModuleType { get; set; }
 
 
         public Module Module { get; set; }

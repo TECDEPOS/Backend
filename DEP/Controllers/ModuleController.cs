@@ -24,11 +24,11 @@ namespace DEP.Controllers
             return Ok(await service.GetModules());
         }
 
-        [HttpGet("type/{type:int}"), Authorize]
-        public async Task<IActionResult> GetModulesByType(int type)
-        {
-            return Ok(await service.GetModulesByType(type));
-        }
+        //[HttpGet("type/{type:int}"), Authorize]
+        //public async Task<IActionResult> GetModulesByType(int type)
+        //{
+        //    return Ok(await service.GetModulesByType(type));
+        //}
 
         [HttpPost, Authorize]
         public async Task<IActionResult> AddModule(Module module)
