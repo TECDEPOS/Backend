@@ -10,7 +10,7 @@
         public ModuleType ModuleType { get; set; }
 
 
-        public Module Module { get; set; }
-        public Person Person { get; set; }
+        public Module? Module { get; set; }
+        public Person? Person { get; set; }
     }
 }
