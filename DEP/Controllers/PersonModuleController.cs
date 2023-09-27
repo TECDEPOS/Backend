@@ -12,22 +12,34 @@ namespace DEP.Controllers
         private readonly IPersonModuleService service;
         public PersonModuleController(IPersonModuleService service) { this.service = service; }
 
-        [HttpGet("{personId:int}/{moduleId:int}/{date:DateTime}"), Authorize]
-        public async Task<IActionResult> GetPersonModule(int personId, int moduleId, DateTime date)
+        [HttpGet, Authorize]
+        public async Task<IActionResult> GetAllPersonModules()
         {
-            return Ok(await service.GetPersonModule(personId, moduleId, date));
+            return Ok(await service.GetAllPersonModules());
         }
 
-        [HttpGet("personmodules/{personId:int}/{moduleId:int}"), Authorize]
+        [HttpGet("{id:int}"), Authorize]
+        public async Task<IActionResult> GetPersonModule(int id)
+        {
+            return Ok(await service.GetPersonModule(id));
+        }
+
+        [HttpGet("{personId:int}/{moduleId:int}"), Authorize]
         public async Task<IActionResult> GetPersonModules(int personId, int moduleId)
         {
             return Ok(await service.GetPersonModules(personId, moduleId));
         }
 
-        [HttpDelete("{personId:int}/{moduleId:int}/{date:DateTime}"), Authorize]
-        public async Task<IActionResult> DeletePersonModule(int personId, int moduleId, DateTime date)
+        [HttpGet("person/{personId:int}"), Authorize]
+        public async Task<IActionResult> GetPersonModulesByPerson(int personId)
         {
-            return Ok(await service.DeletePersonModule(personId, moduleId, date));
+            return Ok(await service.GetPersonModulesByPerson(personId));
+        }
+
+        [HttpDelete("{id:int}"), Authorize]
+        public async Task<IActionResult> DeletePersonModule(int id)
+        {
+            return Ok(await service.DeletePersonModule(id));
         }
 
         [HttpPost, Authorize]
