@@ -4,6 +4,7 @@ using DEP.Repository.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DEP.Repository.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20230925105946_ViasbilityUpdate")]
+    partial class ViasbilityUpdate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -222,35 +225,27 @@ namespace DEP.Repository.Migrations
 
             modelBuilder.Entity("DEP.Repository.Models.PersonModule", b =>
                 {
-                    b.Property<int>("PersonModuleId")
-                        .ValueGeneratedOnAdd()
+                    b.Property<int>("PersonId")
                         .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PersonModuleId"));
-
-                    b.Property<DateTime>("EndDate")
-                        .HasColumnType("datetime2");
 
                     b.Property<int>("ModuleId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ModuleType")
-                        .HasColumnType("int");
-
-                    b.Property<int>("PersonId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("StartDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<DateTime>("EndDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("ModuleType")
+                        .HasColumnType("int");
+
                     b.Property<int>("Status")
                         .HasColumnType("int");
 
-                    b.HasKey("PersonModuleId");
+                    b.HasKey("PersonId", "ModuleId", "StartDate");
 
                     b.HasIndex("ModuleId");
-
-                    b.HasIndex("PersonId");
 
                     b.ToTable("PersonModules");
                 });

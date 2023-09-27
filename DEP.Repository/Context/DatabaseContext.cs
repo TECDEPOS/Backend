@@ -35,7 +35,7 @@ namespace DEP.Repository.Context
             base.OnModelCreating(modelBuilder);
             modelBuilder.Entity<PersonModule>(entity =>
             {
-                entity.HasKey(x => new { x.PersonId, x.ModuleId, x.StartDate });
+                entity.HasKey(x => new { x.PersonModuleId });
             });
 
             //modelBuilder.Entity<Models.File>(entity =>

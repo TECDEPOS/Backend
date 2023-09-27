@@ -2,6 +2,7 @@
 {
     public class PersonModule
     {
+        public int PersonModuleId { get; set; }
         public int PersonId { get; set; }
         public int ModuleId { get; set; }
         public DateTime StartDate { get; set; }
@@ -10,7 +11,7 @@
         public ModuleType ModuleType { get; set; }
 
 
-        public Module Module { get; set; }
-        public Person Person { get; set; }
+        public virtual Module? Module { get; set; }
+        public virtual Person? Person { get; set; }
     }
 }
