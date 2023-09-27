@@ -11,7 +11,7 @@
         public ModuleType ModuleType { get; set; }
 
 
-        public virtual Module? Module { get; set; }
-        public virtual Person? Person { get; set; }
+        public Module? Module { get; set; }
+        public Person? Person { get; set; }
     }
 }
