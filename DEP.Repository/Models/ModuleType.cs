@@ -2,8 +2,8 @@
 {
     public enum ModuleType
     {
-        FullTime,
-        FlexTime,
-        PartTime
+        Heltid,
+        Flex,
+        Deltid
     }
 }
