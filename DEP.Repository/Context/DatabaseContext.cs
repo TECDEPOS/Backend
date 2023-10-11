@@ -22,6 +22,8 @@ namespace DEP.Repository.Context
         public DbSet<Module> Modules { get; set; }
         public DbSet<Person> Persons { get; set; }
         public DbSet<PersonModule> PersonModules { get; set; }
+
+
         public DbSet<User> Users { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
