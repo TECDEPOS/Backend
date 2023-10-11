@@ -13,6 +13,11 @@ namespace DEP.Service.Services
 
         public async Task<Person> AddPerson(Person person)
         {
+            person.Department = null;
+            person.Location = null;
+            person.EducationalConsultant = null;
+            person.OperationCoordinator = null;
+            person.EndDate = person.HiringDate.AddYears(4);
             return await repo.AddPerson(person);
         }
 
