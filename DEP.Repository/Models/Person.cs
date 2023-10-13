@@ -12,6 +12,7 @@
         public DateTime HiringDate { get; set; }
         public DateTime EndDate { get; set; }
         public bool SvuEligible { get; set; }
+        public bool SvuApplied { get; set; }
 
         public User? EducationalConsultant { get; set; }
         public User? OperationCoordinator { get; set; }

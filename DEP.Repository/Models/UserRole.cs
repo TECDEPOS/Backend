@@ -2,7 +2,7 @@
 {
     public enum UserRole
     {
-        SuperAdmin,
+        Super_Admin,
         Pædagogisk_Konsulent_Admin,
         Human_Resources_Admin,
         Drift_Koordinator_Admin,
