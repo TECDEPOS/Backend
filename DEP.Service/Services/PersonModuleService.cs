@@ -16,6 +16,8 @@ namespace DEP.Service.Services
 
         public async Task<PersonModule> AddPersonModule(PersonModule personModule)
         {
+            personModule.Module = null;
+            personModule.Person = null;
             return await repo.AddPersonModule(personModule);
         }
 
