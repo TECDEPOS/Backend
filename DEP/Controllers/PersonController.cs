@@ -26,15 +26,15 @@ namespace DEP.Controllers
             }
         }
 
-        [HttpGet("{id:int}"), Authorize]
-        public async Task<IActionResult> GetPersonById(int id)
+        [HttpGet("{personId:int}/role/{roleId:int}"), Authorize]
+        public async Task<IActionResult> GetPersonById(int personId, int roleId)
         {
             try
             {
-                var person = await service.GetPersonById(id);
+                var person = await service.GetPersonById(personId, roleId);
                 if (person is null)
                 {
-                    return NotFound($"Unable to find person with ID = {id}");
+                    return NotFound($"Unable to find person with ID = {personId}");
                 }
                 return Ok(person);
             }

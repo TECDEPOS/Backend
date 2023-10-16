@@ -10,7 +10,7 @@ namespace DEP.Repository.Interfaces
         Task<Models.File> AddFile(Models.File file);
         Task<Models.File> UpdateFile(Models.File file);
         Task<Models.File> DeleteFile(int id);
-        Task<List<Models.File>> GetFiles();
+        Task<List<Models.File>> GetFiles(int roleId);
         Task<Models.File> GetFileById(int id);
         Task<List<Models.File>> GetFileByName(string name);
     }

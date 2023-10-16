@@ -17,12 +17,12 @@ namespace DEP.Controllers
         public FileController(IFileService service, DatabaseContext context, IConfiguration configuration) 
         { this.service = service; this.context = context; this.configuration = configuration; }
 
-        [HttpGet, Authorize]
-        public async Task<IActionResult> GetFile()
+        [HttpGet("role/{roleId:int}"), Authorize]
+        public async Task<IActionResult> GetFiles(int roleId)
         {
             try
             {
-                return Ok(await service.GetFile());
+                return Ok(await service.GetFiles(roleId));
             }
             catch (Exception e)
             {

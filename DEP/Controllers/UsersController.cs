@@ -49,7 +49,7 @@ namespace DEP.Controllers
             return Ok(user);
         }
 
-        [HttpPost, Authorize(Roles = "SuperAdmin,PkAdmin,HrAdmin,DkAdmin")]
+        [HttpPost, Authorize(Roles = "Super_Admin,PkAdmin,HrAdmin,DkAdmin")]
         public async Task<IActionResult> AddUser(AddUserViewModel viewModel)
         {
             var user = await service.GetUserByUsername(viewModel.Username);

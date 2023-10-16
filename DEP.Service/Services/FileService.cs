@@ -31,9 +31,9 @@ namespace DEP.Service.Services
             return await repo.DeleteFile(id);
         }
 
-        public async Task<List<File>> GetFile()
+        public async Task<List<File>> GetFiles(int roleId)
         {
-            return await repo.GetFiles();
+            return await repo.GetFiles(roleId);
         }
 
         public async Task<File> GetFileById(int id)
