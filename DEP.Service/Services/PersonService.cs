@@ -26,9 +26,9 @@ namespace DEP.Service.Services
             return await repo.DeletePerson(id);
         }
 
-        public Task<Person> GetPersonById(int id)
+        public Task<Person> GetPersonById(int personId, int roleId)
         {
-            return repo.GetPersonById(id);
+            return repo.GetPersonById(personId, roleId);
         }
 
         public async Task<List<Person>> GetPersons()

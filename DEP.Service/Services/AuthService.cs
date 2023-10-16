@@ -131,7 +131,8 @@ namespace DEP.Service.Services
                 new Claim(ClaimTypes.Role, user.UserRole.ToString()),
                 new Claim("userId", user.UserId.ToString()),
                 new Claim("name", user.Name.ToString()),
-                new Claim("role", user.UserRole.ToString())
+                new Claim("role", user.UserRole.ToString()),
+                new Claim("roleId", ((int)user.UserRole).ToString())
             };
             var secretKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration.GetSection("AppSettings:Token").Value));
             var signInCredentials = new SigningCredentials(secretKey, SecurityAlgorithms.HmacSha256);

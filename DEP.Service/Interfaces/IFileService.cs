@@ -9,7 +9,7 @@ namespace DEP.Service.Interfaces
         Task<List<File>> AddMultipleFiles(IFormCollection formData);
         Task<File> UpdateFile(File file);
         Task<File> DeleteFile(int id);
-        Task<List<File>> GetFile();
+        Task<List<File>> GetFiles(int roleId);
         Task<File> GetFileById(int id);
         Task<List<File>> GetFileByName(string name);
     }

@@ -66,7 +66,7 @@ namespace DEP.Repository.Repositories
             return person;
         }
 
-        public async Task<Person> GetPersonById(int id)
+        public async Task<Person> GetPersonById(int personId, int roleId)
         {
             var person = await context.Persons
                 .Include(x => x.Location)
@@ -77,7 +77,30 @@ namespace DEP.Repository.Repositories
                 .ThenInclude(y => y.Module)
                 .Include(x => x.EducationalConsultant)
                 .Include(x => x.OperationCoordinator)
-                .FirstOrDefaultAsync(x => x.PersonId == id);
+                .FirstOrDefaultAsync(x => x.PersonId == personId);
+
+            if (person == null)
+            {
+                return null;
+            }
+
+            if (roleId == 1 || roleId == 4)
+            {
+                person.Files = person.Files.Where(x => x.FileTag?.PKVisability == true).ToList();
+            }
+            else if (roleId == 2 || roleId == 5)
+            {
+                person.Files = person.Files.Where(x => x.FileTag?.HRVisability == true).ToList();
+            }
+            else if (roleId == 3 || roleId == 6)
+            {
+                person.Files = person.Files.Where(x => x.FileTag?.DKVisability == true).ToList();
+            }
+            else if(roleId == 0)
+            {
+                person.Files.Clear();
+            }
+            
             return person;
         }
     }

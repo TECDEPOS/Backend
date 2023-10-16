@@ -7,7 +7,7 @@ namespace DEP.Service.Interfaces
     {
         Task<List<Person>> GetPersons();
         Task<List<Person>> GetPersonsByName(string name);
-        Task<Person> GetPersonById(int id);
+        Task<Person> GetPersonById(int personId, int roleId);
         Task<List<PersonToTabelsViewModel>> GetPersonsTabel();
         Task<Person> DeletePerson(int id);
         Task<Person> AddPerson(Person person);

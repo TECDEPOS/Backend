@@ -8,6 +8,7 @@ using File = DEP.Repository.Models.File;
 using System.Net;
 using Microsoft.Extensions.Configuration;
 using System.Text.Json;
+using System;
 
 namespace DEP.Repository.Repositories
 {
@@ -110,9 +111,26 @@ namespace DEP.Repository.Repositories
             return filesToReturn;
         }
 
-        public async Task<List<File>> GetFiles()
+        public async Task<List<File>> GetFiles(int roleId)
         {
             var files = await context.Files.Include(x => x.FileTag).Include(x => x.Person).ToListAsync();
+
+            if (roleId == 1 || roleId == 4)
+            {
+                files = files.Where(x => x.FileTag?.PKVisability == true).ToList();
+            }
+            else if (roleId == 2 || roleId == 5)
+            {
+                files = files.Where(x => x.FileTag?.HRVisability == true).ToList();
+            }
+            else if (roleId == 3 || roleId == 6)
+            {
+                files = files.Where(x => x.FileTag?.DKVisability == true).ToList();
+            }
+            else if (roleId == 0)
+            {
+                files.Clear();
+            }
 
             return files;
         }
