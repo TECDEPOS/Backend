@@ -51,6 +51,7 @@ namespace DEP.Service.Services
                 Username = loginRequest.Username,
                 AccessToken = newAccessToken,
                 RefreshToken = newRefreshToken,
+                PasswordExpiryDate = user.PasswordExpiryDate,
             };
 
             return auth;
@@ -73,6 +74,7 @@ namespace DEP.Service.Services
 
                 user.PasswordHash = passwordHash;
                 user.PasswordSalt = passwordSalt;
+                user.PasswordExpiryDate = DateTime.Now.AddMonths(3);
             }
             else
             {
