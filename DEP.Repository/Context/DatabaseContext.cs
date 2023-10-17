@@ -1,17 +1,21 @@
 ﻿using DEP.Repository.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using System.Security.Cryptography;
+using System.Text;
 
 namespace DEP.Repository.Context
 {
     public class DatabaseContext : DbContext
     {
+        private readonly IConfiguration configuration;
         public DatabaseContext()
         {
 
         }
-        public DatabaseContext(DbContextOptions<DatabaseContext> options) : base(options)
+        public DatabaseContext(DbContextOptions<DatabaseContext> options, IConfiguration configuration) : base(options)
         {
-
+            this.configuration = configuration;
         }
 
         public DbSet<Book> Books { get; set; }
@@ -69,6 +73,31 @@ namespace DEP.Repository.Context
                 .IsRequired(false)
                 .OnDelete(DeleteBehavior.ClientSetNull);
             });
+
+            var defaultPass = configuration.GetSection("UserSettings:DefaultPassword").Value;
+            CreatePasswordHash(defaultPass, out byte[] passwordHash, out byte[] passwordSalt);
+
+            // Creates a Super_Admin user when the DB is created through add-migration/update-database
+            modelBuilder.Entity<User>().HasData(new User
+            {
+                UserId = 1,
+                Name = "Administrator",
+                UserName = "admin",
+                PasswordHash = passwordHash,
+                PasswordSalt = passwordSalt,
+                UserRole = 0,
+                PasswordExpiryDate = DateTime.Now.AddDays(-1),
+
+            });
+        }
+
+        public void CreatePasswordHash(string password, out byte[] passwordHash, out byte[] passwordSalt)
+        {
+            using (var hmac = new HMACSHA512())
+            {
+                passwordSalt = hmac.Key;
+                passwordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(password));
+            }
         }
 
     }
