@@ -117,15 +117,15 @@ namespace DEP.Repository.Repositories
 
             if (roleId == 1 || roleId == 4)
             {
-                files = files.Where(x => x.FileTag?.PKVisability == true).ToList();
+                files = files.Where(x => x.FileTag?.PKVisability == true || x.FileTag == null).ToList();
             }
             else if (roleId == 2 || roleId == 5)
             {
-                files = files.Where(x => x.FileTag?.HRVisability == true).ToList();
+                files = files.Where(x => x.FileTag?.HRVisability == true || x.FileTag == null).ToList();
             }
             else if (roleId == 3 || roleId == 6)
             {
-                files = files.Where(x => x.FileTag?.DKVisability == true).ToList();
+                files = files.Where(x => x.FileTag?.DKVisability == true || x.FileTag == null).ToList();
             }
             else if (roleId == 0)
             {
