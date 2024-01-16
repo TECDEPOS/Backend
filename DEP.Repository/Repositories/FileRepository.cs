@@ -51,14 +51,8 @@ namespace DEP.Repository.Repositories
         {
             // Create list for returning once files are uploaded
             List<File> filesToReturn = new List<File>();
-
-            // Sets the Network Credentials to authenticate to the server
-            NetworkCredential credential = new NetworkCredential(
-                configuration.GetSection("Appsettings:Username").Value,
-                configuration.GetSection("Appsettings:Password").Value);
-
-
             var files = formData.Files;
+
             // Get the FileTags as stringified and Deserialize them into a list of FileTag objects.
             var fileTags = formData["fileTags"];
             var options = new JsonSerializerOptions() { PropertyNameCaseInsensitive = true };
@@ -68,6 +62,7 @@ namespace DEP.Repository.Repositories
             // path and time variables declared outside of for-loop, values will be changed in every iteration of the loop.
             var time = string.Empty;
             var path = string.Empty;
+            var path1 = string.Empty;
             var fileName = string.Empty;
 
             for (int i = 0; i < formData.Files.Count; i++)
@@ -94,14 +89,10 @@ namespace DEP.Repository.Repositories
                 tempFile.UploadDate = DateTime.Now;
 
 
-                // Use NetworkConnection to gain access to server directory
-                using (new NetworkConnection(configuration.GetSection("Appsettings:AppDirectory").Value, credential))
+                // Upload file to server directory
+                using (var stream = new FileStream(path, FileMode.Create))
                 {
-                    // Upload file to server directory
-                    using (var stream = new FileStream(path, FileMode.Create))
-                    {
-                        await files[i].CopyToAsync(stream);
-                    }
+                    await files[i].CopyToAsync(stream);
                 }
                 // Add to DB and add it to the returnList
                 var newFile = await AddFile(tempFile);
@@ -182,16 +173,9 @@ namespace DEP.Repository.Repositories
                 return null;
             }
 
-            NetworkCredential credential = new NetworkCredential(
-                configuration.GetSection("Appsettings:Username").Value,
-                configuration.GetSection("Appsettings:Password").Value);
-
-            using (new NetworkConnection(configuration.GetSection("Appsettings:AppDirectory").Value, credential))
+            if (System.IO.File.Exists(file.FilePath))
             {
-                if (System.IO.File.Exists(file.FilePath))
-                {
-                    System.IO.File.Delete(file.FilePath);
-                }
+                System.IO.File.Delete(file.FilePath);
             }
             context.Files.Remove(file);
             await context.SaveChangesAsync();

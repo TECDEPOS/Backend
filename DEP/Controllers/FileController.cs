@@ -14,7 +14,7 @@ namespace DEP.Controllers
         private readonly DatabaseContext context;
         private readonly IFileService service;
 
-        public FileController(IFileService service, DatabaseContext context, IConfiguration configuration) 
+        public FileController(IFileService service, DatabaseContext context, IConfiguration configuration)
         { this.service = service; this.context = context; this.configuration = configuration; }
 
         [HttpGet("role/{roleId:int}"), Authorize]
@@ -75,17 +75,10 @@ namespace DEP.Controllers
 
             var path = Path.Combine(configuration.GetSection("Appsettings:AppDirectory").Value, file.FilePath);
 
-            NetworkCredential credential = new NetworkCredential(
-                configuration.GetSection("Appsettings:Username").Value,
-                configuration.GetSection("Appsettings:Password").Value);
-
             var memory = new MemoryStream();
-            using (new NetworkConnection(configuration.GetSection("Appsettings:AppDirectory").Value, credential))
+            using (var stream = new FileStream(path, FileMode.Open))
             {
-                using (var stream = new FileStream(path, FileMode.Open))
-                {
-                    await stream.CopyToAsync(memory);
-                }
+                await stream.CopyToAsync(memory);
             }
             memory.Position = 0;
             var contentType = "APPLICATION/octet-stream";
