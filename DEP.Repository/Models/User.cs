@@ -3,8 +3,8 @@
     public class User
     {
         public int UserId { get; set; }
-        public int LocationId { get; set; }
-        public int DepartmentId { get; set; }
+        public int? LocationId { get; set; }
+        public int? DepartmentId { get; set; }
         public string UserName { get; set; } = string.Empty;
         public string Name { get; set; } = string.Empty;
         public Byte[] PasswordHash { get; set; } = new byte[32];

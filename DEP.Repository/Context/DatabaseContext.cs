@@ -45,6 +45,11 @@ namespace DEP.Repository.Context
                 entity.HasKey(x => new { x.CourseId });
             });
 
+            modelBuilder.Entity<PersonCourse>(entity =>
+            {
+                entity.HasKey(x => new { x.CourseId, x.PersonId });
+            });
+
             //modelBuilder.Entity<Models.File>(entity =>
             //{
             //    entity
