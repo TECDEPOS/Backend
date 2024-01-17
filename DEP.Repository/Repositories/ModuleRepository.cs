@@ -34,7 +34,9 @@ namespace DEP.Repository.Repositories
         public async Task<Module> GetModuleById(int id)
         {
             var module = await context.Modules
-                .Include(m => m.PersonModules).ThenInclude(pm => pm.Person)
+                .Include(m => m.Courses).
+                ThenInclude(c => c.PersonCourses).
+                ThenInclude(x => x.Person)
                 .FirstOrDefaultAsync(m => m.ModuleId == id);
 
             return module;

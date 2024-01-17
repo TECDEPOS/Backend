@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DEP.Repository.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20230918060952_FileTagNullable")]
-    partial class FileTagNullable
+    [Migration("20240117124413_updatedModels")]
+    partial class updatedModels
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -36,7 +36,7 @@ namespace DEP.Repository.Migrations
                     b.Property<int>("Amount")
                         .HasColumnType("int");
 
-                    b.Property<int?>("ModuleId")
+                    b.Property<int>("ModuleId")
                         .HasColumnType("int");
 
                     b.Property<string>("Name")
@@ -48,6 +48,33 @@ namespace DEP.Repository.Migrations
                     b.HasIndex("ModuleId");
 
                     b.ToTable("Books");
+                });
+
+            modelBuilder.Entity("DEP.Repository.Models.Course", b =>
+                {
+                    b.Property<int>("CourseId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CourseId"));
+
+                    b.Property<int>("CourseType")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("EndDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("ModuleId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("StartDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("CourseId");
+
+                    b.HasIndex("ModuleId");
+
+                    b.ToTable("Courses");
                 });
 
             modelBuilder.Entity("DEP.Repository.Models.Department", b =>
@@ -117,6 +144,15 @@ namespace DEP.Repository.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("FileTagId"));
 
+                    b.Property<bool>("DKVisability")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("HRVisability")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("PKVisability")
+                        .HasColumnType("bit");
+
                     b.Property<string>("TagName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -154,9 +190,6 @@ namespace DEP.Repository.Migrations
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("ModuleType")
-                        .HasColumnType("int");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -201,6 +234,9 @@ namespace DEP.Repository.Migrations
                     b.Property<int?>("OperationCoordinatorId")
                         .HasColumnType("int");
 
+                    b.Property<bool>("SvuApplied")
+                        .HasColumnType("bit");
+
                     b.Property<bool>("SvuEligible")
                         .HasColumnType("bit");
 
@@ -217,28 +253,22 @@ namespace DEP.Repository.Migrations
                     b.ToTable("Persons");
                 });
 
-            modelBuilder.Entity("DEP.Repository.Models.PersonModule", b =>
+            modelBuilder.Entity("DEP.Repository.Models.PersonCourse", b =>
                 {
+                    b.Property<int>("CourseId")
+                        .HasColumnType("int");
+
                     b.Property<int>("PersonId")
                         .HasColumnType("int");
-
-                    b.Property<int>("ModuleId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("StartDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("EndDate")
-                        .HasColumnType("datetime2");
 
                     b.Property<int>("Status")
                         .HasColumnType("int");
 
-                    b.HasKey("PersonId", "ModuleId", "StartDate");
+                    b.HasKey("CourseId", "PersonId");
 
-                    b.HasIndex("ModuleId");
+                    b.HasIndex("PersonId");
 
-                    b.ToTable("PersonModules");
+                    b.ToTable("PersonCourses");
                 });
 
             modelBuilder.Entity("DEP.Repository.Models.User", b =>
@@ -248,6 +278,12 @@ namespace DEP.Repository.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("UserId"));
+
+                    b.Property<int?>("DepartmentId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("LocationId")
+                        .HasColumnType("int");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -279,14 +315,46 @@ namespace DEP.Repository.Migrations
 
                     b.HasKey("UserId");
 
+                    b.HasIndex("DepartmentId");
+
+                    b.HasIndex("LocationId");
+
                     b.ToTable("Users");
+
+                    b.HasData(
+                        new
+                        {
+                            UserId = 1,
+                            Name = "Administrator",
+                            PasswordExpiryDate = new DateTime(2024, 1, 16, 13, 44, 13, 241, DateTimeKind.Local).AddTicks(2249),
+                            PasswordHash = new byte[] { 221, 53, 74, 241, 16, 21, 108, 229, 33, 43, 123, 121, 220, 230, 245, 170, 168, 2, 136, 110, 60, 255, 70, 56, 92, 3, 88, 225, 163, 82, 20, 199, 23, 246, 11, 245, 95, 196, 233, 64, 82, 159, 255, 129, 242, 255, 82, 148, 17, 129, 80, 219, 242, 214, 99, 232, 149, 66, 176, 186, 67, 58, 238, 15 },
+                            PasswordSalt = new byte[] { 135, 26, 151, 211, 110, 51, 175, 63, 10, 87, 193, 154, 196, 91, 56, 168, 200, 76, 116, 125, 85, 226, 119, 182, 111, 174, 25, 227, 30, 179, 100, 254, 231, 179, 127, 218, 53, 214, 12, 249, 252, 198, 147, 74, 92, 103, 171, 120, 154, 148, 183, 61, 82, 187, 171, 64, 78, 108, 219, 13, 207, 134, 28, 103, 17, 185, 38, 74, 78, 65, 122, 193, 60, 126, 182, 15, 215, 231, 236, 28, 97, 35, 124, 26, 115, 234, 17, 43, 185, 109, 204, 68, 232, 57, 130, 247, 105, 39, 86, 141, 133, 129, 174, 214, 94, 204, 143, 90, 221, 233, 235, 105, 95, 191, 35, 144, 207, 116, 25, 232, 73, 69, 46, 34, 197, 230, 110, 159 },
+                            RefreshTokenExpiryDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            UserName = "admin",
+                            UserRole = 0
+                        });
                 });
 
             modelBuilder.Entity("DEP.Repository.Models.Book", b =>
                 {
-                    b.HasOne("DEP.Repository.Models.Module", null)
+                    b.HasOne("DEP.Repository.Models.Module", "Module")
                         .WithMany("Books")
-                        .HasForeignKey("ModuleId");
+                        .HasForeignKey("ModuleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Module");
+                });
+
+            modelBuilder.Entity("DEP.Repository.Models.Course", b =>
+                {
+                    b.HasOne("DEP.Repository.Models.Module", "Module")
+                        .WithMany("Courses")
+                        .HasForeignKey("ModuleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Module");
                 });
 
             modelBuilder.Entity("DEP.Repository.Models.File", b =>
@@ -333,37 +401,57 @@ namespace DEP.Repository.Migrations
                     b.Navigation("OperationCoordinator");
                 });
 
-            modelBuilder.Entity("DEP.Repository.Models.PersonModule", b =>
+            modelBuilder.Entity("DEP.Repository.Models.PersonCourse", b =>
                 {
-                    b.HasOne("DEP.Repository.Models.Module", "Module")
-                        .WithMany("PersonModules")
-                        .HasForeignKey("ModuleId")
+                    b.HasOne("DEP.Repository.Models.Course", "Course")
+                        .WithMany("PersonCourses")
+                        .HasForeignKey("CourseId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("DEP.Repository.Models.Person", "Person")
-                        .WithMany("PersonModules")
+                        .WithMany("PersonCourses")
                         .HasForeignKey("PersonId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Module");
+                    b.Navigation("Course");
 
                     b.Navigation("Person");
+                });
+
+            modelBuilder.Entity("DEP.Repository.Models.User", b =>
+                {
+                    b.HasOne("DEP.Repository.Models.Department", "Department")
+                        .WithMany()
+                        .HasForeignKey("DepartmentId");
+
+                    b.HasOne("DEP.Repository.Models.Location", "Location")
+                        .WithMany()
+                        .HasForeignKey("LocationId");
+
+                    b.Navigation("Department");
+
+                    b.Navigation("Location");
+                });
+
+            modelBuilder.Entity("DEP.Repository.Models.Course", b =>
+                {
+                    b.Navigation("PersonCourses");
                 });
 
             modelBuilder.Entity("DEP.Repository.Models.Module", b =>
                 {
                     b.Navigation("Books");
 
-                    b.Navigation("PersonModules");
+                    b.Navigation("Courses");
                 });
 
             modelBuilder.Entity("DEP.Repository.Models.Person", b =>
                 {
                     b.Navigation("Files");
 
-                    b.Navigation("PersonModules");
+                    b.Navigation("PersonCourses");
                 });
 
             modelBuilder.Entity("DEP.Repository.Models.User", b =>

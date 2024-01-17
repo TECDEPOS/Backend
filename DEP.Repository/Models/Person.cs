@@ -19,6 +19,6 @@
         public Department? Department { get; set; }
         public Location? Location { get; set; }
         public List<File> Files { get; set; } = new List<File>();
-        public List<PersonModule> PersonModules { get; set; } = new List<PersonModule>();
+        public List<PersonCourse> PersonCourses { get; set; } = new List<PersonCourse>();
     }
 }

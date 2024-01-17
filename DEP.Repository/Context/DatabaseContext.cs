@@ -25,7 +25,8 @@ namespace DEP.Repository.Context
         public DbSet<Location> Locations { get; set; }
         public DbSet<Module> Modules { get; set; }
         public DbSet<Person> Persons { get; set; }
-        public DbSet<PersonModule> PersonModules { get; set; }
+        public DbSet<Course> Courses { get; set; }
+        public DbSet<PersonCourse> PersonCourses { get; set; }
 
 
         public DbSet<User> Users { get; set; }
@@ -39,9 +40,14 @@ namespace DEP.Repository.Context
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-            modelBuilder.Entity<PersonModule>(entity =>
+            modelBuilder.Entity<Course>(entity =>
             {
-                entity.HasKey(x => new { x.PersonModuleId });
+                entity.HasKey(x => new { x.CourseId });
+            });
+
+            modelBuilder.Entity<PersonCourse>(entity =>
+            {
+                entity.HasKey(x => new { x.CourseId, x.PersonId });
             });
 
             //modelBuilder.Entity<Models.File>(entity =>
