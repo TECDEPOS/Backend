@@ -1,6 +1,6 @@
 ﻿namespace DEP.Repository.Models
 {
-    public enum ModuleType
+    public enum CourseType
     {
         Heltid,
         Flex,

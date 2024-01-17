@@ -2,12 +2,12 @@
 {
     public enum UserRole
     {
-        Super_Admin,
-        Pædagogisk_Konsulent_Admin,
-        Human_Resources_Admin,
-        Drift_Koordinator_Admin,
+        Administrator,
+        Controller,
+        Uddannelsesleder,
+        Uddannelseschef,
         Pædagogisk_konsulent,
         Human_Resources,
-        Drift_Koordinator
+        Driftskoordinator
     }
 }

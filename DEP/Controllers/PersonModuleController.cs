@@ -9,19 +9,19 @@ namespace DEP.Controllers
     [ApiController]
     public class PersonModuleController : ControllerBase
     {
-        private readonly IPersonModuleService service;
-        public PersonModuleController(IPersonModuleService service) { this.service = service; }
+        private readonly ICourseService service;
+        public PersonModuleController(ICourseService service) { this.service = service; }
 
         [HttpGet, Authorize]
         public async Task<IActionResult> GetAllPersonModules()
         {
-            return Ok(await service.GetAllPersonModules());
+            return Ok(await service.GetAllCourses());
         }
 
         [HttpGet("{id:int}"), Authorize]
         public async Task<IActionResult> GetPersonModule(int id)
         {
-            return Ok(await service.GetPersonModule(id));
+            return Ok(await service.GetCourseById(id));
         }
 
         [HttpGet("{personId:int}/{moduleId:int}"), Authorize]
@@ -39,19 +39,19 @@ namespace DEP.Controllers
         [HttpDelete("{id:int}"), Authorize]
         public async Task<IActionResult> DeletePersonModule(int id)
         {
-            return Ok(await service.DeletePersonModule(id));
+            return Ok(await service.DeleteCourse(id));
         }
 
         [HttpPost, Authorize]
-        public async Task<IActionResult> AddPersonModule(PersonModule personModule)
+        public async Task<IActionResult> AddPersonModule(Course personModule)
         {
-            return Ok(await service.AddPersonModule(personModule));
+            return Ok(await service.AddCourse(personModule));
         }
 
         [HttpPut, Authorize]
-        public async Task<IActionResult> UpdatePersonModule(PersonModule personModule)
+        public async Task<IActionResult> UpdatePersonModule(Course personModule)
         {
-            return Ok(await service.UpdatePersonModule(personModule));
+            return Ok(await service.UpdateCourse(personModule));
         }
     }
 }

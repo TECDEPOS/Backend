@@ -6,7 +6,7 @@
         public string Name { get; set; } = string.Empty;
         public string Description { get; set; } = string.Empty;
 
-        public List<PersonModule> PersonModules { get; set; } = new List<PersonModule>();
+        public List<Course> Courses { get; set; } = new List<Course>();
         public List<Book> Books { get; set; } = new List<Book>();
     }
 }
