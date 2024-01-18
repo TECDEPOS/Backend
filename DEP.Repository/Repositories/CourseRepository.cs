@@ -26,7 +26,7 @@ namespace DEP.Repository.Repositories
             if (course != null)
             {
                 context.Courses.Remove(course);
-                await context.SaveChangesAsync();
+                int changes = await context.SaveChangesAsync();
             }
 
             return course;
