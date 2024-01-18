@@ -64,9 +64,11 @@ namespace DEP.Repository.Repositories
                 .ToListAsync();
         }
 
-        public Task<PersonCourse> UpdatePersonCourse(PersonCourse personCourse)
+        public async Task<PersonCourse> UpdatePersonCourse(PersonCourse personCourse)
         {
-            throw new NotImplementedException();
+            context.Entry(personCourse).State = EntityState.Modified;
+            await context.SaveChangesAsync();
+            return personCourse;
         }
     }
 }

@@ -54,6 +54,7 @@ namespace DEP.Repository.Repositories
                     }),
                     Module = new
                     {
+                        x.Module.ModuleId,
                         x.Module.Name,
                         x.Module.Description
                     }
@@ -63,6 +64,9 @@ namespace DEP.Repository.Repositories
             var personCourses = new List<PersonCourse>();
             foreach (var item in tempList)
             {
+                // Making a new instance of list per iteration otherwise all courses will share the same list of PersonCourse.
+                personCourses = new List<PersonCourse>();
+
                 foreach (var x in item.PersonCourses)
                 {
                     personCourses.Add(new PersonCourse()
@@ -86,6 +90,7 @@ namespace DEP.Repository.Repositories
                     PersonCourses = personCourses,
                     Module = new Module()
                     {
+                        ModuleId = item.ModuleId,
                         Name = item.Module.Name,
                         Description = item.Module.Description,
                     }
@@ -102,116 +107,6 @@ namespace DEP.Repository.Repositories
                 .FirstOrDefaultAsync(x => x.CourseId == id);
 
             return course;
-        }
-
-        //TODO: Lav om og flyt til PersonCourseRepository
-        public async Task<List<Course>> GetPersonModules(int personId, int moduleId)
-        {
-            //var tempList = await context.Courses.Where(pm => pm.PersonId == personId && pm.ModuleId == moduleId)
-            //    .Select(x => new
-            //    {
-            //        x.PersonModuleId,
-            //        x.PersonId,
-            //        x.ModuleId,
-            //        x.StartDate,
-            //        x.EndDate,
-            //        x.Status,
-            //        x.ModuleType,
-            //        Person = new
-            //        {
-            //            x.Person.Name,
-            //            x.Person.Initials
-            //        },
-            //        Module = new
-            //        {
-            //            x.Module.Name,
-            //            x.Module.Description
-            //        }
-            //    }).ToListAsync();
-
-            //var personModules = new List<Course>();
-            //foreach (var item in tempList)
-            //{
-            //    personModules.Add(new Course()
-            //    {
-            //        PersonModuleId = item.PersonModuleId,
-            //        PersonId = item.PersonId,
-            //        ModuleId = item.ModuleId,
-            //        StartDate = item.StartDate,
-            //        EndDate = item.EndDate,
-            //        ModuleType = item.ModuleType,
-            //        Status = item.Status,
-            //        Person = new Person()
-            //        {
-            //            Name = item.Person.Name,
-            //            Initials = item.Person.Initials,
-            //        },
-            //        Module = new Module()
-            //        {
-            //            Name = item.Module.Name,
-            //            Description = item.Module.Description,
-            //        }
-            //    });
-            //}
-
-            //return personModules;
-
-            //var personModules = await context.PersonModules.Include(x => x.Person).Include(x => x.Module).Where(pm => pm.PersonId == personId && pm.ModuleId == moduleId).ToListAsync();
-            return null;
-        }
-
-        //TODO: Lav om og flyt til PersonCourseRepository
-        public async Task<List<Course>> GetPersonModulesByPerson(int personId)
-        {
-            //var tempList = await context.Courses.Where(pm => pm.PersonId == personId)
-            //    .Select(x => new
-            //    {
-            //        x.PersonModuleId,
-            //        x.PersonId,
-            //        x.ModuleId,
-            //        x.StartDate,
-            //        x.EndDate,
-            //        x.Status,
-            //        x.ModuleType,
-            //        Person = new
-            //        {
-            //            x.Person.Name,
-            //            x.Person.Initials
-            //        },
-            //        Module = new
-            //        {
-            //            x.Module.Name,
-            //            x.Module.Description
-            //        }
-            //    }).ToListAsync();
-
-            //var personModules = new List<Course>();
-            //foreach (var item in tempList)
-            //{
-            //    personModules.Add(new Course()
-            //    {
-            //        PersonModuleId = item.PersonModuleId,
-            //        PersonId = item.PersonId,
-            //        ModuleId = item.ModuleId,
-            //        StartDate = item.StartDate,
-            //        EndDate = item.EndDate,
-            //        ModuleType = item.ModuleType,
-            //        Status = item.Status,
-            //        Person = new Person()
-            //        {
-            //            Name = item.Person.Name,
-            //            Initials = item.Person.Initials,
-            //        },
-            //        Module = new Module()
-            //        {
-            //            Name = item.Module.Name,
-            //            Description = item.Module.Description,
-            //        }
-            //    });
-            //}
-
-            //return personModules;
-            return null;
         }
 
         public async Task<Course> UpdateCourse(Course course)

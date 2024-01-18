@@ -24,20 +24,6 @@ namespace DEP.Controllers
             return Ok(await service.GetCourseById(id));
         }
 
-        //Check if there's any point in having this or if it needs to be modified after DB re-design
-        [HttpGet("{personId:int}/{moduleId:int}"), Authorize]
-        public async Task<IActionResult> GetCourses(int personId, int moduleId)
-        {
-            return Ok(await service.GetPersonModules(personId, moduleId));
-        }
-
-        //Check if there's any point in having this or if it needs to be modified after DB re-design
-        [HttpGet("person/{personId:int}"), Authorize]
-        public async Task<IActionResult> GetCoursesByPerson(int personId)
-        {
-            return Ok(await service.GetPersonModulesByPerson(personId));
-        }
-
         [HttpDelete("{id:int}"), Authorize]
         public async Task<IActionResult> DeleteCourse(int id)
         {
