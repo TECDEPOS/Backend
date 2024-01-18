@@ -30,18 +30,6 @@ namespace DEP.Service.Services
             return await repo.GetCourseById(id);
         }
 
-        //Flyt til PersonCourseService
-        public async Task<List<Course>> GetPersonModules(int personId, int moduleId)
-        {
-            return await repo.GetPersonModules(personId, moduleId);
-        }
-
-        //Flyt til PersonCourseService
-        public async Task<List<Course>> GetPersonModulesByPerson(int personId)
-        {
-            return await repo.GetPersonModulesByPerson(personId);
-        }
-
         public async Task<Course> UpdateCourse(Course course)
         {
             return await repo.UpdateCourse(course);
