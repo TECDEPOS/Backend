@@ -47,7 +47,7 @@ namespace DEP.Controllers
             return Ok(await service.UpdatePersonCourse(personCourse));
         }
 
-        [HttpDelete, Authorize]
+        [HttpDelete("person/{personId:int}/course/{courseId:int}"), Authorize]
         public async Task<IActionResult> DeletePersonCourse(int personId, int courseId)
         {
             var result = await service.DeletePersonCourse(personId, courseId);
