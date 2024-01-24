@@ -5,6 +5,8 @@ namespace DEP.Repository.Interfaces
     public interface IUserRepository
     {
         Task<List<User>> GetUsers();
+        Task<List<User>> GetUsersByEducationBossId(int id);
+        Task<List<User>> GetUsersByUserRole(UserRole userRole);
         Task<User> GetUserById(int id);
         Task<User> GetUserByUsername(string username);
         Task<List<User>> GetUserByName(string name);

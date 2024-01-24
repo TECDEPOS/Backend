@@ -99,6 +99,11 @@ namespace DEP.Repository.Repositories
 
             return courses;
         }
+        
+        public async Task<List<Course>> GetCoursesByModuleId(int id)
+        {
+            return await context.Courses.Where(x => x.ModuleId == id).ToListAsync();
+        }
 
         public Task<Course> GetCourseById(int id)
         {

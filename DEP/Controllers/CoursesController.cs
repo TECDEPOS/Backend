@@ -18,6 +18,12 @@ namespace DEP.Controllers
             return Ok(await service.GetAllCourses());
         }
 
+        [HttpGet("module/{id:int}"), Authorize]
+        public async Task<IActionResult> GetCoursesByModuleId(int id)
+        {
+            return Ok(await service.GetCoursesByModuleId(id));
+        }
+
         [HttpGet("{id:int}"), Authorize]
         public async Task<IActionResult> GetCourseById(int id)
         {

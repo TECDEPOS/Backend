@@ -23,6 +23,18 @@ namespace DEP.Controllers
             return Ok(await service.GetUsers());
         }
 
+        [HttpGet("educationleader/{id:int}"), Authorize]
+        public async Task<IActionResult> GetUsersByEducationBossId(int id)
+        {
+            return Ok(await service.GetUsersByEducationBossId(id));
+        }
+
+        [HttpGet("userrole"), Authorize]
+        public async Task<IActionResult> GetUsersByUserRole(UserRole userRole)
+        {
+            return Ok(await service.GetUsersByUserRole(userRole));
+        }
+
         [HttpGet("{id:int}"), Authorize]
         public async Task<IActionResult> GetUserById(int id)
         {

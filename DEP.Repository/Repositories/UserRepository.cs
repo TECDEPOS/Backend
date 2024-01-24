@@ -19,6 +19,16 @@ namespace DEP.Repository.Repositories
             return await context.Users.ToListAsync();
         }
 
+        public async Task<List<User>> GetUsersByEducationBossId(int id)
+        {
+            return await context.Users.Where(x => x.EducationBossId == id).ToListAsync();
+        }
+
+        public async Task<List<User>> GetUsersByUserRole(UserRole userRole)
+        {
+            return await context.Users.Where(x => x.UserRole == userRole).ToListAsync();
+        }
+
         public async Task<User> GetUserById(int id)
         {
             return await context.Users.FirstOrDefaultAsync(x => x.UserId == id);

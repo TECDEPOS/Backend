@@ -6,6 +6,8 @@ namespace DEP.Service.Interfaces
     public interface IUserService
     {
         Task<List<User>> GetUsers();
+        Task<List<User>> GetUsersByEducationBossId(int id);
+        Task<List<User>> GetUsersByUserRole(UserRole userRole);
         Task<User> GetUserById(int id);
         Task<List<User>> GetUserByName(string name);
         Task<User> GetUserByUsername(string username);

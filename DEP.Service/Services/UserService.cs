@@ -24,6 +24,16 @@ namespace DEP.Service.Services
             return await userRepository.GetUsers();
         }
 
+        public async Task<List<User>> GetUsersByEducationBossId(int id)
+        {
+            return await userRepository.GetUsersByEducationBossId(id);
+        }
+
+        public async Task<List<User>> GetUsersByUserRole(UserRole userRole)
+        {
+            return await userRepository.GetUsersByUserRole(userRole);
+        }
+
         public async Task<User> GetUserById(int id)
         {
             return await userRepository.GetUserById(id);
@@ -51,6 +61,7 @@ namespace DEP.Service.Services
             {
                 UserName = viewModel.Username,
                 Name = viewModel.Name,
+                EducationBossId = viewModel.EducationBossId,
                 PasswordHash = passwordHash,
                 PasswordSalt = passwordSalt,
                 UserRole = viewModel.UserRole,
