@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DEP.Repository.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20240117124413_updatedModels")]
-    partial class updatedModels
+    [Migration("20240126091413_initialv1")]
+    partial class initialv1
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -282,6 +282,9 @@ namespace DEP.Repository.Migrations
                     b.Property<int?>("DepartmentId")
                         .HasColumnType("int");
 
+                    b.Property<int?>("EducationBossId")
+                        .HasColumnType("int");
+
                     b.Property<int?>("LocationId")
                         .HasColumnType("int");
 
@@ -317,6 +320,8 @@ namespace DEP.Repository.Migrations
 
                     b.HasIndex("DepartmentId");
 
+                    b.HasIndex("EducationBossId");
+
                     b.HasIndex("LocationId");
 
                     b.ToTable("Users");
@@ -326,9 +331,9 @@ namespace DEP.Repository.Migrations
                         {
                             UserId = 1,
                             Name = "Administrator",
-                            PasswordExpiryDate = new DateTime(2024, 1, 16, 13, 44, 13, 241, DateTimeKind.Local).AddTicks(2249),
-                            PasswordHash = new byte[] { 221, 53, 74, 241, 16, 21, 108, 229, 33, 43, 123, 121, 220, 230, 245, 170, 168, 2, 136, 110, 60, 255, 70, 56, 92, 3, 88, 225, 163, 82, 20, 199, 23, 246, 11, 245, 95, 196, 233, 64, 82, 159, 255, 129, 242, 255, 82, 148, 17, 129, 80, 219, 242, 214, 99, 232, 149, 66, 176, 186, 67, 58, 238, 15 },
-                            PasswordSalt = new byte[] { 135, 26, 151, 211, 110, 51, 175, 63, 10, 87, 193, 154, 196, 91, 56, 168, 200, 76, 116, 125, 85, 226, 119, 182, 111, 174, 25, 227, 30, 179, 100, 254, 231, 179, 127, 218, 53, 214, 12, 249, 252, 198, 147, 74, 92, 103, 171, 120, 154, 148, 183, 61, 82, 187, 171, 64, 78, 108, 219, 13, 207, 134, 28, 103, 17, 185, 38, 74, 78, 65, 122, 193, 60, 126, 182, 15, 215, 231, 236, 28, 97, 35, 124, 26, 115, 234, 17, 43, 185, 109, 204, 68, 232, 57, 130, 247, 105, 39, 86, 141, 133, 129, 174, 214, 94, 204, 143, 90, 221, 233, 235, 105, 95, 191, 35, 144, 207, 116, 25, 232, 73, 69, 46, 34, 197, 230, 110, 159 },
+                            PasswordExpiryDate = new DateTime(2024, 1, 25, 10, 14, 13, 473, DateTimeKind.Local).AddTicks(8209),
+                            PasswordHash = new byte[] { 222, 63, 72, 110, 63, 9, 106, 34, 6, 71, 137, 79, 203, 196, 141, 6, 73, 193, 109, 36, 9, 230, 230, 156, 168, 116, 81, 195, 13, 70, 98, 16, 164, 226, 89, 171, 205, 47, 46, 241, 255, 73, 14, 59, 239, 82, 27, 204, 158, 47, 212, 141, 57, 229, 80, 69, 144, 52, 112, 183, 18, 169, 231, 182 },
+                            PasswordSalt = new byte[] { 154, 114, 26, 207, 140, 147, 119, 181, 20, 29, 101, 150, 247, 252, 159, 193, 45, 78, 49, 93, 149, 64, 251, 17, 98, 56, 26, 136, 175, 18, 181, 143, 199, 107, 90, 39, 223, 45, 232, 89, 146, 223, 166, 78, 41, 180, 129, 96, 15, 134, 159, 247, 132, 48, 112, 223, 208, 69, 27, 219, 147, 125, 104, 238, 87, 52, 43, 42, 120, 250, 8, 47, 139, 202, 224, 144, 199, 145, 39, 230, 108, 88, 105, 139, 158, 119, 100, 212, 158, 109, 86, 133, 110, 21, 112, 186, 165, 217, 108, 24, 240, 235, 101, 174, 23, 250, 196, 216, 214, 107, 18, 111, 122, 218, 76, 215, 172, 51, 209, 212, 48, 87, 96, 68, 177, 17, 205, 45 },
                             RefreshTokenExpiryDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             UserName = "admin",
                             UserRole = 0
@@ -377,16 +382,18 @@ namespace DEP.Repository.Migrations
             modelBuilder.Entity("DEP.Repository.Models.Person", b =>
                 {
                     b.HasOne("DEP.Repository.Models.Department", "Department")
-                        .WithMany()
-                        .HasForeignKey("DepartmentId");
+                        .WithMany("Persons")
+                        .HasForeignKey("DepartmentId")
+                        .OnDelete(DeleteBehavior.SetNull);
 
                     b.HasOne("DEP.Repository.Models.User", "EducationalConsultant")
                         .WithMany("EducationalConsultantPersons")
                         .HasForeignKey("EducationalConsultantId");
 
                     b.HasOne("DEP.Repository.Models.Location", "Location")
-                        .WithMany()
-                        .HasForeignKey("LocationId");
+                        .WithMany("Persons")
+                        .HasForeignKey("LocationId")
+                        .OnDelete(DeleteBehavior.SetNull);
 
                     b.HasOne("DEP.Repository.Models.User", "OperationCoordinator")
                         .WithMany("OperationCoordinatorPersons")
@@ -423,14 +430,22 @@ namespace DEP.Repository.Migrations
             modelBuilder.Entity("DEP.Repository.Models.User", b =>
                 {
                     b.HasOne("DEP.Repository.Models.Department", "Department")
-                        .WithMany()
-                        .HasForeignKey("DepartmentId");
+                        .WithMany("Users")
+                        .HasForeignKey("DepartmentId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
+                    b.HasOne("DEP.Repository.Models.User", "EducationBoss")
+                        .WithMany("EducationLeaders")
+                        .HasForeignKey("EducationBossId");
 
                     b.HasOne("DEP.Repository.Models.Location", "Location")
-                        .WithMany()
-                        .HasForeignKey("LocationId");
+                        .WithMany("Users")
+                        .HasForeignKey("LocationId")
+                        .OnDelete(DeleteBehavior.SetNull);
 
                     b.Navigation("Department");
+
+                    b.Navigation("EducationBoss");
 
                     b.Navigation("Location");
                 });
@@ -438,6 +453,20 @@ namespace DEP.Repository.Migrations
             modelBuilder.Entity("DEP.Repository.Models.Course", b =>
                 {
                     b.Navigation("PersonCourses");
+                });
+
+            modelBuilder.Entity("DEP.Repository.Models.Department", b =>
+                {
+                    b.Navigation("Persons");
+
+                    b.Navigation("Users");
+                });
+
+            modelBuilder.Entity("DEP.Repository.Models.Location", b =>
+                {
+                    b.Navigation("Persons");
+
+                    b.Navigation("Users");
                 });
 
             modelBuilder.Entity("DEP.Repository.Models.Module", b =>
@@ -456,6 +485,8 @@ namespace DEP.Repository.Migrations
 
             modelBuilder.Entity("DEP.Repository.Models.User", b =>
                 {
+                    b.Navigation("EducationLeaders");
+
                     b.Navigation("EducationalConsultantPersons");
 
                     b.Navigation("OperationCoordinatorPersons");

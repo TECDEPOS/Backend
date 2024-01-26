@@ -328,9 +328,9 @@ namespace DEP.Repository.Migrations
                         {
                             UserId = 1,
                             Name = "Administrator",
-                            PasswordExpiryDate = new DateTime(2024, 1, 23, 8, 13, 21, 804, DateTimeKind.Local).AddTicks(4343),
-                            PasswordHash = new byte[] { 31, 138, 1, 51, 63, 36, 230, 151, 113, 150, 191, 185, 181, 221, 153, 57, 29, 184, 160, 76, 178, 223, 79, 65, 43, 209, 36, 215, 0, 10, 28, 109, 9, 27, 140, 160, 44, 240, 150, 194, 119, 25, 13, 169, 56, 62, 148, 197, 200, 32, 0, 32, 147, 253, 187, 143, 14, 216, 152, 203, 159, 25, 60, 230 },
-                            PasswordSalt = new byte[] { 251, 1, 20, 57, 60, 234, 106, 66, 160, 119, 47, 151, 156, 120, 120, 208, 44, 48, 122, 50, 40, 49, 32, 46, 191, 92, 206, 22, 216, 236, 195, 45, 5, 212, 53, 133, 131, 191, 8, 97, 89, 26, 167, 83, 140, 136, 46, 81, 62, 62, 229, 171, 104, 168, 188, 101, 59, 99, 69, 248, 89, 228, 187, 61, 22, 142, 193, 179, 245, 130, 82, 53, 144, 162, 161, 220, 203, 20, 240, 147, 241, 24, 162, 100, 241, 71, 87, 111, 145, 70, 212, 107, 28, 4, 250, 208, 17, 153, 30, 155, 224, 47, 124, 54, 40, 146, 127, 169, 3, 204, 49, 57, 197, 17, 44, 167, 146, 93, 233, 178, 129, 41, 14, 203, 130, 153, 18, 186 },
+                            PasswordExpiryDate = new DateTime(2024, 1, 25, 10, 14, 13, 473, DateTimeKind.Local).AddTicks(8209),
+                            PasswordHash = new byte[] { 222, 63, 72, 110, 63, 9, 106, 34, 6, 71, 137, 79, 203, 196, 141, 6, 73, 193, 109, 36, 9, 230, 230, 156, 168, 116, 81, 195, 13, 70, 98, 16, 164, 226, 89, 171, 205, 47, 46, 241, 255, 73, 14, 59, 239, 82, 27, 204, 158, 47, 212, 141, 57, 229, 80, 69, 144, 52, 112, 183, 18, 169, 231, 182 },
+                            PasswordSalt = new byte[] { 154, 114, 26, 207, 140, 147, 119, 181, 20, 29, 101, 150, 247, 252, 159, 193, 45, 78, 49, 93, 149, 64, 251, 17, 98, 56, 26, 136, 175, 18, 181, 143, 199, 107, 90, 39, 223, 45, 232, 89, 146, 223, 166, 78, 41, 180, 129, 96, 15, 134, 159, 247, 132, 48, 112, 223, 208, 69, 27, 219, 147, 125, 104, 238, 87, 52, 43, 42, 120, 250, 8, 47, 139, 202, 224, 144, 199, 145, 39, 230, 108, 88, 105, 139, 158, 119, 100, 212, 158, 109, 86, 133, 110, 21, 112, 186, 165, 217, 108, 24, 240, 235, 101, 174, 23, 250, 196, 216, 214, 107, 18, 111, 122, 218, 76, 215, 172, 51, 209, 212, 48, 87, 96, 68, 177, 17, 205, 45 },
                             RefreshTokenExpiryDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             UserName = "admin",
                             UserRole = 0
@@ -379,16 +379,18 @@ namespace DEP.Repository.Migrations
             modelBuilder.Entity("DEP.Repository.Models.Person", b =>
                 {
                     b.HasOne("DEP.Repository.Models.Department", "Department")
-                        .WithMany()
-                        .HasForeignKey("DepartmentId");
+                        .WithMany("Persons")
+                        .HasForeignKey("DepartmentId")
+                        .OnDelete(DeleteBehavior.SetNull);
 
                     b.HasOne("DEP.Repository.Models.User", "EducationalConsultant")
                         .WithMany("EducationalConsultantPersons")
                         .HasForeignKey("EducationalConsultantId");
 
                     b.HasOne("DEP.Repository.Models.Location", "Location")
-                        .WithMany()
-                        .HasForeignKey("LocationId");
+                        .WithMany("Persons")
+                        .HasForeignKey("LocationId")
+                        .OnDelete(DeleteBehavior.SetNull);
 
                     b.HasOne("DEP.Repository.Models.User", "OperationCoordinator")
                         .WithMany("OperationCoordinatorPersons")
@@ -425,16 +427,18 @@ namespace DEP.Repository.Migrations
             modelBuilder.Entity("DEP.Repository.Models.User", b =>
                 {
                     b.HasOne("DEP.Repository.Models.Department", "Department")
-                        .WithMany()
-                        .HasForeignKey("DepartmentId");
+                        .WithMany("Users")
+                        .HasForeignKey("DepartmentId")
+                        .OnDelete(DeleteBehavior.SetNull);
 
                     b.HasOne("DEP.Repository.Models.User", "EducationBoss")
                         .WithMany("EducationLeaders")
                         .HasForeignKey("EducationBossId");
 
                     b.HasOne("DEP.Repository.Models.Location", "Location")
-                        .WithMany()
-                        .HasForeignKey("LocationId");
+                        .WithMany("Users")
+                        .HasForeignKey("LocationId")
+                        .OnDelete(DeleteBehavior.SetNull);
 
                     b.Navigation("Department");
 
@@ -446,6 +450,20 @@ namespace DEP.Repository.Migrations
             modelBuilder.Entity("DEP.Repository.Models.Course", b =>
                 {
                     b.Navigation("PersonCourses");
+                });
+
+            modelBuilder.Entity("DEP.Repository.Models.Department", b =>
+                {
+                    b.Navigation("Persons");
+
+                    b.Navigation("Users");
+                });
+
+            modelBuilder.Entity("DEP.Repository.Models.Location", b =>
+                {
+                    b.Navigation("Persons");
+
+                    b.Navigation("Users");
                 });
 
             modelBuilder.Entity("DEP.Repository.Models.Module", b =>
