@@ -50,21 +50,7 @@ namespace DEP.Repository.Context
                 entity.HasKey(x => new { x.CourseId, x.PersonId });
             });
 
-            //modelBuilder.Entity<Models.File>(entity =>
-            //{
-            //    entity
-            //    .HasOne(x => x.FileTag)
-            //    .WithMany(x => x.Files)
-            //    .HasForeignKey(x => x.FileTagId)
-            //    .IsRequired(false);
-
-            //    entity
-            //    .HasOne(x=> x.Person)
-            //    .WithMany(x => x.Files)
-            //    .HasForeignKey(x => x.PersonId)
-            //    .IsRequired(false);
-            //});
-
+            // Use .OnDelete(DeleteBehavior.SetNull) for the entities to set FK properties to null when deleting a FK record.
             modelBuilder.Entity<Person>(entity =>
             {
                 entity.HasOne(x => x.EducationalConsultant)
@@ -76,6 +62,51 @@ namespace DEP.Repository.Context
                 entity.HasOne(x => x.OperationCoordinator)
                 .WithMany(x => x.OperationCoordinatorPersons)
                 .HasForeignKey(x => x.OperationCoordinatorId)
+                .IsRequired(false)
+                .OnDelete(DeleteBehavior.ClientSetNull);
+
+                entity.HasOne(x => x.Location)
+                .WithMany(x => x.Persons)
+                .HasForeignKey(x => x.LocationId)
+                .IsRequired(false)
+                .OnDelete(DeleteBehavior.SetNull);
+
+                entity.HasOne(x => x.Department)
+                .WithMany(x => x.Persons)
+                .HasForeignKey(x => x.DepartmentId)
+                .IsRequired(false)
+                .OnDelete(DeleteBehavior.SetNull);
+            });
+
+            modelBuilder.Entity<User>(entity =>
+            {
+                entity.HasOne(x => x.Location)
+                .WithMany(x => x.Users)
+                .HasForeignKey(x => x.LocationId)
+                .IsRequired(false)
+                .OnDelete(DeleteBehavior.SetNull);
+
+                entity.HasOne(x => x.Department)
+                .WithMany(x => x.Users)
+                .HasForeignKey(x => x.DepartmentId)
+                .IsRequired(false)
+                .OnDelete(DeleteBehavior.SetNull);
+
+                entity.HasMany(x => x.OperationCoordinatorPersons)
+                .WithOne(x => x.OperationCoordinator)
+                .HasForeignKey(x => x.OperationCoordinatorId)
+                .IsRequired(false)
+                .OnDelete(DeleteBehavior.ClientSetNull);
+
+                entity.HasMany(x => x.EducationalConsultantPersons)
+                .WithOne(x => x.EducationalConsultant)
+                .HasForeignKey(x => x.EducationalConsultantId)
+                .IsRequired(false)
+                .OnDelete(DeleteBehavior.ClientSetNull);
+
+                entity.HasOne(x => x.EducationBoss)
+                .WithMany(x => x.EducationLeaders)
+                .HasForeignKey(x => x.EducationBossId)
                 .IsRequired(false)
                 .OnDelete(DeleteBehavior.ClientSetNull);
             });

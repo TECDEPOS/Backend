@@ -80,7 +80,7 @@ namespace DEP.Controllers
             return Ok(newUser);
         }
 
-        [HttpDelete("{id:int}"), Authorize(Roles = "Super_Admin,Pædagogisk_Konsulent_Admin,Human_Resources_Admin,Drift_Koordinator_Admin,")]
+        [HttpDelete("{id:int}"), Authorize(Roles = "Administrator")]
         public async Task<IActionResult> DeleteUser(int id)
         {
             var userDeleted = await service.DeleteUser(id);

@@ -78,6 +78,25 @@ namespace DEP.Repository.Repositories
                 return false;
             }
 
+            var personList = await context.Persons.Where(x => x.EducationalConsultantId == id || x.OperationCoordinatorId == id).ToListAsync();
+            foreach (var person in personList)
+            {
+                if (person.EducationalConsultantId == id)
+                {
+                    person.EducationalConsultantId = null;
+                }
+                if (person.OperationCoordinatorId == id)
+                {
+                    person.OperationCoordinatorId = null;
+                }
+            }
+
+            var educationalLeaders = await context.Users.Where(x => x.EducationBossId == id).ToListAsync();
+            foreach (var leader in educationalLeaders)
+            {
+                leader.EducationBossId = null;
+            }
+
             context.Users.Remove(user);
             await context.SaveChangesAsync();
             return true;

@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace DEP.Repository.Migrations
 {
     /// <inheritdoc />
-    public partial class updatedModels : Migration
+    public partial class initialv1 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -75,6 +75,7 @@ namespace DEP.Repository.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     LocationId = table.Column<int>(type: "int", nullable: true),
                     DepartmentId = table.Column<int>(type: "int", nullable: true),
+                    EducationBossId = table.Column<int>(type: "int", nullable: true),
                     UserName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     PasswordHash = table.Column<byte[]>(type: "varbinary(max)", nullable: false),
@@ -91,12 +92,19 @@ namespace DEP.Repository.Migrations
                         name: "FK_Users_Departments_DepartmentId",
                         column: x => x.DepartmentId,
                         principalTable: "Departments",
-                        principalColumn: "DepartmentId");
+                        principalColumn: "DepartmentId",
+                        onDelete: ReferentialAction.SetNull);
                     table.ForeignKey(
                         name: "FK_Users_Locations_LocationId",
                         column: x => x.LocationId,
                         principalTable: "Locations",
-                        principalColumn: "LocationId");
+                        principalColumn: "LocationId",
+                        onDelete: ReferentialAction.SetNull);
+                    table.ForeignKey(
+                        name: "FK_Users_Users_EducationBossId",
+                        column: x => x.EducationBossId,
+                        principalTable: "Users",
+                        principalColumn: "UserId");
                 });
 
             migrationBuilder.CreateTable(
@@ -166,12 +174,14 @@ namespace DEP.Repository.Migrations
                         name: "FK_Persons_Departments_DepartmentId",
                         column: x => x.DepartmentId,
                         principalTable: "Departments",
-                        principalColumn: "DepartmentId");
+                        principalColumn: "DepartmentId",
+                        onDelete: ReferentialAction.SetNull);
                     table.ForeignKey(
                         name: "FK_Persons_Locations_LocationId",
                         column: x => x.LocationId,
                         principalTable: "Locations",
-                        principalColumn: "LocationId");
+                        principalColumn: "LocationId",
+                        onDelete: ReferentialAction.SetNull);
                     table.ForeignKey(
                         name: "FK_Persons_Users_EducationalConsultantId",
                         column: x => x.EducationalConsultantId,
@@ -241,8 +251,8 @@ namespace DEP.Repository.Migrations
 
             migrationBuilder.InsertData(
                 table: "Users",
-                columns: new[] { "UserId", "DepartmentId", "LocationId", "Name", "PasswordExpiryDate", "PasswordHash", "PasswordSalt", "RefreshToken", "RefreshTokenExpiryDate", "UserName", "UserRole" },
-                values: new object[] { 1, null, null, "Administrator", new DateTime(2024, 1, 16, 13, 44, 13, 241, DateTimeKind.Local).AddTicks(2249), new byte[] { 221, 53, 74, 241, 16, 21, 108, 229, 33, 43, 123, 121, 220, 230, 245, 170, 168, 2, 136, 110, 60, 255, 70, 56, 92, 3, 88, 225, 163, 82, 20, 199, 23, 246, 11, 245, 95, 196, 233, 64, 82, 159, 255, 129, 242, 255, 82, 148, 17, 129, 80, 219, 242, 214, 99, 232, 149, 66, 176, 186, 67, 58, 238, 15 }, new byte[] { 135, 26, 151, 211, 110, 51, 175, 63, 10, 87, 193, 154, 196, 91, 56, 168, 200, 76, 116, 125, 85, 226, 119, 182, 111, 174, 25, 227, 30, 179, 100, 254, 231, 179, 127, 218, 53, 214, 12, 249, 252, 198, 147, 74, 92, 103, 171, 120, 154, 148, 183, 61, 82, 187, 171, 64, 78, 108, 219, 13, 207, 134, 28, 103, 17, 185, 38, 74, 78, 65, 122, 193, 60, 126, 182, 15, 215, 231, 236, 28, 97, 35, 124, 26, 115, 234, 17, 43, 185, 109, 204, 68, 232, 57, 130, 247, 105, 39, 86, 141, 133, 129, 174, 214, 94, 204, 143, 90, 221, 233, 235, 105, 95, 191, 35, 144, 207, 116, 25, 232, 73, 69, 46, 34, 197, 230, 110, 159 }, null, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "admin", 0 });
+                columns: new[] { "UserId", "DepartmentId", "EducationBossId", "LocationId", "Name", "PasswordExpiryDate", "PasswordHash", "PasswordSalt", "RefreshToken", "RefreshTokenExpiryDate", "UserName", "UserRole" },
+                values: new object[] { 1, null, null, null, "Administrator", new DateTime(2024, 1, 25, 10, 14, 13, 473, DateTimeKind.Local).AddTicks(8209), new byte[] { 222, 63, 72, 110, 63, 9, 106, 34, 6, 71, 137, 79, 203, 196, 141, 6, 73, 193, 109, 36, 9, 230, 230, 156, 168, 116, 81, 195, 13, 70, 98, 16, 164, 226, 89, 171, 205, 47, 46, 241, 255, 73, 14, 59, 239, 82, 27, 204, 158, 47, 212, 141, 57, 229, 80, 69, 144, 52, 112, 183, 18, 169, 231, 182 }, new byte[] { 154, 114, 26, 207, 140, 147, 119, 181, 20, 29, 101, 150, 247, 252, 159, 193, 45, 78, 49, 93, 149, 64, 251, 17, 98, 56, 26, 136, 175, 18, 181, 143, 199, 107, 90, 39, 223, 45, 232, 89, 146, 223, 166, 78, 41, 180, 129, 96, 15, 134, 159, 247, 132, 48, 112, 223, 208, 69, 27, 219, 147, 125, 104, 238, 87, 52, 43, 42, 120, 250, 8, 47, 139, 202, 224, 144, 199, 145, 39, 230, 108, 88, 105, 139, 158, 119, 100, 212, 158, 109, 86, 133, 110, 21, 112, 186, 165, 217, 108, 24, 240, 235, 101, 174, 23, 250, 196, 216, 214, 107, 18, 111, 122, 218, 76, 215, 172, 51, 209, 212, 48, 87, 96, 68, 177, 17, 205, 45 }, null, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "admin", 0 });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Books_ModuleId",
@@ -293,6 +303,11 @@ namespace DEP.Repository.Migrations
                 name: "IX_Users_DepartmentId",
                 table: "Users",
                 column: "DepartmentId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Users_EducationBossId",
+                table: "Users",
+                column: "EducationBossId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Users_LocationId",
