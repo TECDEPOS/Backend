@@ -1,6 +1,7 @@
 ﻿using DEP.Repository.Interfaces;
 using DEP.Repository.Models;
 using DEP.Service.Interfaces;
+using System;
 
 namespace DEP.Service.Services
 {
@@ -21,6 +22,10 @@ namespace DEP.Service.Services
 
         public async Task<Course> AddCourse(Course course)
         {
+            TimeZoneInfo localTimeZone = TimeZoneInfo.Local;
+            course.StartDate = TimeZoneInfo.ConvertTimeFromUtc(course.StartDate, localTimeZone);
+            course.StartDate = course.StartDate.Date;
+
             course.Module = null;
             return await repo.AddCourse(course);
         }
