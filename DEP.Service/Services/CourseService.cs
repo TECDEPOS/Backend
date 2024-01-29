@@ -1,8 +1,8 @@
 ﻿using DEP.Repository.Interfaces;
 using DEP.Repository.Models;
 using DEP.Service.Interfaces;
-using System;
 using System.Reflection;
+using System;
 
 namespace DEP.Service.Services
 {
