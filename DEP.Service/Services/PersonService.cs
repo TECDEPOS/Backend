@@ -13,6 +13,10 @@ namespace DEP.Service.Services
 
         public async Task<Person> AddPerson(Person person)
         {
+            TimeZoneInfo localTimeZone = TimeZoneInfo.Local;
+            person.HiringDate = TimeZoneInfo.ConvertTimeFromUtc(person.HiringDate, localTimeZone);
+            person.HiringDate = person.HiringDate.Date;
+
             person.Department = null;
             person.Location = null;
             person.EducationalConsultant = null;
