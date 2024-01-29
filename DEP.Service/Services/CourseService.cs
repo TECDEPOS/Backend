@@ -1,6 +1,7 @@
 ﻿using DEP.Repository.Interfaces;
 using DEP.Repository.Models;
 using DEP.Service.Interfaces;
+using System.Reflection;
 
 namespace DEP.Service.Services
 {
@@ -14,9 +15,9 @@ namespace DEP.Service.Services
             return await repo.GetAllCourses();
         }
 
-        public async Task<List<Course>> GetCoursesByModuleId(int id)
+        public async Task<List<Course>> GetCoursesByModuleId(int moduleId, int userId)
         {
-            return await repo.GetCoursesByModuleId(id);
+            return await repo.GetCoursesByModuleId(moduleId, userId);
         }
 
         public async Task<Course> AddCourse(Course course)

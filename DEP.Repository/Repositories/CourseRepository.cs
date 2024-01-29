@@ -100,9 +100,25 @@ namespace DEP.Repository.Repositories
             return courses;
         }
         
-        public async Task<List<Course>> GetCoursesByModuleId(int id)
+        public async Task<List<Course>> GetCoursesByModuleId(int moduleId, int userId)
         {
-            return await context.Courses.Where(x => x.ModuleId == id).ToListAsync();
+            
+            var courses = new List<Course>();
+            courses = await context.Courses.Where(x => x.ModuleId == moduleId).Include(x => x.PersonCourses).OrderBy(x => x.StartDate).OrderBy(x => x.EndDate).ToListAsync();
+
+            var newCourses = new List<Course>();
+
+            foreach (var course in courses)
+            {
+                bool any = course.PersonCourses.Any(x => x.PersonId == userId);
+                
+                if (!any)
+                {
+                    newCourses.Add(course);
+                }
+            }
+
+            return newCourses;
         }
 
         public Task<Course> GetCourseById(int id)

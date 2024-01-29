@@ -45,7 +45,6 @@ namespace DEP.Repository.Repositories
         public async Task<List<Module>> GetModules()
         {
             var modules = await context.Modules.ToListAsync();
-
             return modules;
         }
 

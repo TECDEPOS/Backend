@@ -61,6 +61,8 @@ namespace DEP.Service.Services
             {
                 UserName = viewModel.Username,
                 Name = viewModel.Name,
+                LocationId = viewModel.LocationId,
+                DepartmentId = viewModel.DepartmentId,
                 EducationBossId = viewModel.EducationBossId,
                 PasswordHash = passwordHash,
                 PasswordSalt = passwordSalt,

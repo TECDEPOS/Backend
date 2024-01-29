@@ -5,7 +5,7 @@
         public int UserId { get; set; }
         public int? LocationId { get; set; }
         public int? DepartmentId { get; set; }
-        public int? EducationBossId { get; set; }
+        public int? EducationBossId { get; set; } //Uddannelseschef
         public string UserName { get; set; } = string.Empty;
         public string Name { get; set; } = string.Empty;
         public Byte[] PasswordHash { get; set; } = new byte[32];
@@ -19,9 +19,9 @@
 
         public Location? Location { get; set; }
         public Department? Department { get; set; }
-        public User? EducationBoss { get; set; }
+        public User? EducationBoss { get; set; } //Uddannelseschef
         public List<Person> EducationalConsultantPersons { get; set; } = new List<Person>();
         public List<Person> OperationCoordinatorPersons { get; set; } = new List<Person>();
-        public List<User> EducationLeaders { get; set; } = new List<User>();
+        public List<User> EducationLeaders { get; set; } = new List<User>();// Uddannelsesledere
     }
 }

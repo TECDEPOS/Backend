@@ -2,6 +2,7 @@
 using DEP.Service.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Reflection;
 
 namespace DEP.Controllers
 {
@@ -18,10 +19,10 @@ namespace DEP.Controllers
             return Ok(await service.GetAllCourses());
         }
 
-        [HttpGet("module/{id:int}"), Authorize]
-        public async Task<IActionResult> GetCoursesByModuleId(int id)
+        [HttpGet("module/{moduleId:int}/{userId:int}"), Authorize]
+        public async Task<IActionResult> GetCoursesByModuleId(int moduleId, int userId)
         {
-            return Ok(await service.GetCoursesByModuleId(id));
+            return Ok(await service.GetCoursesByModuleId(moduleId, userId));
         }
 
         [HttpGet("{id:int}"), Authorize]
