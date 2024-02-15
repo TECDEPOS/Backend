@@ -13,9 +13,9 @@ namespace DEP.Controllers
         public BookController(IBookService service) { this.service = service; }
 
         [HttpGet("{id:int}"), Authorize]
-        public async Task<IActionResult> GetBook(int Id)
+        public async Task<IActionResult> GetBook(int id)
         {
-            return Ok(await service.GetBook(Id));
+            return Ok(await service.GetBook(id));
         }
 
         [HttpGet, Authorize]
