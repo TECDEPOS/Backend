@@ -3,6 +3,7 @@
     public class Book
     {
         public int BookId { get; set; }
+        public int ModuleId { get; set; }
         public string Name { get; set; }
         public int Amount { get; set; }
 
