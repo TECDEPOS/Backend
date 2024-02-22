@@ -1,4 +1,6 @@
-﻿namespace DEP.Repository.Models
+﻿using System.Text.Json.Serialization;
+
+namespace DEP.Repository.Models
 {
     public class User
     {
@@ -20,8 +22,13 @@
         public Location? Location { get; set; }
         public Department? Department { get; set; }
         public User? EducationBoss { get; set; } //Uddannelseschef
-        public List<Person> EducationalConsultantPersons { get; set; } = new List<Person>();
-        public List<Person> OperationCoordinatorPersons { get; set; } = new List<Person>();
         public List<User> EducationLeaders { get; set; } = new List<User>();// Uddannelsesledere
+
+
+        // JsonIgnore to prevent circular references resulting in an exception.
+        [JsonIgnore]
+        public List<Person> EducationalConsultantPersons { get; set; } = new List<Person>();
+        [JsonIgnore]
+        public List<Person> OperationCoordinatorPersons { get; set; } = new List<Person>();
     }
 }

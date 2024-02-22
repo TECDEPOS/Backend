@@ -16,7 +16,11 @@ namespace DEP.Repository.Repositories
 
         public async Task<List<User>> GetUsers()
         {
-            return await context.Users.ToListAsync();
+            return await context.Users
+                .Include(u => u.Department)
+                .Include(u => u.Location)
+                .Include(u => u.EducationBoss)
+                .ToListAsync();
         }
 
         public async Task<List<User>> GetUsersByEducationBossId(int id)
