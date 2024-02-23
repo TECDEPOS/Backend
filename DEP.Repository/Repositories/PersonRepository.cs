@@ -87,18 +87,31 @@ namespace DEP.Repository.Repositories
                 return null;
             }
 
-            if (roleId == 1 || roleId == 4)
+            if (roleId == 1)
             {
-                person.Files = person.Files.Where(x => x.FileTag?.PKVisability == true || x.FileTag == null).ToList();
+                person.Files = person.Files.Where(x => x.FileTag?.ControllerVisibility == true || x.FileTag == null).ToList();
             }
-            else if (roleId == 2 || roleId == 5)
+            else if (roleId == 2)
             {
-                person.Files = person.Files.Where(x => x.FileTag?.HRVisability == true || x.FileTag == null).ToList();
+                person.Files = person.Files.Where(x => x.FileTag?.EducationLeaderVisibility == true || x.FileTag == null).ToList();
             }
-            else if (roleId == 3 || roleId == 6)
+            else if (roleId == 3)
             {
-                person.Files = person.Files.Where(x => x.FileTag?.DKVisability == true || x.FileTag == null).ToList();
+                person.Files = person.Files.Where(x => x.FileTag?.EducationBossVisibility == true || x.FileTag == null).ToList();
             }
+            else if (roleId == 4)
+            {
+                person.Files = person.Files.Where(x => x.FileTag?.PKVisibility == true || x.FileTag == null).ToList();
+            }
+            else if (roleId == 5)
+            {
+                person.Files = person.Files.Where(x => x.FileTag?.HRVisibility == true || x.FileTag == null).ToList();
+            }
+            else if (roleId == 6)
+            {
+                person.Files = person.Files.Where(x => x.FileTag?.DKVisibility == true || x.FileTag == null).ToList();
+            }
+            // Administrator
             else if (roleId == 0)
             {
                 person.Files.Clear();

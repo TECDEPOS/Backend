@@ -36,7 +36,8 @@ namespace DEP.Repository.Repositories
             var module = await context.Modules
                 .Include(m => m.Courses).
                 ThenInclude(c => c.PersonCourses).
-                ThenInclude(x => x.Person)
+                ThenInclude(x => x.Person).
+                Include(m => m.Books)
                 .FirstOrDefaultAsync(m => m.ModuleId == id);
 
             return module;
@@ -44,7 +45,7 @@ namespace DEP.Repository.Repositories
 
         public async Task<List<Module>> GetModules()
         {
-            var modules = await context.Modules.ToListAsync();
+            var modules = await context.Modules.Include(m => m.Books).ToListAsync();
             return modules;
         }
 
