@@ -106,18 +106,31 @@ namespace DEP.Repository.Repositories
         {
             var files = await context.Files.Include(x => x.FileTag).Include(x => x.Person).ToListAsync();
 
-            if (roleId == 1 || roleId == 4)
+            if (roleId == 1)
             {
-                files = files.Where(x => x.FileTag?.PKVisability == true || x.FileTag == null).ToList();
+                files = files.Where(x => x.FileTag?.ControllerVisibility == true || x.FileTag == null).ToList();
             }
-            else if (roleId == 2 || roleId == 5)
+            else if (roleId == 2)
             {
-                files = files.Where(x => x.FileTag?.HRVisability == true || x.FileTag == null).ToList();
+                files = files.Where(x => x.FileTag?.EducationLeaderVisibility == true || x.FileTag == null).ToList();
             }
-            else if (roleId == 3 || roleId == 6)
+            else if (roleId == 3)
             {
-                files = files.Where(x => x.FileTag?.DKVisability == true || x.FileTag == null).ToList();
+                files = files.Where(x => x.FileTag?.EducationBossVisibility == true || x.FileTag == null).ToList();
             }
+            else if (roleId == 4)
+            {
+                files = files.Where(x => x.FileTag?.PKVisibility == true || x.FileTag == null).ToList();
+            }
+            else if (roleId == 5)
+            {
+                files = files.Where(x => x.FileTag?.HRVisibility == true || x.FileTag == null).ToList();
+            }
+            else if (roleId == 6)
+            {
+                files = files.Where(x => x.FileTag?.DKVisibility == true || x.FileTag == null).ToList();
+            }
+            // Administrator
             else if (roleId == 0)
             {
                 files.Clear();

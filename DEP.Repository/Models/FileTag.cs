@@ -4,9 +4,11 @@
     {
         public int FileTagId { get; set; }
         public string TagName { get; set; } = string.Empty;
-        public bool DKVisability { get; set; }
-        public bool HRVisability { get; set; }
-        public bool PKVisability { get; set; }
-        //public List<File> Files { get; set; } = new List<File>();
+        public bool DKVisibility { get; set; }
+        public bool HRVisibility { get; set; }
+        public bool PKVisibility { get; set; }
+        public bool EducationLeaderVisibility { get; set; }
+        public bool EducationBossVisibility { get; set; }
+        public bool ControllerVisibility { get; set; }
     }
 }
