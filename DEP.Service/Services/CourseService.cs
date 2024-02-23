@@ -16,9 +16,14 @@ namespace DEP.Service.Services
             return await repo.GetAllCourses();
         }
 
-        public async Task<List<Course>> GetCoursesByModuleId(int moduleId, int userId)
+        public async Task<List<Course>> GetCoursesByModuleId(int moduleId)
         {
-            return await repo.GetCoursesByModuleId(moduleId, userId);
+            return await repo.GetCoursesByModuleId(moduleId);
+        }
+
+        public async Task<List<Course>> GetCoursesByModuleIdAndUserId(int moduleId, int userId)
+        {
+            return await repo.GetCoursesByModuleIdAndUserId(moduleId, userId);
         }
 
         public async Task<Course> AddCourse(Course course)

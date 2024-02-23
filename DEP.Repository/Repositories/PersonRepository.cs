@@ -99,12 +99,38 @@ namespace DEP.Repository.Repositories
             {
                 person.Files = person.Files.Where(x => x.FileTag?.DKVisability == true || x.FileTag == null).ToList();
             }
-            else if(roleId == 0)
+            else if (roleId == 0)
             {
                 person.Files.Clear();
             }
-            
+
             return person;
+        }
+
+        public async Task<List<Person>> GetPersonsByCourseId(int courseId)
+        {
+            var persons = new List<Person>();
+            persons = await context.Persons.Include(x => x.PersonCourses).Include(x => x.Department).Include(x => x.Location).ToListAsync();
+
+            var newPersons = new List<Person>();
+            foreach (var person in persons)
+            {
+                if (person.PersonCourses.Any(x => x.CourseId == courseId))
+                {
+                    newPersons.Add(person);
+                }
+            }
+
+            return newPersons;
+        }
+
+        public async Task<List<Person>> GetPersonsByDepartmentAndLocation(int departmentId, int locationId)
+        {
+            return await context.Persons
+                .Include(p => p.Location)
+                .Include(p => p.Department)
+                .Where(p => p.DepartmentId == departmentId && p.LocationId == locationId)
+                .ToListAsync();
         }
     }
 }

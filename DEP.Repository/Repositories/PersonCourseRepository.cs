@@ -61,6 +61,7 @@ namespace DEP.Repository.Repositories
                 .Where(x => x.PersonId == personId)
                 .Include(pc => pc.Person)
                 .Include(pc => pc.Course)
+                .ThenInclude(c => c.Module)
                 .ToListAsync();
         }
 

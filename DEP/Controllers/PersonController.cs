@@ -26,6 +26,12 @@ namespace DEP.Controllers
             }
         }
 
+        [HttpGet("courseId/{courseId:int}"), Authorize]
+        public async Task<IActionResult> GetPersonsByCourseId(int courseId)
+        {
+            return Ok(await service.GetPersonsByCourseId(courseId));
+        }
+
         [HttpGet("{personId:int}/role/{roleId:int}"), Authorize]
         public async Task<IActionResult> GetPersonById(int personId, int roleId)
         {
@@ -42,6 +48,12 @@ namespace DEP.Controllers
             {
                 return BadRequest(e.Message);
             }
+        }
+
+        [HttpGet("departmentId/{departmentId}/locationId{locationId}"), Authorize]
+        public async Task<IActionResult> GetPersonsFromLocationAndDepartment(int departmentId, int locationId)
+        {
+            return Ok(await service.GetPersonsByDepartmentAndLocation(departmentId, locationId));
         }
 
         [HttpGet("{name}"), Authorize]

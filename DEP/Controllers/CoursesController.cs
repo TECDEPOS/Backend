@@ -19,10 +19,16 @@ namespace DEP.Controllers
             return Ok(await service.GetAllCourses());
         }
 
-        [HttpGet("module/{moduleId:int}/{userId:int}"), Authorize]
-        public async Task<IActionResult> GetCoursesByModuleId(int moduleId, int userId)
+        [HttpGet("module/{moduleId:int}"), Authorize]
+        public async Task<IActionResult> GetCoursesByModuleId(int moduleId)
         {
-            return Ok(await service.GetCoursesByModuleId(moduleId, userId));
+            return Ok(await service.GetCoursesByModuleId(moduleId));
+        }
+
+        [HttpGet("module/{moduleId:int}/user/{userId:int}"), Authorize]
+        public async Task<IActionResult> GetCoursesByModuleIdAndUserId(int moduleId, int userId)
+        {
+            return Ok(await service.GetCoursesByModuleIdAndUserId(moduleId, userId));
         }
 
         [HttpGet("{id:int}"), Authorize]

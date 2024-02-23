@@ -40,6 +40,16 @@ namespace DEP.Service.Services
             return await repo.GetPersons();
         }
 
+        public async Task<List<Person>> GetPersonsByCourseId(int courseId)
+        {
+            return await repo.GetPersonsByCourseId(courseId);
+        }
+
+        public async Task<List<Person>> GetPersonsByDepartmentAndLocation(int departmentId, int locationId)
+        {
+            return await repo.GetPersonsByDepartmentAndLocation(departmentId, locationId);
+        }
+
         public async Task<List<Person>> GetPersonsByName(string name)
         {
             return await repo.GetPersonsByName(name);

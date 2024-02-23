@@ -6,7 +6,9 @@ namespace DEP.Repository.Interfaces
     {
         Task<Person> AddPerson(Person person);
         Task<Person> UpdatePerson(Person person);
+        Task<List<Person>> GetPersonsByCourseId(int courseId);
         Task<List<Person>> GetPersonsByName(string name);
+        Task<List<Person>> GetPersonsByDepartmentAndLocation(int departmentId, int locationId);
         Task<Person> GetPersonById(int personId, int roleId);
         Task<Person> DeletePerson(int id);
         Task<List<Person>> GetPersons();

@@ -99,13 +99,18 @@ namespace DEP.Repository.Repositories
 
             return courses;
         }
-        
-        public async Task<List<Course>> GetCoursesByModuleId(int moduleId, int userId)
+
+        public async Task<List<Course>> GetCoursesByModuleId(int moduleId)
+        {
+            return await context.Courses.Where(x => x.ModuleId == moduleId).Include(x => x.PersonCourses).OrderBy(x => x.StartDate).OrderBy(x => x.EndDate).ToListAsync();
+        }
+
+        public async Task<List<Course>> GetCoursesByModuleIdAndUserId(int moduleId, int userId)
         {
             
             var courses = new List<Course>();
             courses = await context.Courses.Where(x => x.ModuleId == moduleId).Include(x => x.PersonCourses).OrderBy(x => x.StartDate).OrderBy(x => x.EndDate).ToListAsync();
-
+            
             var newCourses = new List<Course>();
 
             foreach (var course in courses)
