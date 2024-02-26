@@ -111,6 +111,12 @@ namespace DEP.Repository.Context
                 .OnDelete(DeleteBehavior.ClientSetNull);
             });
 
+            modelBuilder.Entity<Models.File>()
+            .HasOne(f => f.FileTag)
+            .WithMany()
+            .HasForeignKey(f => f.FileTagId)
+            .OnDelete(DeleteBehavior.SetNull);
+
             var defaultPass = configuration.GetSection("UserSettings:DefaultPassword").Value;
             CreatePasswordHash(defaultPass, out byte[] passwordHash, out byte[] passwordSalt);
 
