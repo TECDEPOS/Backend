@@ -23,13 +23,7 @@ namespace DEP.Repository.Repositories
             var person = await context.Persons
                 .Include(x => x.Location)
                 .Include(x => x.Department)
-                .Include(x => x.Files)
-                .ThenInclude(y => y.FileTag)
                 .Include(x => x.PersonCourses)
-                .ThenInclude(x => x.Course)
-                .ThenInclude(y => y.Module)
-                .Include(x => x.EducationalConsultant)
-                .Include(x => x.OperationCoordinator)
                 .ToListAsync();
             return person;
         }

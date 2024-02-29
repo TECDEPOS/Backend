@@ -19,20 +19,10 @@ namespace DEP.Service.Services
             return await repo.DeleteModule(id);
         }
 
-        public async Task<Module> GetModuleById(int id)
-        {
-            return await repo.GetModuleById(id);
-        }
-
         public async Task<List<Module>> GetModules()
         {
             return await repo.GetModules();
         }
-
-        //public async Task<List<Module>> GetModulesByType(int type)
-        //{
-        //    return await repo.GetModulesByType(type);
-        //}
 
         public async Task<Module> UpdateModule(Module module)
         {

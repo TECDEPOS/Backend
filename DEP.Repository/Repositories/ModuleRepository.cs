@@ -31,18 +31,6 @@ namespace DEP.Repository.Repositories
             return module;
         }
 
-        public async Task<Module> GetModuleById(int id)
-        {
-            var module = await context.Modules
-                .Include(m => m.Courses).
-                ThenInclude(c => c.PersonCourses).
-                ThenInclude(x => x.Person).
-                Include(m => m.Books)
-                .FirstOrDefaultAsync(m => m.ModuleId == id);
-
-            return module;
-        }
-
         public async Task<List<Module>> GetModules()
         {
             var modules = await context.Modules.Include(m => m.Books).ToListAsync();
