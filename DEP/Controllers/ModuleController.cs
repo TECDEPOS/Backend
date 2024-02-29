@@ -12,23 +12,11 @@ namespace DEP.Controllers
         private readonly IModuleService service;
         public ModuleController(IModuleService service) { this.service = service; }
 
-        [HttpGet("{id:int}"), Authorize]
-        public async Task<IActionResult> GetModuleById(int id)
-        {
-            return Ok(await service.GetModuleById(id));
-        }
-
         [HttpGet, Authorize]
         public async Task<IActionResult> GetModules()
         {
             return Ok(await service.GetModules());
         }
-
-        //[HttpGet("type/{type:int}"), Authorize]
-        //public async Task<IActionResult> GetModulesByType(int type)
-        //{
-        //    return Ok(await service.GetModulesByType(type));
-        //}
 
         [HttpPost, Authorize]
         public async Task<IActionResult> AddModule(Module module)
