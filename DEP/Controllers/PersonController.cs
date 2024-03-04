@@ -32,6 +32,12 @@ namespace DEP.Controllers
             return Ok(await service.GetPersonsByCourseId(courseId));
         }
 
+        [HttpGet("notincourse/{courseId:int}"), Authorize]
+        public async Task<IActionResult> GetPersonsNotInCourse(int courseId)
+        {
+            return Ok(await service.GetPersonsNotInCourse(courseId));
+        }
+
         [HttpGet("{personId:int}/role/{roleId:int}"), Authorize]
         public async Task<IActionResult> GetPersonById(int personId, int roleId)
         {

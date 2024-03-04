@@ -23,11 +23,11 @@ namespace DEP.Repository.Repositories
             var person = await context.Persons
                 .Include(x => x.Location)
                 .Include(x => x.Department)
-                .Include(x => x.Files)
-                .ThenInclude(y => y.FileTag)
+                //.Include(x => x.Files)
+                //.ThenInclude(y => y.FileTag)
                 .Include(x => x.PersonCourses)
-                .ThenInclude(x => x.Course)
-                .ThenInclude(y => y.Module)
+                //.ThenInclude(x => x.Course)
+                //.ThenInclude(y => y.Module)
                 .Include(x => x.EducationalConsultant)
                 .Include(x => x.OperationCoordinator)
                 .ToListAsync();
@@ -128,7 +128,33 @@ namespace DEP.Repository.Repositories
             var newPersons = new List<Person>();
             foreach (var person in persons)
             {
+            var newPersonsCourses = new List<PersonCourse>();
                 if (person.PersonCourses.Any(x => x.CourseId == courseId))
+                {
+                    foreach (var personCourse in person.PersonCourses)
+                    {
+                        if (personCourse.CourseId == courseId)
+                        {
+                            newPersonsCourses.Add(personCourse);
+                        }
+                    }
+                    person.PersonCourses = newPersonsCourses;
+                    newPersons.Add(person);
+                }
+            }
+
+            return newPersons;
+        }
+
+        public async Task<List<Person>> GetPersonsNotInCourse(int courseId)
+        {
+            var persons = new List<Person>();
+            persons = await context.Persons.Include(x => x.PersonCourses).ToListAsync();
+
+            var newPersons = new List<Person>();
+            foreach (var person in persons)
+            {
+                if (!person.PersonCourses.Any(x => x.CourseId == courseId))
                 {
                     newPersons.Add(person);
                 }

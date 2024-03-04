@@ -55,6 +55,11 @@ namespace DEP.Service.Services
             return await repo.GetPersonsByName(name);
         }
 
+        public async Task<List<Person>> GetPersonsNotInCourse(int courseId)
+        {
+            return await repo.GetPersonsNotInCourse(courseId);
+        }
+
         public async Task<List<PersonToTabelsViewModel>> GetPersonsTabel()
         {
             var people = await repo.GetPersons();

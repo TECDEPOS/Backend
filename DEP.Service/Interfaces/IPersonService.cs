@@ -8,6 +8,7 @@ namespace DEP.Service.Interfaces
         Task<List<Person>> GetPersons();
         Task<List<Person>> GetPersonsByName(string name);
         Task<List<Person>> GetPersonsByCourseId(int courseId);
+        Task<List<Person>> GetPersonsNotInCourse(int courseId);
         Task<List<Person>> GetPersonsByDepartmentAndLocation(int departmentId, int locationId);
         Task<Person> GetPersonById(int personId, int roleId);
         Task<List<PersonToTabelsViewModel>> GetPersonsTabel();
