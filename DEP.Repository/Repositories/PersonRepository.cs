@@ -23,6 +23,8 @@ namespace DEP.Repository.Repositories
             var person = await context.Persons
                 .Include(x => x.Location)
                 .Include(x => x.Department)
+                .Include(x => x.EducationalConsultant)
+                .Include(x => x.OperationCoordinator)
                 .Include(x => x.PersonCourses)
                 .ToListAsync();
             return person;
@@ -143,7 +145,7 @@ namespace DEP.Repository.Repositories
         public async Task<List<Person>> GetPersonsNotInCourse(int courseId)
         {
             var persons = new List<Person>();
-            persons = await context.Persons.Include(x => x.PersonCourses).ToListAsync();
+            persons = await context.Persons.Include(x => x.PersonCourses).Include(x => x.Department).Include(x => x.Location).ToListAsync();
 
             var newPersons = new List<Person>();
             foreach (var person in persons)
@@ -161,7 +163,17 @@ namespace DEP.Repository.Repositories
         {
             return await context.Persons
                 .Include(p => p.Location)
+                .Include(p => p.Department)               
+                .Where(p => p.DepartmentId == departmentId && p.LocationId == locationId)
+                .ToListAsync();
+        }
+
+        public async Task<List<Person>> GetPersonsExcel(int departmentId, int locationId)
+        {
+            return await context.Persons
+                .Include(p => p.Location)
                 .Include(p => p.Department)
+                .Include(p => p.PersonCourses).ThenInclude(pc => pc.Course).ThenInclude(c => c.Module)
                 .Where(p => p.DepartmentId == departmentId && p.LocationId == locationId)
                 .ToListAsync();
         }

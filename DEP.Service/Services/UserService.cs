@@ -11,12 +11,14 @@ namespace DEP.Service.Services
         private readonly IUserRepository userRepository;
         private readonly IAuthService authService;
         private readonly IConfiguration configuration;
+        private readonly IPersonRepository personRepository;
 
-        public UserService(IUserRepository userRepository, IAuthService authService, IConfiguration configuration)
+        public UserService(IUserRepository userRepository, IAuthService authService, IConfiguration configuration, IPersonRepository personRepository)
         {
             this.userRepository = userRepository;
             this.authService = authService;
             this.configuration = configuration;
+            this.personRepository = personRepository;
         }
 
         public async Task<List<User>> GetUsers()
@@ -87,6 +89,49 @@ namespace DEP.Service.Services
         public async Task<User> UpdateUser(User user)
         {
             return await userRepository.UpdateUser(user);
+        }
+
+        public async Task<List<EducationBossViewModel>> GetEducationBossesExcel()
+        {
+            var bosses = await userRepository.GetEducationBossesExcel();
+            var viewModel = new List<EducationBossViewModel>();
+
+            foreach (var boss in bosses)
+            {
+                var persons = new List<Person>();
+                foreach (var leader in boss.EducationLeaders)
+                {
+                    var person = await personRepository.GetPersonsExcel((int)leader.DepartmentId, (int)leader.LocationId);
+
+                    persons.AddRange(person);
+
+                }
+
+                var bossViewModel = new EducationBossViewModel
+                {
+                    UserId = boss.UserId,
+                    Name = boss.Name,
+                    UserRole = boss.UserRole,
+                    EducationLeaders = boss.EducationLeaders.Select(leader => new EducationLeaderViewModel
+                    {
+                        UserId = leader.UserId,
+                        Name = leader.Name,
+                        LocationId = leader.LocationId,
+                        DepartmentId = leader.DepartmentId,
+                        UserRole = leader.UserRole,
+                        EducationBossId = leader.EducationBossId,
+                        Department = leader.Department,
+                        Location = leader.Location,
+                        Educators = persons.ToList(),
+                    }).ToList()
+                };
+
+                viewModel.Add(bossViewModel);
+            }
+
+            return viewModel;
+
+            throw new NotImplementedException();
         }
     }
 }
