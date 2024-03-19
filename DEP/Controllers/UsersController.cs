@@ -23,6 +23,12 @@ namespace DEP.Controllers
             return Ok(await service.GetUsers());
         }
 
+        [HttpGet("EducationBossesExcel")]
+        public async Task<IActionResult> GetEducationBossesExcel()
+        {
+            return Ok(await service.GetEducationBossesExcel());
+        }
+
         [HttpGet("educationleader/{id:int}"), Authorize]
         public async Task<IActionResult> GetUsersByEducationBossId(int id)
         {

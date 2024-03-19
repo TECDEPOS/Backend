@@ -23,6 +23,65 @@ namespace DEP.Repository.Repositories
                 .ToListAsync();
         }
 
+        public async Task<List<User>> GetEducationBossesExcel()
+        {
+            var result = await context.Users
+                .Where(u => u.UserRole == UserRole.Uddannelseschef)
+                .Select(eb => new
+                {
+                    UserId = eb.UserId,
+                    Name = eb.Name,
+                    UserRole = eb.UserRole,
+                    EducationLeaders = eb.EducationLeaders.Select(ed => new
+                    {
+                        UserId = ed.UserId,
+                        Name = ed.Name,
+                        UserRole = ed.UserRole,
+                        DepartmentId = ed.DepartmentId,
+                        LocationId = ed.LocationId,
+                        Department = new Department
+                        {
+                            DepartmentId = ed.Department.DepartmentId,
+                            Name = ed.Department.Name,
+                        },
+                        Location = new Location
+                        {
+                            LocationId = ed.Location.LocationId,
+                            Name = ed.Location.Name,
+                        },
+                    }),
+                })
+                .ToListAsync();
+
+            var bosses = new List<User>();
+            foreach (var user in result)
+            {
+                var leaders = new List<User>();
+                foreach (var leader in user.EducationLeaders)
+                {
+                    leaders.Add(new User()
+                    {
+                        UserId = leader.UserId,
+                        Name = leader.Name,
+                        UserRole = leader.UserRole,
+                        DepartmentId = leader.DepartmentId,
+                        LocationId = leader.LocationId,
+                        Department = leader.Department,
+                        Location = leader.Location,
+                    });
+                }
+
+                bosses.Add(new User()
+                {
+                    UserId = user.UserId,
+                    Name = user.Name,
+                    UserRole = user.UserRole,
+                    EducationLeaders = leaders
+                });
+            }
+            return bosses;
+        }
+
         public async Task<List<User>> GetUsersByEducationBossId(int id)
         {
             return await context.Users.Where(x => x.EducationBossId == id).ToListAsync();

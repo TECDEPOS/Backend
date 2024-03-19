@@ -2,9 +2,10 @@
 {
     public enum Status
     {
-        NotStarted,
-        Started,
-        Failed,
-        Passed
+        Ikke_begyndt,
+        Begyndt,
+        Ej_bestået,
+        Bestået,
+        Ikke_gennemført
     }
 }

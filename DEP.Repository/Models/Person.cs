@@ -8,6 +8,7 @@
         public int? DepartmentId { get; set; }
         public int? LocationId { get; set; }
         public int? EducationalConsultantId { get; set; }
+        public int? EducationalLeaderId { get; set; }
         public int? OperationCoordinatorId { get; set; }
         public DateTime HiringDate { get; set; }
         public DateTime EndDate { get; set; }
@@ -15,6 +16,7 @@
         public bool SvuApplied { get; set; }
 
         public User? EducationalConsultant { get; set; }
+        public User? EducationalLeader { get; set; }
         public User? OperationCoordinator { get; set; }
         public Department? Department { get; set; }
         public Location? Location { get; set; }
