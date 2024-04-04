@@ -23,6 +23,7 @@ namespace DEP.Repository.Repositories
             var person = await context.Persons
                 .Include(x => x.Location)
                 .Include(x => x.Department)
+                .Include(x => x.EducationalLeader)
                 .Include(x => x.EducationalConsultant)
                 .Include(x => x.OperationCoordinator)
                 .Include(x => x.PersonCourses)
@@ -168,13 +169,13 @@ namespace DEP.Repository.Repositories
                 .ToListAsync();
         }
 
-        public async Task<List<Person>> GetPersonsExcel(int departmentId, int locationId)
+        public async Task<List<Person>> GetPersonsExcel(int leaderId)
         {
             return await context.Persons
                 .Include(p => p.Location)
                 .Include(p => p.Department)
                 .Include(p => p.PersonCourses).ThenInclude(pc => pc.Course).ThenInclude(c => c.Module)
-                .Where(p => p.DepartmentId == departmentId && p.LocationId == locationId)
+                .Where(p => p.DepartmentId == leaderId)
                 .ToListAsync();
         }
     }

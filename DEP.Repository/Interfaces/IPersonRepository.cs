@@ -10,7 +10,7 @@ namespace DEP.Repository.Interfaces
         Task<List<Person>> GetPersonsNotInCourse(int courseId);
         Task<List<Person>> GetPersonsByName(string name);
         Task<List<Person>> GetPersonsByDepartmentAndLocation(int departmentId, int locationId);
-        Task<List<Person>> GetPersonsExcel(int departmentId, int locationId);
+        Task<List<Person>> GetPersonsExcel(int leaderId);
         Task<Person> GetPersonById(int personId, int roleId);
         Task<Person> DeletePerson(int id);
         Task<List<Person>> GetPersons();

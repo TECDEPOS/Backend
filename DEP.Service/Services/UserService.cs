@@ -101,7 +101,7 @@ namespace DEP.Service.Services
                 var persons = new List<Person>();
                 foreach (var leader in boss.EducationLeaders)
                 {
-                    var person = await personRepository.GetPersonsExcel((int)leader.DepartmentId, (int)leader.LocationId);
+                    var person = await personRepository.GetPersonsExcel((int)leader.UserId);
 
                     persons.AddRange(person);
 
@@ -116,12 +116,8 @@ namespace DEP.Service.Services
                     {
                         UserId = leader.UserId,
                         Name = leader.Name,
-                        LocationId = leader.LocationId,
-                        DepartmentId = leader.DepartmentId,
                         UserRole = leader.UserRole,
                         EducationBossId = leader.EducationBossId,
-                        Department = leader.Department,
-                        Location = leader.Location,
                         Educators = persons.ToList(),
                     }).ToList()
                 };
@@ -130,8 +126,33 @@ namespace DEP.Service.Services
             }
 
             return viewModel;
+        }
 
-            throw new NotImplementedException();
+        public async Task<List<EducationLeaderViewModel>> GetEducationLeadersExcel()
+        {
+            var leaders = await userRepository.GetEducationLeadersExcel();
+            var viewModel = new List<EducationLeaderViewModel>();
+
+            foreach (var leader in leaders)
+            {
+                var persons = new List<Person>();
+                var person = await personRepository.GetPersonsExcel((int)leader.UserId);
+
+                persons.AddRange(person);
+
+                var leaderViewModel = new EducationLeaderViewModel
+                {
+                    UserId = leader.UserId,
+                    Name = leader.Name,
+                    UserRole = leader.UserRole,
+                    EducationBossId = leader.EducationBossId,
+                    Educators = persons.ToList(),
+                };
+
+                viewModel.Add(leaderViewModel);
+            }
+
+            return viewModel;
         }
     }
 }

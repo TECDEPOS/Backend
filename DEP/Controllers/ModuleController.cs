@@ -18,6 +18,12 @@ namespace DEP.Controllers
             return Ok(await service.GetModules());
         }
 
+        [HttpGet("excel"), Authorize]
+        public async Task<IActionResult> GetModulesExcel()
+        {
+            return Ok(await service.GetModulesExcel());
+        }
+
         [HttpPost, Authorize]
         public async Task<IActionResult> AddModule(Module module)
         {
