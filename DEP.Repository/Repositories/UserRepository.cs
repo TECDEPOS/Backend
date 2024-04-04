@@ -23,6 +23,32 @@ namespace DEP.Repository.Repositories
                 .ToListAsync();
         }
 
+        public async Task<List<User>> GetEducationLeadersExcel()
+        {
+            var result = await context.Users
+                .Where(u => u.UserRole == UserRole.Uddannelsesleder)
+                .Select(el => new
+                {
+                    UserId = el.UserId,
+                    Name = el.Name,
+                    UserRole = el.UserRole,
+                })
+                .ToListAsync();
+
+            var leaders = new List<User>();
+            foreach (var leader in result)
+            {
+                leaders.Add(new User()
+                {
+                    UserId = leader.UserId,
+                    Name = leader.Name,
+                    UserRole = leader.UserRole,
+                });
+            }
+
+            return leaders;
+        }
+
         public async Task<List<User>> GetEducationBossesExcel()
         {
             var result = await context.Users
@@ -37,18 +63,6 @@ namespace DEP.Repository.Repositories
                         UserId = ed.UserId,
                         Name = ed.Name,
                         UserRole = ed.UserRole,
-                        DepartmentId = ed.DepartmentId,
-                        LocationId = ed.LocationId,
-                        Department = new Department
-                        {
-                            DepartmentId = ed.Department.DepartmentId,
-                            Name = ed.Department.Name,
-                        },
-                        Location = new Location
-                        {
-                            LocationId = ed.Location.LocationId,
-                            Name = ed.Location.Name,
-                        },
                     }),
                 })
                 .ToListAsync();
@@ -64,10 +78,6 @@ namespace DEP.Repository.Repositories
                         UserId = leader.UserId,
                         Name = leader.Name,
                         UserRole = leader.UserRole,
-                        DepartmentId = leader.DepartmentId,
-                        LocationId = leader.LocationId,
-                        Department = leader.Department,
-                        Location = leader.Location,
                     });
                 }
 

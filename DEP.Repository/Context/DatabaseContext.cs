@@ -65,6 +65,12 @@ namespace DEP.Repository.Context
                 .IsRequired(false)
                 .OnDelete(DeleteBehavior.ClientSetNull);
 
+                entity.HasOne(x => x.EducationalLeader)
+                .WithMany(x => x.EducationLeaderPersons)
+                .HasForeignKey(x => x.EducationalLeaderId)
+                .IsRequired(false)
+                .OnDelete(DeleteBehavior.SetNull);
+
                 entity.HasOne(x => x.Location)
                 .WithMany(x => x.Persons)
                 .HasForeignKey(x => x.LocationId)

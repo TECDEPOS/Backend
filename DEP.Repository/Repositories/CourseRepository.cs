@@ -142,5 +142,13 @@ namespace DEP.Repository.Repositories
 
             return course;
         }
+
+        
+        public async Task<List<Course>> GetCourseExcel(int moduleId)
+        {
+            return await context.Courses
+                .Include(c => c.PersonCourses).ThenInclude(pc => pc.Person)
+                .Where(c => c.ModuleId == moduleId).ToListAsync();
+        }
     }
 }

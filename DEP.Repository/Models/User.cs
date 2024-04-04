@@ -29,7 +29,7 @@ namespace DEP.Repository.Models
         [JsonIgnore]
         public List<Person> EducationalConsultantPersons { get; set; } = new List<Person>();
         [JsonIgnore]
-        public List<Person> OperationLeaderPersons { get; set; } = new List<Person>();
+        public List<Person> EducationLeaderPersons { get; set; } = new List<Person>();
         [JsonIgnore]
         public List<Person> OperationCoordinatorPersons { get; set; } = new List<Person>();
     }

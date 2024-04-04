@@ -94,6 +94,7 @@ namespace DEP.Service.Services
 
         public async Task<Person> UpdatePerson(Person person)
         {
+            person.EducationalLeaderId = person.EducationalLeader?.UserId;
             person.EducationalConsultantId = person.EducationalConsultant?.UserId;
             person.OperationCoordinatorId = person.OperationCoordinator?.UserId;
             person.LocationId = person.Location?.LocationId;
