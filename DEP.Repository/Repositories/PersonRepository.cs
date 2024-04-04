@@ -176,7 +176,7 @@ namespace DEP.Repository.Repositories
                 .Include(p => p.Location)
                 .Include(p => p.Department)
                 .Include(p => p.PersonCourses).ThenInclude(pc => pc.Course).ThenInclude(c => c.Module)
-                .Where(p => p.DepartmentId == leaderId)
+                .Where(p => p.EducationalLeaderId == leaderId)
                 .ToListAsync();
         }
     }
