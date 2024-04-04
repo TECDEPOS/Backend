@@ -76,6 +76,7 @@ namespace DEP.Repository.Repositories
                 .ThenInclude(x => x.Course)
                 .ThenInclude(y => y.Module)
                 .Include(x => x.EducationalConsultant)
+                .Include(x => x.EducationalLeader)
                 .Include(x => x.OperationCoordinator)
                 .FirstOrDefaultAsync(x => x.PersonId == personId);
 
