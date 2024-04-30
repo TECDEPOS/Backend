@@ -26,22 +26,23 @@ namespace DEP.Service.Services
             return await repo.GetModules();
         }
 
-        public async Task<List<ModuleExcelViewModel>> GetModulesExcel()
+        public async Task<List<ModuleWithCourseViewModel>> GetModulesWithCourse()
         {
             var re = await repo.GetModules();
-            var modules = new List<ModuleExcelViewModel>();
+            var modules = new List<ModuleWithCourseViewModel>();
 
             foreach (var module in re)
             {
-                var courses = await courseRepo.GetCourseExcel(module.ModuleId);
+                var courses = await courseRepo.GetCourseWithPerson(module.ModuleId);
 
-                var excelModules = new ModuleExcelViewModel
+                var excelModules = new ModuleWithCourseViewModel
                 {
                     ModuleId = module.ModuleId,
                     Name = module.Name,
                     Description = module.Description,
                     Courses = courses,
                 };
+                modules.Add(excelModules);
             }
 
             return modules;

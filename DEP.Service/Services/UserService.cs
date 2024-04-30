@@ -98,28 +98,11 @@ namespace DEP.Service.Services
 
             foreach (var boss in bosses)
             {
-                var persons = new List<Person>();
-                foreach (var leader in boss.EducationLeaders)
-                {
-                    var person = await personRepository.GetPersonsExcel((int)leader.UserId);
-
-                    persons.AddRange(person);
-
-                }
-
                 var bossViewModel = new EducationBossViewModel
                 {
                     UserId = boss.UserId,
                     Name = boss.Name,
-                    UserRole = boss.UserRole,
-                    EducationLeaders = boss.EducationLeaders.Select(leader => new EducationLeaderViewModel
-                    {
-                        UserId = leader.UserId,
-                        Name = leader.Name,
-                        UserRole = leader.UserRole,
-                        EducationBossId = leader.EducationBossId,
-                        Educators = persons.ToList(),
-                    }).ToList()
+                    UserRole = boss.UserRole
                 };
 
                 viewModel.Add(bossViewModel);

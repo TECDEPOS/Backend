@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace DEP.Service.ViewModels
 {
-    public class ModuleExcelViewModel
+    public class ModuleWithCourseViewModel
     {
         public int ModuleId { get; set; }
         public string Name { get; set; } = string.Empty;

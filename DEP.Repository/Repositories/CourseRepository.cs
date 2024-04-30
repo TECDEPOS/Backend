@@ -125,7 +125,7 @@ namespace DEP.Repository.Repositories
 
             return newCourses;
         }
-
+        
         public Task<Course> GetCourseById(int id)
         {
             var course = context.Courses.Include(x => x.PersonCourses).ThenInclude(x => x.Person)
@@ -142,12 +142,12 @@ namespace DEP.Repository.Repositories
 
             return course;
         }
-
         
-        public async Task<List<Course>> GetCourseExcel(int moduleId)
+        public async Task<List<Course>> GetCourseWithPerson(int moduleId)
         {
             return await context.Courses
-                .Include(c => c.PersonCourses).ThenInclude(pc => pc.Person)
+                .Include(c => c.PersonCourses).ThenInclude(pc => pc.Person).ThenInclude(p => p.Department)
+                .Include(c => c.PersonCourses).ThenInclude(pc => pc.Person).ThenInclude(p => p.Location)
                 .Where(c => c.ModuleId == moduleId).ToListAsync();
         }
     }

@@ -32,6 +32,7 @@ namespace DEP.Repository.Repositories
                     UserId = el.UserId,
                     Name = el.Name,
                     UserRole = el.UserRole,
+                    EducationBossId = el.EducationBossId,
                 })
                 .ToListAsync();
 
@@ -43,6 +44,7 @@ namespace DEP.Repository.Repositories
                     UserId = leader.UserId,
                     Name = leader.Name,
                     UserRole = leader.UserRole,
+                    EducationBossId = leader.EducationBossId,
                 });
             }
 
@@ -58,35 +60,17 @@ namespace DEP.Repository.Repositories
                     UserId = eb.UserId,
                     Name = eb.Name,
                     UserRole = eb.UserRole,
-                    EducationLeaders = eb.EducationLeaders.Select(ed => new
-                    {
-                        UserId = ed.UserId,
-                        Name = ed.Name,
-                        UserRole = ed.UserRole,
-                    }),
                 })
                 .ToListAsync();
 
             var bosses = new List<User>();
             foreach (var user in result)
             {
-                var leaders = new List<User>();
-                foreach (var leader in user.EducationLeaders)
-                {
-                    leaders.Add(new User()
-                    {
-                        UserId = leader.UserId,
-                        Name = leader.Name,
-                        UserRole = leader.UserRole,
-                    });
-                }
-
                 bosses.Add(new User()
                 {
                     UserId = user.UserId,
                     Name = user.Name,
                     UserRole = user.UserRole,
-                    EducationLeaders = leaders
                 });
             }
             return bosses;

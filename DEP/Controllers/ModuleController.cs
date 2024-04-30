@@ -18,10 +18,10 @@ namespace DEP.Controllers
             return Ok(await service.GetModules());
         }
 
-        [HttpGet("excel"), Authorize]
-        public async Task<IActionResult> GetModulesExcel()
+        [HttpGet("moduleswithcourse"), Authorize]
+        public async Task<IActionResult> GetModuleWithCourse()
         {
-            return Ok(await service.GetModulesExcel());
+            return Ok(await service.GetModulesWithCourse());
         }
 
         [HttpPost, Authorize]
