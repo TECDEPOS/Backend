@@ -16,11 +16,6 @@ namespace DEP.Service.Services
             TimeZoneInfo localTimeZone = TimeZoneInfo.Local;
             person.HiringDate = TimeZoneInfo.ConvertTimeFromUtc(person.HiringDate, localTimeZone);
             person.HiringDate = person.HiringDate.Date;
-
-            person.Department = null;
-            person.Location = null;
-            person.EducationalConsultant = null;
-            person.OperationCoordinator = null;
             person.EndDate = person.HiringDate.AddYears(4);
             return await repo.AddPerson(person);
         }
