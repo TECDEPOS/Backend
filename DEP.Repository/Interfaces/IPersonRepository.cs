@@ -14,5 +14,6 @@ namespace DEP.Repository.Interfaces
         Task<Person> GetPersonById(int personId, int roleId);
         Task<Person> DeletePerson(int id);
         Task<List<Person>> GetPersons();
+        Task<List<Person>> GetPersonsByModuleId(int moduleId);
     }
 }

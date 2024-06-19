@@ -179,5 +179,13 @@ namespace DEP.Repository.Repositories
                 .Where(p => p.EducationalLeaderId == leaderId)
                 .ToListAsync();
         }
+
+        public async Task<List<Person>> GetPersonsByModuleId(int moduleId)
+        {
+            return await context.Persons
+                .Where(p => p.PersonCourses.Any(pc => pc.Course.ModuleId == moduleId))
+                .Distinct()
+                .ToListAsync();
+        }
     }
 }
