@@ -1,6 +1,7 @@
 ﻿using DEP.Repository.Interfaces;
 using DEP.Repository.Models;
 using DEP.Service.Interfaces;
+using DEP.Service.ViewModels.Statistic;
 
 namespace DEP.Service.Services
 {

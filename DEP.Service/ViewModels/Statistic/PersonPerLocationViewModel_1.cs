@@ -1,4 +1,4 @@
-﻿namespace DEP.Service.ViewModels
+﻿namespace DEP.Service.ViewModels.Statistic
 {
     public class PersonPerDepartmentViewModel
     {
