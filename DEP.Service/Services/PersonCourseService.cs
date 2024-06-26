@@ -43,36 +43,5 @@ namespace DEP.Service.Services
         {
             return await repo.UpdatePersonCourse(personCourse);
         }
-
-        //public async Task<List<CourseStatusCountViewModel>> GetCourseStatusCount(int moduleId)
-        //{
-        //    var personCourses = await repo.GetPersonCoursesByModule(moduleId);
-
-        //    // Get all possible values of the Status enum
-        //    var allStatuses = Enum.GetValues(typeof(Status)).Cast<Status>();
-
-        //    // Create a dictionary to hold the count for each status
-        //    var statusCounts = allStatuses.ToDictionary(status => status, status => 0);
-
-        //    // Populate the dictionary with counts from the personCourses
-        //    foreach (var pc in personCourses)
-        //    {
-        //        if (statusCounts.ContainsKey(pc.Status))
-        //        {
-        //            statusCounts[pc.Status]++;
-        //        }
-        //    }
-
-        //    // Create the result list from the statusCounts dictionary
-        //    var result = statusCounts
-        //        .Select(kvp => new CourseStatusCountViewModel
-        //        {
-        //            StatusId = (int)kvp.Key,
-        //            CourseStatus = kvp.Key.ToString(),
-        //            PersonCount = kvp.Value
-        //        }).ToList();
-
-        //    return result;
-        //}
     }
 }
