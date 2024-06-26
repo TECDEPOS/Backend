@@ -75,11 +75,11 @@ namespace DEP.Controllers
             }
         }
 
-        [HttpGet("module/{moduleId:int}")]
-        public async Task<IActionResult> GetPersonsPerDepartmentFromModule(int moduleId)
-        {
-            return Ok(await service.GetPersonPerDepartment(moduleId));
-        }
+        //[HttpGet("module/{moduleId:int}")]
+        //public async Task<IActionResult> GetPersonsPerDepartmentFromModule(int moduleId)
+        //{
+        //    return Ok(await service.GetPersonPerDepartment(moduleId));
+        //}
 
         [HttpPost, Authorize]
         public async Task<IActionResult> AddPerson(Person person)

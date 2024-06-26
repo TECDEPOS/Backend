@@ -3,6 +3,7 @@ using DEP.Repository.Models;
 using DEP.Repository.Repositories;
 using DEP.Service.Interfaces;
 using DEP.Service.ViewModels;
+using DEP.Service.ViewModels.Statistic;
 
 namespace DEP.Service.Services
 {
@@ -102,44 +103,46 @@ namespace DEP.Service.Services
             return await repo.UpdatePerson(person);
         }
 
-        public async Task<List<PersonPerDepartmentViewModel>> GetPersonPerDepartment(int moduleId)
-        {
-            var departments = await departmentRepository.GetDepartments();
-            var persons = await repo.GetPersonsByModuleId(moduleId);
+        //public async Task<List<PersonPerDepartmentViewModel>> GetPersonPerDepartment(int moduleId)
+        //{
+        //    var departments = await departmentRepository.GetDepartments();
+        //    var persons = await repo.GetPersonsByModuleId(moduleId);
 
-            // Group persons by DepartmentId and count them
-            var personCounts = persons
-            .GroupBy(p => p.DepartmentId)
-            .Select(g => new
-            {
-                DepartmentId = g.Key,
-                Count = g.Distinct().Count()
-            })
-            .ToList();
+        //    // Group persons by DepartmentId and count them
+        //    var personCounts = persons
+        //    .GroupBy(p => p.DepartmentId)
+        //    .Select(g => new
+        //    {
+        //        DepartmentId = g.Key,
+        //        Count = g.Distinct().Count()
+        //    })
+        //    .ToList();
 
-            // Create and populate the view model
-            var result = departments
-                .Select(d => new PersonPerDepartmentViewModel
-                {
-                    DepartmentId = d.DepartmentId,
-                    DepartmentName = d.Name,
-                    TeacherCount = personCounts.FirstOrDefault(pc => pc.DepartmentId == d.DepartmentId)?.Count ?? 0
-                })
-                .ToList();
+        //    // Create and populate the view model
+        //    var result = departments
+        //        .Select(d => new PersonPerDepartmentViewModel
+        //        {
+        //            DepartmentId = d.DepartmentId,
+        //            DepartmentName = d.Name,
+        //            TeacherCount = personCounts.FirstOrDefault(pc => pc.DepartmentId == d.DepartmentId)?.Count ?? 0
+        //        })
+        //        .ToList();
 
-            // Handle persons with no department
-            var noDepartmentCount = personCounts.FirstOrDefault(pc => pc.DepartmentId == null)?.Count ?? 0;
-            if (noDepartmentCount > 0)
-            {
-                result.Add(new PersonPerDepartmentViewModel
-                {
-                    DepartmentId = 0,  // Use 0 or any other value to indicate no department
-                    DepartmentName = "Uden afdeling",
-                    TeacherCount = noDepartmentCount
-                });
-            }
+        //    // Handle persons with no department
+        //    var noDepartmentCount = personCounts.FirstOrDefault(pc => pc.DepartmentId == null)?.Count ?? 0;
+        //    if (noDepartmentCount > 0)
+        //    {
+        //        result.Add(new PersonPerDepartmentViewModel
+        //        {
+        //            DepartmentId = 0,  // Use 0 or any other value to indicate no department
+        //            DepartmentName = "Uden afdeling",
+        //            TeacherCount = noDepartmentCount
+        //        });
+        //    }
 
-            return result;
-        }
+        //    return result;
+        //}
+
+
     }
 }

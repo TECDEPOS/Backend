@@ -35,6 +35,12 @@ namespace DEP.Controllers
             return Ok(await service.GetPersonCoursesByCourse(courseId));
         }
 
+        //[HttpGet("module/{moduleId:int}")]
+        //public async Task<IActionResult> GetCourseStatusCount(int moduleId)
+        //{
+        //    return Ok(await service.GetCourseStatusCount(moduleId));
+        //}
+
         [HttpPost, Authorize]
         public async Task<IActionResult> AddPersonCourse(PersonCourse personCourse)
         {

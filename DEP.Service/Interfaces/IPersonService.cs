@@ -1,5 +1,6 @@
 ﻿using DEP.Repository.Models;
 using DEP.Service.ViewModels;
+using DEP.Service.ViewModels.Statistic;
 
 namespace DEP.Service.Interfaces
 {
@@ -15,7 +16,5 @@ namespace DEP.Service.Interfaces
         Task<Person> DeletePerson(int id);
         Task<Person> AddPerson(Person person);
         Task<Person> UpdatePerson(Person person);
-        Task<List<PersonPerDepartmentViewModel>> GetPersonPerDepartment(int moduleId);
-
     }
 }

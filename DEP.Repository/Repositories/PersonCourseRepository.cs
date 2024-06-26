@@ -65,6 +65,13 @@ namespace DEP.Repository.Repositories
                 .ToListAsync();
         }
 
+        public async Task<List<PersonCourse>> GetPersonCoursesByModule(int moduleId)
+        {
+            return await context.PersonCourses
+                .Where(x => x.Course.ModuleId == moduleId)
+                .ToListAsync();
+        }
+
         public async Task<PersonCourse> UpdatePersonCourse(PersonCourse personCourse)
         {
             context.Entry(personCourse).State = EntityState.Modified;
