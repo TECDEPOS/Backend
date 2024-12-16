@@ -65,7 +65,7 @@ namespace DEP.Repository.Repositories
             return person;
         }
 
-        public async Task<Person> GetPersonById(int personId, int roleId)
+        public async Task<Person?> GetPersonById(int personId)
         {
             var person = await context.Persons
                 .Include(x => x.Location)
@@ -80,43 +80,60 @@ namespace DEP.Repository.Repositories
                 .Include(x => x.OperationCoordinator)
                 .FirstOrDefaultAsync(x => x.PersonId == personId);
 
-            if (person == null)
-            {
-                return null;
-            }
-
-            if (roleId == 1)
-            {
-                person.Files = person.Files.Where(x => x.FileTag?.ControllerVisibility == true || x.FileTag == null).ToList();
-            }
-            else if (roleId == 2)
-            {
-                person.Files = person.Files.Where(x => x.FileTag?.EducationLeaderVisibility == true || x.FileTag == null).ToList();
-            }
-            else if (roleId == 3)
-            {
-                person.Files = person.Files.Where(x => x.FileTag?.EducationBossVisibility == true || x.FileTag == null).ToList();
-            }
-            else if (roleId == 4)
-            {
-                person.Files = person.Files.Where(x => x.FileTag?.PKVisibility == true || x.FileTag == null).ToList();
-            }
-            else if (roleId == 5)
-            {
-                person.Files = person.Files.Where(x => x.FileTag?.HRVisibility == true || x.FileTag == null).ToList();
-            }
-            else if (roleId == 6)
-            {
-                person.Files = person.Files.Where(x => x.FileTag?.DKVisibility == true || x.FileTag == null).ToList();
-            }
-            // Administrator
-            else if (roleId == 0)
-            {
-                person.Files.Clear();
-            }
-
             return person;
         }
+        //public async Task<Person> GetPersonById(int personId, int roleId)
+        //{
+        //    var person = await context.Persons
+        //        .Include(x => x.Location)
+        //        .Include(x => x.Department)
+        //        .Include(x => x.Files)
+        //        .ThenInclude(y => y.FileTag)
+        //        .Include(x => x.PersonCourses)
+        //        .ThenInclude(x => x.Course)
+        //        .ThenInclude(y => y.Module)
+        //        .Include(x => x.EducationalConsultant)
+        //        .Include(x => x.EducationalLeader)
+        //        .Include(x => x.OperationCoordinator)
+        //        .FirstOrDefaultAsync(x => x.PersonId == personId);
+
+        //    if (person == null)
+        //    {
+        //        return null;
+        //    }
+
+        //    if (roleId == 1)
+        //    {
+        //        person.Files = person.Files.Where(x => x.FileTag?.ControllerVisibility == true || x.FileTag == null).ToList();
+        //    }
+        //    else if (roleId == 2)
+        //    {
+        //        person.Files = person.Files.Where(x => x.FileTag?.EducationLeaderVisibility == true || x.FileTag == null).ToList();
+        //    }
+        //    else if (roleId == 3)
+        //    {
+        //        person.Files = person.Files.Where(x => x.FileTag?.EducationBossVisibility == true || x.FileTag == null).ToList();
+        //    }
+        //    else if (roleId == 4)
+        //    {
+        //        person.Files = person.Files.Where(x => x.FileTag?.PKVisibility == true || x.FileTag == null).ToList();
+        //    }
+        //    else if (roleId == 5)
+        //    {
+        //        person.Files = person.Files.Where(x => x.FileTag?.HRVisibility == true || x.FileTag == null).ToList();
+        //    }
+        //    else if (roleId == 6)
+        //    {
+        //        person.Files = person.Files.Where(x => x.FileTag?.DKVisibility == true || x.FileTag == null).ToList();
+        //    }
+        //    // Administrator
+        //    else if (roleId == 0)
+        //    {
+        //        person.Files.Clear();
+        //    }
+
+        //    return person;
+        //}
 
         public async Task<List<Person>> GetPersonsByCourseId(int courseId)
         {

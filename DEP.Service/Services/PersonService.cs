@@ -31,15 +31,20 @@ namespace DEP.Service.Services
             return await repo.DeletePerson(id);
         }
 
-        public Task<Person> GetPersonById(int personId, int roleId)
+        public Task<Person> GetPersonById(int personId)
         {
-            return repo.GetPersonById(personId, roleId);
+            return repo.GetPersonById(personId);
         }
+        //public Task<Person> GetPersonById(int personId, int roleId)
+        //{
+        //    return repo.GetPersonById(personId, roleId);
+        //}
 
         public async Task<List<Person>> GetPersons()
         {
             return await repo.GetPersons();
         }
+
 
         public async Task<List<Person>> GetPersonsByCourseId(int courseId)
         {

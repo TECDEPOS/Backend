@@ -11,7 +11,8 @@ namespace DEP.Repository.Interfaces
         Task<List<Person>> GetPersonsByName(string name);
         Task<List<Person>> GetPersonsByDepartmentAndLocation(int departmentId, int locationId);
         Task<List<Person>> GetPersonsExcel(int leaderId);
-        Task<Person> GetPersonById(int personId, int roleId);
+        Task<Person> GetPersonById(int personId);
+        //Task<Person> GetPersonById(int personId, int roleId);
         Task<Person> DeletePerson(int id);
         Task<List<Person>> GetPersons();
         Task<List<Person>> GetPersonsByModuleId(int moduleId);

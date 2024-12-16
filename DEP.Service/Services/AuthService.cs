@@ -45,10 +45,10 @@ namespace DEP.Service.Services
 
             AuthenticatedResponse auth = new AuthenticatedResponse()
             {
-                UserId = user.UserId,
-                Name = user.Name,
-                UserRole = user.UserRole,
-                Username = loginRequest.Username,
+                //UserId = user.UserId,
+                //Name = user.Name,
+                //UserRole = user.UserRole,
+                //Username = loginRequest.Username,
                 AccessToken = newAccessToken,
                 RefreshToken = newRefreshToken,
                 PasswordExpiryDate = user.PasswordExpiryDate,
@@ -132,15 +132,15 @@ namespace DEP.Service.Services
             {
                 new Claim(ClaimTypes.Role, user.UserRole.ToString()),
                 new Claim("userId", user.UserId.ToString()),
-                new Claim("name", user.Name.ToString()),
-                new Claim("role", user.UserRole.ToString()),
+                new Claim(ClaimTypes.Name, user.Name.ToString()),
+                //new Claim(ClaimTypes.NameIdentifier, user.Name.ToString()),
                 new Claim("roleId", ((int)user.UserRole).ToString())
             };
             var secretKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration.GetSection("AppSettings:Token").Value));
             var signInCredentials = new SigningCredentials(secretKey, SecurityAlgorithms.HmacSha256);
             var tokeOptions = new JwtSecurityToken(
                 claims: claims,
-                expires: DateTime.Now.AddMinutes(10),
+                expires: DateTime.Now.AddSeconds(10),
                 signingCredentials: signInCredentials
                 );
 

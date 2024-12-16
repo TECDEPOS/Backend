@@ -65,13 +65,11 @@ namespace DEP.Controllers
                 return BadRequest("Invalid client Request");
             }
 
-            string refreshToken = authResponse.RefreshToken;
-
             var user = await userService.GetUserById(authResponse.UserId);
 
             if (user.RefreshTokenExpiryDate <= DateTime.Now)
             {
-                return BadRequest("Your session has expired, please log in again.");
+                return Unauthorized("Your session has expired, please log in again.");
             }
 
             if (user is null)
@@ -79,12 +77,13 @@ namespace DEP.Controllers
                 return BadRequest("Invalid Request");
             }
 
-            if (user.RefreshToken != refreshToken)
+            if (user.RefreshToken != authResponse.RefreshToken)
             {
-                return BadRequest("User is logged in on another device, please log in again.");
+                return Unauthorized("User is logged in on another device, please log in again.");
             }
 
             var newAccessToken = authService.CreateJwtToken(user);
+
             var newRefreshToken = await authService.CreateRefreshToken();
 
             user.RefreshToken = newRefreshToken;

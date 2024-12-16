@@ -38,23 +38,34 @@ namespace DEP.Controllers
             return Ok(await service.GetPersonsNotInCourse(courseId));
         }
 
-        [HttpGet("{personId:int}/role/{roleId:int}"), Authorize]
-        public async Task<IActionResult> GetPersonById(int personId, int roleId)
+
+        [HttpGet("{personId:int}"), Authorize]
+        public async Task<IActionResult> GetPersonById(int personId)
         {
-            try
+            var person = await service.GetPersonById(personId);
+            if (person is null)
             {
-                var person = await service.GetPersonById(personId, roleId);
-                if (person is null)
-                {
-                    return NotFound($"Unable to find person with ID = {personId}");
-                }
-                return Ok(person);
+                return NotFound($"Unable to find person with ID = {personId}");
             }
-            catch (Exception e)
-            {
-                return BadRequest(e.Message);
-            }
+            return Ok(person);
         }
+        //[HttpGet("{personId:int}/role/{roleId:int}"), Authorize]
+        //public async Task<IActionResult> GetPersonById(int personId, int roleId)
+        //{
+        //    try
+        //    {
+        //        var person = await service.GetPersonById(personId, roleId);
+        //        if (person is null)
+        //        {
+        //            return NotFound($"Unable to find person with ID = {personId}");
+        //        }
+        //        return Ok(person);
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        return BadRequest(e.Message);
+        //    }
+        //}
 
         [HttpGet("departmentId/{departmentId}/locationId{locationId}"), Authorize]
         public async Task<IActionResult> GetPersonsFromLocationAndDepartment(int departmentId, int locationId)
@@ -80,7 +91,7 @@ namespace DEP.Controllers
         {
             try
             {
-                if(person is null)
+                if (person is null)
                 {
                     return BadRequest("You have given me SHEIIIT!");
                 }
@@ -97,9 +108,9 @@ namespace DEP.Controllers
         {
             try
             {
-                if(person is null)
+                if (person is null)
                 {
-                    return BadRequest("What kind of dog piss are this?!");
+                    return BadRequest("Invalid model.");
                 }
                 return Ok(await service.UpdatePerson(person));
             }
