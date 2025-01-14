@@ -7,7 +7,6 @@ namespace DEP.Service.Interfaces
     public interface IFileService
     {
         Task<File> AddFile(IFormFile file, int userId, int tagId);
-        //Task<List<File>> AddMultipleFiles(IFormCollection formData);
         Task<List<File>> AddMultipleFiles(List<IFormFile> files, List<FileTag> fileTags, int personId);
         Task<File> UpdateFile(File file);
         Task<File> DeleteFile(int id);

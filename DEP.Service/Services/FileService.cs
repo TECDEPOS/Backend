@@ -21,11 +21,6 @@ namespace DEP.Service.Services
             return await repo.AddFile(newfile);
         }
 
-        //public async Task<List<File>> AddMultipleFiles(IFormCollection formData)
-        //{
-        //    var fileList = await repo.UploadMultipleFiles(formData);
-        //    return fileList;
-        //}
         public async Task<List<File>> AddMultipleFiles(List<IFormFile> files, List<FileTag> fileTags, int personId)
         {
             var fileList = await repo.UploadMultipleFiles(files, fileTags, personId);
