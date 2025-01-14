@@ -3,6 +3,7 @@ using DEP.Repository.Models;
 using DEP.Service.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.StaticFiles;
 using System.Net;
 using System.Text.Json;
 
@@ -74,8 +75,17 @@ namespace DEP.Controllers
         public async Task<IActionResult> DownloadFile(int id)
         {
             var file = context.Files.Where(f => f.FileId == id).FirstOrDefault();
+            if (file == null)
+            {
+                return NotFound();
+            }
 
             var path = Path.Combine(configuration.GetSection("Appsettings:AppDirectory").Value, file.FilePath);
+
+            if (!System.IO.File.Exists(path))
+            {
+                return NotFound();
+            }
 
             var memory = new MemoryStream();
             using (var stream = new FileStream(path, FileMode.Open))
@@ -83,10 +93,21 @@ namespace DEP.Controllers
                 await stream.CopyToAsync(memory);
             }
             memory.Position = 0;
-            var contentType = "APPLICATION/octet-stream";
+
+            var contentType = GetContentType(path); // Retrieve the content type dynamically
             var fileName = file.FileName;
 
             return File(memory, contentType, fileName);
+        }
+
+        private string GetContentType(string path)
+        {
+            var provider = new FileExtensionContentTypeProvider();
+            if (!provider.TryGetContentType(path, out var contentType))
+            {
+                contentType = "application/octet-stream";
+            }
+            return contentType;
         }
 
         [HttpPost("{userId:int}/{tagId:int}")]
