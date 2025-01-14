@@ -1,4 +1,5 @@
 ﻿using DEP.Repository.Interfaces;
+using DEP.Repository.Models;
 using DEP.Service.Interfaces;
 using DEP.Service.ViewModels;
 using Microsoft.AspNetCore.Http;
@@ -20,9 +21,14 @@ namespace DEP.Service.Services
             return await repo.AddFile(newfile);
         }
 
-        public async Task<List<File>> AddMultipleFiles(IFormCollection formData)
+        //public async Task<List<File>> AddMultipleFiles(IFormCollection formData)
+        //{
+        //    var fileList = await repo.UploadMultipleFiles(formData);
+        //    return fileList;
+        //}
+        public async Task<List<File>> AddMultipleFiles(List<IFormFile> files, List<FileTag> fileTags, int personId)
         {
-            var fileList = await repo.UploadMultipleFiles(formData);
+            var fileList = await repo.UploadMultipleFiles(files, fileTags, personId);
             return fileList;
         }
 
