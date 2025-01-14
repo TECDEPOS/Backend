@@ -1,8 +1,10 @@
 ﻿using DEP.Repository.Context;
+using DEP.Repository.Models;
 using DEP.Service.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
+using System.Text.Json;
 
 namespace DEP.Controllers
 {
@@ -106,21 +108,24 @@ namespace DEP.Controllers
         }
 
         [HttpPost("multiple")]
-        public async Task<IActionResult> AddMultipleFiles()
+        public async Task<IActionResult> AddMultipleFiles([FromForm] List<IFormFile> files, [FromForm] string fileTags, [FromForm] int personId)
         {
-            var formData = Request.Form;
-
             try
             {
-                if (formData == null)
+                if (files == null || !files.Any())
                 {
-                    return NotFound("Form is null");
+                    return BadRequest("No files uploaded.");
                 }
-                return Created("File", await service.AddMultipleFiles(formData));
+
+                var options = new JsonSerializerOptions() { PropertyNameCaseInsensitive = true };
+                var fileTagList = JsonSerializer.Deserialize<List<FileTag>>(fileTags!, options);
+
+                var uploadedFiles = await service.AddMultipleFiles(files, fileTagList, personId);
+
+                return Ok(uploadedFiles);
             }
             catch (Exception e)
             {
-
                 return BadRequest(e.Message);
             }
         }

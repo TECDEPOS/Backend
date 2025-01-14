@@ -47,16 +47,10 @@ namespace DEP.Repository.Repositories
             return file;
         }
 
-        public async Task<List<File>> UploadMultipleFiles(IFormCollection formData)
+        public async Task<List<File>> UploadMultipleFiles(List<IFormFile> files, List<FileTag> fileTags, int personId)
         {
             // Create list for returning once files are uploaded
             List<File> filesToReturn = new List<File>();
-            var files = formData.Files;
-
-            // Get the FileTags as stringified and Deserialize them into a list of FileTag objects.
-            var fileTags = formData["fileTags"];
-            var options = new JsonSerializerOptions() { PropertyNameCaseInsensitive = true };
-            var fileTagList = JsonSerializer.Deserialize<List<FileTag>>(fileTags!, options);
 
 
             // path and time variables declared outside of for-loop, values will be changed in every iteration of the loop.
@@ -65,12 +59,21 @@ namespace DEP.Repository.Repositories
             var path1 = string.Empty;
             var fileName = string.Empty;
 
-            for (int i = 0; i < formData.Files.Count; i++)
+            // Resolve the AppDirectory from environment variables
+            var appDirectory = Environment.ExpandEnvironmentVariables(configuration["AppSettings:AppDirectory"]);
+
+            // Ensure the directory exists
+            if (!Directory.Exists(appDirectory))
+            {
+                Directory.CreateDirectory(appDirectory);
+            }
+
+            for (int i = 0; i < files.Count; i++)
             {
                 // Set time format and path for file
                 time = Regex.Replace(DateTime.Now.ToString(), "[/.:-]", " ");
                 fileName = i + " " + time + files[i].FileName;
-                path = Path.Combine(configuration.GetSection("Appsettings:AppDirectory").Value, fileName);
+                path = Path.Combine(appDirectory, fileName);
 
                 // Create File object, set values and add it to the list of files to return
                 File tempFile = new File();
@@ -78,13 +81,13 @@ namespace DEP.Repository.Repositories
                 tempFile.FilePath = path;
                 tempFile.FileFormat = Path.GetExtension(files[i].FileName);
                 tempFile.ContentType = files[i].ContentType;
-                tempFile.PersonId = Convert.ToInt32(formData["personId"][0]);
+                tempFile.PersonId = personId;
 
 
                 // FileTagId explodes if it's null due to the property not being nullable in the DB and on the model
-                if (fileTagList![i] is not null)
+                if (fileTags![i] is not null)
                 {
-                    tempFile.FileTagId = fileTagList![i].FileTagId;
+                    tempFile.FileTagId = fileTags![i].FileTagId;
                 }
                 tempFile.UploadDate = DateTime.Now;
 
