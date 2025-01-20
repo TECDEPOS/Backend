@@ -92,17 +92,6 @@ namespace DEP.Repository.Repositories
             return await context.Users.FirstOrDefaultAsync(x => x.UserId == id);
         }
 
-        //public async Task<User> GetUserDashboardById(int id)
-        //{
-        //    var user = await context.Users
-        //        .Include(u => u.EducationBoss)
-        //        .Include(x => x.EducationLeaderPersons)
-        //        .Include(x => x.EducationalConsultantPersons)
-        //        .Include(x => x.OperationCoordinatorPersons)
-        //        .FirstOrDefaultAsync(x => x.UserId == id);
-        //    return user;
-        //}
-
         public async Task<UserDashboardViewModel?> GetUserDashboardById(int id)
         {
             var user = await context.Users
