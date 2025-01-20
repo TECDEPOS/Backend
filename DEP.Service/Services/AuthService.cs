@@ -99,34 +99,6 @@ namespace DEP.Service.Services
             }
         }
 
-        //public async Task<bool> ChangePassword(ChangePasswordViewModel viewModel)
-        //{
-        //    var user = await userRepo.GetUserById(viewModel.UserId);
-
-        //    if (user is null)
-        //    {
-        //        return false;
-        //    }
-
-        //    //Verify that the old password is correct
-        //    if (VerifyPasswordHash(viewModel.OldPassword, user.PasswordHash, user.PasswordSalt))
-        //    {
-        //        //Create new passwordHash and passwordSalt for the new password
-        //        CreatePasswordHash(viewModel.NewPassword, out byte[] passwordHash, out byte[] passwordSalt);
-
-        //        user.PasswordHash = passwordHash;
-        //        user.PasswordSalt = passwordSalt;
-        //        user.PasswordExpiryDate = DateTime.Now.AddMonths(3);
-        //    }
-        //    else
-        //    {
-        //        return false;
-        //    }
-
-        //    await userRepo.UpdateUser(user);
-        //    return true;
-        //}
-
         public async Task<bool> ResetPassword(int userId)
         {
             var user = await userRepo.GetUserById(userId);

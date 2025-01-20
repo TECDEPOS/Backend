@@ -7,7 +7,6 @@ namespace DEP.Service.Interfaces
     public interface IAuthService
     {
         Task<AuthenticatedResponse> Login(LoginViewModel loginRequest);
-        //Task<bool> ChangePassword(ChangePasswordViewModel viewModel);
         Task<ChangePasswordResult> ChangePassword(ChangePasswordViewModel viewModel);
         Task<bool> ResetPassword(int userId);
         void CreatePasswordHash(string password, out byte[] passwordHash, out byte[] passwordSalt);
