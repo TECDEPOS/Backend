@@ -1,5 +1,6 @@
 ﻿using DEP.Repository.Interfaces;
 using DEP.Repository.Models;
+using DEP.Repository.ViewModels;
 using DEP.Service.Interfaces;
 using DEP.Service.ViewModels;
 using Microsoft.Extensions.Configuration;
@@ -39,6 +40,11 @@ namespace DEP.Service.Services
         public async Task<User> GetUserById(int id)
         {
             return await userRepository.GetUserById(id);
+        }
+
+        public async Task<UserDashboardViewModel?> GetUserDashboardById(int id)
+        {
+            return await userRepository.GetUserDashboardById(id);
         }
 
         public async Task<List<User>> GetUserByName(string name)

@@ -1,4 +1,5 @@
 ﻿using DEP.Repository.Models;
+using DEP.Repository.ViewModels;
 using DEP.Service.Interfaces;
 using DEP.Service.ViewModels;
 using Microsoft.AspNetCore.Authorization;
@@ -54,10 +55,41 @@ namespace DEP.Controllers
 
             if (user == null)
             {
-                return NotFound($"Unable to find user with ID: {id}");
+                return NotFound(new ApiResponse<object>
+                {
+                    Success = false,
+                    Message = "Bruger kunne ikke findes."
+                });
             }
 
-            return Ok(user);
+            return Ok(new ApiResponse<User>
+            {
+                Success = true,
+                Message = "Bruger fundet",
+                Data = user
+            });
+        }
+
+        [HttpGet("dashboard/{id:int}"), Authorize]
+        public async Task<IActionResult> GetUserDashboardById(int id)
+        {
+            var userDashboard = await service.GetUserDashboardById(id);
+
+            if (userDashboard == null)
+            {
+                return NotFound(new ApiResponse<object>
+                {
+                    Success = false,
+                    Message = "Bruger kunne ikke findes."
+                });
+            }
+
+            return Ok(new ApiResponse<UserDashboardViewModel>
+            {
+                Success = true,
+                Message = "Bruger fundet",
+                Data = userDashboard
+            });
         }
 
         [HttpGet("{name}"), Authorize]

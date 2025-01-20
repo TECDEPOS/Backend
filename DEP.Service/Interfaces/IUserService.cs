@@ -1,4 +1,5 @@
 ﻿using DEP.Repository.Models;
+using DEP.Repository.ViewModels;
 using DEP.Service.ViewModels;
 
 namespace DEP.Service.Interfaces
@@ -11,6 +12,7 @@ namespace DEP.Service.Interfaces
         Task<List<EducationLeaderViewModel>> GetEducationLeadersExcel();
         Task<List<User>> GetUsersByUserRole(UserRole userRole);
         Task<User> GetUserById(int id);
+        Task<UserDashboardViewModel?> GetUserDashboardById(int id);
         Task<List<User>> GetUserByName(string name);
         Task<User> GetUserByUsername(string username);
         Task<AddUserViewModel> AddUser(AddUserViewModel addRequest);

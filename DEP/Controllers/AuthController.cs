@@ -1,7 +1,9 @@
-﻿using DEP.Service.Interfaces;
+﻿using DEP.Repository.Models;
+using DEP.Service.Interfaces;
 using DEP.Service.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using static DEP.Service.Services.AuthService;
 
 namespace DEP.Controllers
 {
@@ -34,15 +36,42 @@ namespace DEP.Controllers
         [HttpPut("changepassword"), Authorize]
         public async Task<IActionResult> ChangePassword(ChangePasswordViewModel viewModel)
         {
-            var success = await authService.ChangePassword(viewModel);
+            var result = await authService.ChangePassword(viewModel);
 
-            if (!success)
+            if (result == ChangePasswordResult.UserNotFound)
             {
-                return BadRequest("Change Password failed.");
+                return NotFound(new ApiResponse<object>
+                {
+                    Success = false,
+                    Message = "Bruger kunne ikke findes."
+                });
             }
 
-            return Ok(success);
+            if (result == ChangePasswordResult.WrongOldPassword)
+            {
+                return BadRequest(new ApiResponse<object>
+                {
+                    Success = false,
+                    Message = "Forkert gammel adgangskode."
+                });
+            }
+
+            if (result == ChangePasswordResult.Failure)
+            {
+                return BadRequest(new ApiResponse<object>
+                {
+                    Success = false,
+                    Message = "Der er sket en uforventet fejl."
+                });
+            }
+
+            return Ok(new ApiResponse<object>
+            {
+                Success = true,
+                Message = "Adgangskoden er blevet skiftet"
+            });
         }
+
 
         [HttpPut("resetpassword"), Authorize]
         public async Task<IActionResult> ResetPassword(ChangePasswordViewModel viewModel)
