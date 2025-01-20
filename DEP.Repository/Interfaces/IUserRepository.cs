@@ -1,4 +1,5 @@
 ﻿using DEP.Repository.Models;
+using DEP.Repository.ViewModels;
 
 namespace DEP.Repository.Interfaces
 {
@@ -10,6 +11,7 @@ namespace DEP.Repository.Interfaces
         Task<List<User>> GetUsersByEducationBossId(int id);
         Task<List<User>> GetUsersByUserRole(UserRole userRole);
         Task<User> GetUserById(int id);
+        Task<UserDashboardViewModel?> GetUserDashboardById(int id);
         Task<User> GetUserByUsername(string username);
         Task<List<User>> GetUserByName(string name);
         Task<User> GetUserByRefreshToken(string refreshToken);

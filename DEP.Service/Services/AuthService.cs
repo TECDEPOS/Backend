@@ -57,33 +57,75 @@ namespace DEP.Service.Services
             return auth;
         }
 
-        public async Task<bool> ChangePassword(ChangePasswordViewModel viewModel)
+        public enum ChangePasswordResult
+        {
+            Success,
+            UserNotFound,
+            WrongOldPassword,
+            Failure
+        }
+
+        public async Task<ChangePasswordResult> ChangePassword(ChangePasswordViewModel viewModel)
         {
             var user = await userRepo.GetUserById(viewModel.UserId);
 
             if (user is null)
             {
-                return false;
+                return ChangePasswordResult.UserNotFound;
             }
 
-            //Verify that the old password is correct
-            if (VerifyPasswordHash(viewModel.OldPassword, user.PasswordHash, user.PasswordSalt))
+            // Verify that the old password is correct
+            if (!VerifyPasswordHash(viewModel.OldPassword, user.PasswordHash, user.PasswordSalt))
             {
-                //Create new passwordHash and passwordSalt for the new password
+                return ChangePasswordResult.WrongOldPassword;
+            }
+
+            try
+            {
+                // Create new passwordHash and passwordSalt for the new password
                 CreatePasswordHash(viewModel.NewPassword, out byte[] passwordHash, out byte[] passwordSalt);
 
                 user.PasswordHash = passwordHash;
                 user.PasswordSalt = passwordSalt;
                 user.PasswordExpiryDate = DateTime.Now.AddMonths(3);
-            }
-            else
-            {
-                return false;
-            }
 
-            await userRepo.UpdateUser(user);
-            return true;
+                await userRepo.UpdateUser(user);
+
+                return ChangePasswordResult.Success;
+            }
+            catch
+            {
+                return ChangePasswordResult.Failure;
+            }
         }
+
+        //public async Task<bool> ChangePassword(ChangePasswordViewModel viewModel)
+        //{
+        //    var user = await userRepo.GetUserById(viewModel.UserId);
+
+        //    if (user is null)
+        //    {
+        //        return false;
+        //    }
+
+        //    //Verify that the old password is correct
+        //    if (VerifyPasswordHash(viewModel.OldPassword, user.PasswordHash, user.PasswordSalt))
+        //    {
+        //        //Create new passwordHash and passwordSalt for the new password
+        //        CreatePasswordHash(viewModel.NewPassword, out byte[] passwordHash, out byte[] passwordSalt);
+
+        //        user.PasswordHash = passwordHash;
+        //        user.PasswordSalt = passwordSalt;
+        //        user.PasswordExpiryDate = DateTime.Now.AddMonths(3);
+        //    }
+        //    else
+        //    {
+        //        return false;
+        //    }
+
+        //    await userRepo.UpdateUser(user);
+        //    return true;
+        //}
 
         public async Task<bool> ResetPassword(int userId)
         {
