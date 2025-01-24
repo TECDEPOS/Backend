@@ -13,11 +13,12 @@ namespace DEP.Repository.Repositories
                 this.context = context;
         }
 
-        public async Task<PersonCourse> AddPersonCourse(PersonCourse personCourse)
+        public async Task<bool> AddPersonCourse(PersonCourse personCourse)
         {
             context.PersonCourses.Add(personCourse);
-            await context.SaveChangesAsync();
-            return personCourse;
+            var result = await context.SaveChangesAsync();
+
+            return result > 0;
         }
 
         public async Task<bool> DeletePersonCourse(int personId, int courseId)
