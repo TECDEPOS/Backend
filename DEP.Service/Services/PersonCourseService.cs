@@ -14,7 +14,7 @@ namespace DEP.Service.Services
             this.repo = repo;
         }
 
-        public async Task<PersonCourse> AddPersonCourse(PersonCourse personCourse)
+        public async Task<bool> AddPersonCourse(PersonCourse personCourse)
         {
             return await repo.AddPersonCourse(personCourse);
         }
