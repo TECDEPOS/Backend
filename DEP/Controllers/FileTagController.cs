@@ -64,12 +64,7 @@ namespace DEP.Controllers
         {
             try
             {
-                if (fileTag == null)
-                {
-                    return NotFound("FileTag not Given? Be better than that!");
-                }
-                
-                return Created("FileTag", await service.AddFileTag(fileTag));
+                return Ok(await service.AddFileTag(fileTag));
             }
             catch (Exception e)
             {

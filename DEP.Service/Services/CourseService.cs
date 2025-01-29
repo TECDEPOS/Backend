@@ -26,7 +26,7 @@ namespace DEP.Service.Services
             return await repo.GetCoursesByModuleIdAndUserId(moduleId, userId);
         }
 
-        public async Task<Course> AddCourse(Course course)
+        public async Task<bool> AddCourse(Course course)
         {
             TimeZoneInfo localTimeZone = TimeZoneInfo.Local;
             course.StartDate = TimeZoneInfo.ConvertTimeFromUtc(course.StartDate, localTimeZone);

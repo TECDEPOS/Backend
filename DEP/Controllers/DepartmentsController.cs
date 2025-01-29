@@ -26,11 +26,6 @@ namespace DEP.Controllers
         {
             var dep = await depService.AddDepartment(department);
 
-            if (dep is null)
-            {
-                return BadRequest($"An error has occurred, unable to add new department.");
-            }
-
             return Ok(dep);
         }
 

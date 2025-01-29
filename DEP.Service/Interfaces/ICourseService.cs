@@ -8,7 +8,7 @@ namespace DEP.Service.Interfaces
         Task<List<Course>> GetCoursesByModuleId(int moduleId);
         Task<List<Course>> GetCoursesByModuleIdAndUserId(int moduleId, int userId);
         Task<Course> GetCourseById(int id);
-        Task<Course> AddCourse(Course personModule);
+        Task<bool> AddCourse(Course personModule);
         Task<Course> UpdateCourse(Course personModule);
         Task<Course> DeleteCourse(int id);
     }

@@ -9,7 +9,7 @@ namespace DEP.Service.Services
         private readonly IBookRepository repo;
         public BookService(IBookRepository repo) {  this.repo = repo; }
 
-        public async Task<Book> AddBook(Book book)
+        public async Task<bool> AddBook(Book book)
         {
             return await repo.AddBook(book);
         }

@@ -7,6 +7,6 @@
         public string Name { get; set; }
         public int Amount { get; set; }
 
-        public Module Module { get; set; }
+        public Module? Module { get; set; }
     }
 }

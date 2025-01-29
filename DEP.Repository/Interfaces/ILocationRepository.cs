@@ -8,7 +8,7 @@ namespace DEP.Repository.Interfaces
         Task<Location> GetLocationById(int id);
         Task<Location> GetLocationByName(string name);
         Task<Location> DeleteLocation(int id);
-        Task<Location> AddLocation(Location location);
+        Task<bool> AddLocation(Location location);
         Task<Location> UpdateLocation(Location location);
     }
 }
