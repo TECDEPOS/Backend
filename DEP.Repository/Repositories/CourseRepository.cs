@@ -10,12 +10,12 @@ namespace DEP.Repository.Repositories
         private readonly DatabaseContext context;
         public CourseRepository(DatabaseContext context) { this.context = context; }
 
-        public async Task<Course> AddCourse(Course course)
+        public async Task<bool> AddCourse(Course course)
         {
             context.Courses.Add(course);
-            await context.SaveChangesAsync();
+            var result = await context.SaveChangesAsync();
 
-            return course;
+            return result > 0;
         }
 
         public async Task<Course> DeleteCourse(int id)

@@ -11,7 +11,7 @@ namespace DEP.Service.Services
         private readonly ICourseRepository courseRepo;
         public ModuleService(IModuleRepository repo, ICourseRepository courseRepo) {  this.repo = repo; this.courseRepo = courseRepo; }
 
-        public async Task<Module> AddModule(Module module)
+        public async Task<bool> AddModule(Module module)
         {
             return await repo.AddModule(module);
         }

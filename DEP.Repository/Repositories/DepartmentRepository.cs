@@ -19,11 +19,11 @@ namespace DEP.Repository.Repositories
             return await context.Departments.ToListAsync();
         }
 
-        public async Task<Department> AddDepartment(Department department)
+        public async Task<bool> AddDepartment(Department department)
         {
             context.Departments.Add(department);
-            await context.SaveChangesAsync();
-            return department;
+            var result = await context.SaveChangesAsync();
+            return result > 0;
         }
 
         public async Task<Department> UpdateDepartment(Department department)

@@ -9,7 +9,7 @@ namespace DEP.Service.Services
         private readonly ILocationRepository repo;
         public LocationService(ILocationRepository repo) { this.repo = repo; }
 
-        public async Task<Location> AddLocation(Location location)
+        public async Task<bool> AddLocation(Location location)
         {
             return await repo.AddLocation(location);
         }

@@ -17,7 +17,7 @@ namespace DEP.Service.Services
             this.departmentRepository = departmentRepo;
         }
 
-        public async Task<Person> AddPerson(Person person)
+        public async Task<Person?> AddPerson(Person person)
         {
             TimeZoneInfo localTimeZone = TimeZoneInfo.Local;
             person.HiringDate = TimeZoneInfo.ConvertTimeFromUtc(person.HiringDate, localTimeZone);

@@ -154,7 +154,7 @@ namespace DEP.Service.Services
             var signInCredentials = new SigningCredentials(secretKey, SecurityAlgorithms.HmacSha256);
             var tokeOptions = new JwtSecurityToken(
                 claims: claims,
-                expires: DateTime.Now.AddMinutes(1),
+                expires: DateTime.Now.AddMinutes(10),
                 signingCredentials: signInCredentials
                 );
 

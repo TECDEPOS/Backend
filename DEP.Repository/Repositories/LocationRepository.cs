@@ -10,12 +10,12 @@ namespace DEP.Repository.Repositories
         private readonly DatabaseContext context;
         public LocationRepository(DatabaseContext context) { this.context = context; }
 
-        public async Task<Location> AddLocation(Location location)
+        public async Task<bool> AddLocation(Location location)
         {
             context.Locations.Add(location);
-            await context.SaveChangesAsync();
+            var result = await context.SaveChangesAsync();
 
-            return location;
+            return result > 0;
         }
 
         public async Task<Location> DeleteLocation(int id)

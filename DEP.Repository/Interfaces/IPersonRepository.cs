@@ -4,7 +4,7 @@ namespace DEP.Repository.Interfaces
 {
     public interface IPersonRepository
     {
-        Task<Person> AddPerson(Person person);
+        Task<Person?> AddPerson(Person person);
         Task<Person> UpdatePerson(Person person);
         Task<List<Person>> GetPersonsByCourseId(int courseId);
         Task<List<Person>> GetPersonsNotInCourse(int courseId);

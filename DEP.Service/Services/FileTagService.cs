@@ -15,7 +15,7 @@ namespace DEP.Service.Services
 
         public FileTagService(IFileTagRepository repo) { this.repo = repo; }
 
-        public Task<FileTag>? AddFileTag(FileTag filetag)
+        public Task<bool>? AddFileTag(FileTag filetag)
         {
             return repo.AddFileTag(filetag);
         }

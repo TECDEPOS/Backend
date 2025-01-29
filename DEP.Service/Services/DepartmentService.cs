@@ -18,15 +18,9 @@ namespace DEP.Service.Services
             return await depRepository.GetDepartments();
         }
 
-        public async Task<Department> AddDepartment(Department department)
+        public async Task<bool> AddDepartment(Department department)
         {
-            var dep = await depRepository.AddDepartment(department);
-
-            if (dep is null)
-            {
-                return null;
-            }
-            return dep;
+            return await depRepository.AddDepartment(department);
         }
 
         public async Task<Department> UpdateDepartment(Department department)
