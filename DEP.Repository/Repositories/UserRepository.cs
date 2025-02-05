@@ -84,7 +84,14 @@ namespace DEP.Repository.Repositories
 
         public async Task<List<User>> GetUsersByUserRole(UserRole userRole)
         {
-            return await context.Users.Where(x => x.UserRole == userRole).ToListAsync();
+            if (userRole == UserRole.Uddannelsesleder)
+            {
+                return await context.Users.Where(x => x.UserRole == userRole).Include(x => x.Department).Include(x => x.Location).ToListAsync();
+            }
+            else
+            {
+                return await context.Users.Where(x => x.UserRole == userRole).ToListAsync();
+            }
         }
 
         public async Task<User> GetUserById(int id)
