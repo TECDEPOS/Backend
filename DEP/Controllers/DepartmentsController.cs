@@ -40,10 +40,6 @@ namespace DEP.Controllers
         {
             var success = await depService.DeleteDepartment(id);
 
-            if (!success)
-            {
-                return BadRequest($"Something went wrong, unable to delete department.");
-            }
             return Ok(success);
         }
     }

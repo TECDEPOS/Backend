@@ -16,7 +16,7 @@ namespace DEP.Repository.Interfaces
         Task<List<User>> GetUserByName(string name);
         Task<User> GetUserByRefreshToken(string refreshToken);
         Task<bool> AddUser(User addRequest);
-        Task<User> UpdateUser(User user);
+        Task<bool> UpdateUser(User user);
         Task<bool> DeleteUser(int id);
     }
 }
