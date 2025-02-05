@@ -92,7 +92,7 @@ namespace DEP.Service.Services
             return await userRepository.DeleteUser(id);
         }
 
-        public async Task<User> UpdateUser(User user)
+        public async Task<bool> UpdateUser(User user)
         {
             return await userRepository.UpdateUser(user);
         }

@@ -73,10 +73,10 @@ namespace DEP.Controllers
         }
 
 
-        [HttpPut("resetpassword"), Authorize]
-        public async Task<IActionResult> ResetPassword(ChangePasswordViewModel viewModel)
+        [HttpPut("resetpassword/{userId:int}"), Authorize]
+        public async Task<IActionResult> ResetPassword(int userId)
         {
-            var success = await authService.ResetPassword(viewModel.UserId);
+            var success = await authService.ResetPassword(userId);
 
             if (!success)
             {

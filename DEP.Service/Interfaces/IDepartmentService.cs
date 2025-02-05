@@ -6,7 +6,7 @@ namespace DEP.Service.Interfaces
     {
         Task<List<Department>> GetDepartments();
         Task<bool> AddDepartment(Department department);
-        Task<Department> UpdateDepartment(Department department);
+        Task<bool> UpdateDepartment(Department department);
         Task<bool> DeleteDepartment(int id);
     }
 }

@@ -33,8 +33,16 @@ namespace DEP.Controllers
         [HttpDelete("{id:int}"), Authorize]
         public async Task<IActionResult> DeleteLocation(int id)
         {
-            return Ok(await service.DeleteLocation(id));
+            var success = await service.DeleteLocation(id);
+
+            if (!success)
+            {
+                return NotFound("Location not found or could not be deleted.");
+            }
+
+            return Ok(true);
         }
+
 
         [HttpPut, Authorize]
         public async Task<IActionResult> UpdateLocation(Location location)

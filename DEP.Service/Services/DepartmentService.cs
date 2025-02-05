@@ -23,7 +23,7 @@ namespace DEP.Service.Services
             return await depRepository.AddDepartment(department);
         }
 
-        public async Task<Department> UpdateDepartment(Department department)
+        public async Task<bool> UpdateDepartment(Department department)
         {
             return await depRepository.UpdateDepartment(department);
         }

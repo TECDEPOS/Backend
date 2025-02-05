@@ -21,7 +21,9 @@ namespace DEP.Controllers
         [HttpGet, Authorize]
         public async Task<IActionResult> GetUsers()
         {
-            return Ok(await service.GetUsers());
+            var tt = await service.GetUsers();
+            return Ok(tt);
+            //return Ok(await service.GetUsers());
         }
 
         [HttpGet("educationBossesExcel")]
@@ -147,11 +149,11 @@ namespace DEP.Controllers
                 return BadRequest($"Something went wrong, user with ID={id} was not deleted.");
             }
 
-            return NoContent();
+            return Ok(userDeleted);
         }
 
         [HttpPut, Authorize]
-        public async Task<IActionResult> EditUser(User user)
+        public async Task<IActionResult> UpdateUser(User user)
         {
             return Ok(await service.UpdateUser(user));
         }

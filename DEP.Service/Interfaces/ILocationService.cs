@@ -7,8 +7,8 @@ namespace DEP.Service.Interfaces
         Task<List<Location>> GetLocations();
         Task<Location> GetLocationById(int id);
         Task<Location> GetLocationByName(string name);
-        Task<Location> DeleteLocation(int id);
+        Task<bool> DeleteLocation(int id);
         Task<bool> AddLocation(Location location);
-        Task<Location> UpdateLocation(Location location);
+        Task<bool> UpdateLocation(Location location);
     }
 }

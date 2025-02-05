@@ -18,18 +18,19 @@ namespace DEP.Repository.Repositories
             return result > 0;
         }
 
-        public async Task<Location> DeleteLocation(int id)
+        public async Task<bool> DeleteLocation(int id)
         {
-            var location = await context.Locations.FirstOrDefaultAsync(l => l.LocationId == id);
+            var location = await context.Locations.FindAsync(id);
 
-            if (location != null)
+            if (location == null)
             {
-                context.Locations.Remove(location);
-                await context.SaveChangesAsync();
+                return false;
             }
 
-            return location;
+            context.Locations.Remove(location);
+            return await context.SaveChangesAsync() > 0;
         }
+
 
         public async Task<List<Location>> GetLocations()
         {
@@ -52,12 +53,12 @@ namespace DEP.Repository.Repositories
             return location;
         }
 
-        public async Task<Location> UpdateLocation(Location location)
+        public async Task<bool> UpdateLocation(Location location)
         {
             context.Entry(location).State = EntityState.Modified;
-            await context.SaveChangesAsync();
+            var result = await context.SaveChangesAsync();
 
-            return location;
+            return result > 0;
         }
     }
 }
