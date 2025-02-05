@@ -10,7 +10,7 @@ namespace DEP.Repository.Repositories
         private readonly DatabaseContext context;
         public BookRepository(DatabaseContext context) { this.context = context; }
 
-        public async Task<Book> AddBook(Book book)
+        public async Task<bool> AddBook(Book book)
         {
             // Check if the Module object is currently being tracked in 'Local', This doesn't query the DB.
             var existingModule = context.Modules.Local.FirstOrDefault(x => x.ModuleId == book.ModuleId);
@@ -24,9 +24,9 @@ namespace DEP.Repository.Repositories
 
             book.Module = existingModule;
             context.Books.Add(book);
-            await context.SaveChangesAsync();
+            var result = await context.SaveChangesAsync();
 
-            return book;
+            return result > 0;
         }
 
         public async Task<Book> DeleteBook(int id)

@@ -29,11 +29,11 @@ namespace DEP.Repository.Repositories
             return filetag;
         }
 
-        public async Task<FileTag> AddFileTag(FileTag fileTag)
+        public async Task<bool> AddFileTag(FileTag fileTag)
         {
             context.FileTags.Add(fileTag);
-            await context.SaveChangesAsync();
-            return fileTag;
+            var result = await context.SaveChangesAsync();
+            return result > 0;
         }
 
         public async Task<FileTag> UpdateFileTag(FileTag fileTag)

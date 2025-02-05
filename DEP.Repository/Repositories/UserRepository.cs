@@ -205,11 +205,11 @@ namespace DEP.Repository.Repositories
             return true;
         }
 
-        public async Task<User> UpdateUser(User user)
+        public async Task<bool> UpdateUser(User user)
         {
             context.Entry(user).State = EntityState.Modified;
-            await context.SaveChangesAsync();
-            return user;
+            var result = await context.SaveChangesAsync();
+            return result > 0;
         }
 
         public async Task<bool> DeleteUser(int id)

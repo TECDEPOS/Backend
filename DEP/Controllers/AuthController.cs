@@ -73,10 +73,10 @@ namespace DEP.Controllers
         }
 
 
-        [HttpPut("resetpassword"), Authorize]
-        public async Task<IActionResult> ResetPassword(ChangePasswordViewModel viewModel)
+        [HttpPut("resetpassword/{userId:int}"), Authorize]
+        public async Task<IActionResult> ResetPassword(int userId)
         {
-            var success = await authService.ResetPassword(viewModel.UserId);
+            var success = await authService.ResetPassword(userId);
 
             if (!success)
             {
@@ -91,24 +91,24 @@ namespace DEP.Controllers
         {
             if (authResponse is null)
             {
-                return BadRequest("Invalid client Request");
+                return BadRequest("Der skete en uforventet fejl, log venligst ind igen.");
             }
 
             var user = await userService.GetUserById(authResponse.UserId);
 
             if (user.RefreshTokenExpiryDate <= DateTime.Now)
             {
-                return Unauthorized("Your session has expired, please log in again.");
+                return Unauthorized("Din session er udløbet, log venligst ind igen.");
             }
 
             if (user is null)
             {
-                return BadRequest("Invalid Request");
+                return BadRequest("Kunne ikke loade bruger");
             }
 
             if (user.RefreshToken != authResponse.RefreshToken)
             {
-                return Unauthorized("User is logged in on another device, please log in again.");
+                return Unauthorized("Brugeren er logget ind et andet sted, log venligst ind igen.");
             }
 
             var newAccessToken = authService.CreateJwtToken(user);

@@ -26,11 +26,6 @@ namespace DEP.Controllers
         {
             var dep = await depService.AddDepartment(department);
 
-            if (dep is null)
-            {
-                return BadRequest($"An error has occurred, unable to add new department.");
-            }
-
             return Ok(dep);
         }
 
@@ -45,10 +40,6 @@ namespace DEP.Controllers
         {
             var success = await depService.DeleteDepartment(id);
 
-            if (!success)
-            {
-                return BadRequest($"Something went wrong, unable to delete department.");
-            }
             return Ok(success);
         }
     }

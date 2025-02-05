@@ -15,7 +15,7 @@ namespace DEP.Service.Interfaces
         //Task<Person> GetPersonById(int personId, int roleId);
         Task<List<PersonToTabelsViewModel>> GetPersonsTabel();
         Task<Person> DeletePerson(int id);
-        Task<Person> AddPerson(Person person);
+        Task<Person?> AddPerson(Person person);
         Task<Person> UpdatePerson(Person person);
     }
 }

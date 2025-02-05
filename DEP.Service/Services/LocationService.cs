@@ -9,12 +9,12 @@ namespace DEP.Service.Services
         private readonly ILocationRepository repo;
         public LocationService(ILocationRepository repo) { this.repo = repo; }
 
-        public async Task<Location> AddLocation(Location location)
+        public async Task<bool> AddLocation(Location location)
         {
             return await repo.AddLocation(location);
         }
 
-        public async Task<Location> DeleteLocation(int id)
+        public async Task<bool> DeleteLocation(int id)
         {
             return await repo.DeleteLocation(id);
         }
@@ -34,7 +34,7 @@ namespace DEP.Service.Services
             return await repo.GetLocationByName(name);
         }
 
-        public async Task<Location> UpdateLocation(Location location)
+        public async Task<bool> UpdateLocation(Location location)
         {
             return await repo.UpdateLocation(location);
         }

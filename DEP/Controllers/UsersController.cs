@@ -21,7 +21,9 @@ namespace DEP.Controllers
         [HttpGet, Authorize]
         public async Task<IActionResult> GetUsers()
         {
-            return Ok(await service.GetUsers());
+            var tt = await service.GetUsers();
+            return Ok(tt);
+            //return Ok(await service.GetUsers());
         }
 
         [HttpGet("educationBossesExcel")]
@@ -43,7 +45,7 @@ namespace DEP.Controllers
         }
 
         [HttpGet("userrole"), Authorize]
-        public async Task<IActionResult> GetUsersByUserRole(UserRole userRole)
+        public async Task<IActionResult> GetUsersByUserRole([FromQuery] UserRole userRole)
         {
             return Ok(await service.GetUsersByUserRole(userRole));
         }
@@ -112,16 +114,29 @@ namespace DEP.Controllers
 
             if (user is not null)
             {
-                return BadRequest("An account with that username already exists.");
+                return BadRequest(new ApiResponse<object>
+                {
+                    Success = false,
+                    Message = "En bruger med det brugernavn findes allerede."
+                });
             }
             var newUser = await service.AddUser(viewModel);
 
             if (newUser is null)
             {
-                return BadRequest("An error has occurred, user could not be created");
+                return BadRequest(new ApiResponse<object>
+                {
+                    Success = false,
+                    Message = "Der opstod en fejl, brugeren blev ikke oprettet."
+                });
             }
 
-            return Ok(newUser);
+            return Ok(new ApiResponse<AddUserViewModel>
+            {
+                Success = true,
+                Message = "Bruger oprettet.",
+                Data = newUser
+            });
         }
 
         [HttpDelete("{id:int}"), Authorize(Roles = "Administrator")]
@@ -134,11 +149,11 @@ namespace DEP.Controllers
                 return BadRequest($"Something went wrong, user with ID={id} was not deleted.");
             }
 
-            return NoContent();
+            return Ok(userDeleted);
         }
 
         [HttpPut, Authorize]
-        public async Task<IActionResult> EditUser(User user)
+        public async Task<IActionResult> UpdateUser(User user)
         {
             return Ok(await service.UpdateUser(user));
         }

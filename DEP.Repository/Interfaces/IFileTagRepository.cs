@@ -10,7 +10,7 @@ namespace DEP.Repository.Interfaces
 {
     public interface IFileTagRepository
     {
-        Task<FileTag> AddFileTag(FileTag fileTag);
+        Task<bool> AddFileTag(FileTag fileTag);
 
         Task<List<FileTag>> GetAllFileTag();
 

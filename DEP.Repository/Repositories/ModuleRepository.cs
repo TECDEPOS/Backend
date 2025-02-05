@@ -10,12 +10,12 @@ namespace DEP.Repository.Repositories
         private readonly DatabaseContext context;
         public ModuleRepository(DatabaseContext context) { this.context = context; }
 
-        public async Task<Module> AddModule(Module module)
+        public async Task<bool> AddModule(Module module)
         {
             context.Modules.Add(module);
-            await context.SaveChangesAsync();
+            var result = await context.SaveChangesAsync();
 
-            return module;
+            return result > 0;
         }
 
         public async Task<Module> DeleteModule(int id)

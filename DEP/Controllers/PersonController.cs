@@ -1,5 +1,6 @@
 ﻿using DEP.Repository.Models;
 using DEP.Service.Interfaces;
+using DEP.Service.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -91,11 +92,23 @@ namespace DEP.Controllers
         {
             try
             {
-                if (person is null)
+                var result = await service.AddPerson(person);
+
+                if (result is null)
                 {
-                    return BadRequest("You have given me SHEIIIT!");
+                    return BadRequest(new ApiResponse<object>
+                    {
+                        Success = false,
+                        Message = "Der opstod en fejl, underviseren kunne ikke oprettes."
+                    });
                 }
-                return Created("Person", await service.AddPerson(person));
+
+                return Ok(new ApiResponse<Person>
+                {
+                    Success = true,
+                    Message = "Bruger oprettet.",
+                    Data = result
+                });
             }
             catch (Exception e)
             {

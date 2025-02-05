@@ -19,18 +19,18 @@ namespace DEP.Repository.Repositories
             return await context.Departments.ToListAsync();
         }
 
-        public async Task<Department> AddDepartment(Department department)
+        public async Task<bool> AddDepartment(Department department)
         {
             context.Departments.Add(department);
-            await context.SaveChangesAsync();
-            return department;
+            var result = await context.SaveChangesAsync();
+            return result > 0;
         }
 
-        public async Task<Department> UpdateDepartment(Department department)
+        public async Task<bool> UpdateDepartment(Department department)
         {
             context.Entry(department).State = EntityState.Modified;
-            await context.SaveChangesAsync();
-            return department;
+            var result = await context.SaveChangesAsync();
+            return result > 0;
         }
 
         public async Task<bool> DeleteDepartment(int id)
@@ -43,8 +43,8 @@ namespace DEP.Repository.Repositories
             }
 
             context.Departments.Remove(dep);
-            await context.SaveChangesAsync();
-            return true;
+            var result = await context.SaveChangesAsync();
+            return result > 0;
         }
     }
 }

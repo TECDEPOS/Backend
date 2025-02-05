@@ -2,6 +2,7 @@
 using DEP.Repository.Interfaces;
 using DEP.Repository.Models;
 using Microsoft.EntityFrameworkCore;
+using System.Reflection.Metadata.Ecma335;
 
 namespace DEP.Repository.Repositories
 {
@@ -11,11 +12,16 @@ namespace DEP.Repository.Repositories
 
         public PersonRepository(DatabaseContext context) { this.context = context; }
 
-        public async Task<Person> AddPerson(Person person)
+        public async Task<Person?> AddPerson(Person person)
         {
             context.Persons.Add(person);
-            await context.SaveChangesAsync();
-            return person;
+            var result = await context.SaveChangesAsync();
+            if (result > 0)
+            {
+                return person;
+            }
+
+            return null;
         }
 
         public async Task<List<Person>> GetPersons()
