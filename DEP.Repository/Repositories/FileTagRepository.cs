@@ -36,19 +36,26 @@ namespace DEP.Repository.Repositories
             return result > 0;
         }
 
-        public async Task<FileTag> UpdateFileTag(FileTag fileTag)
+        public async Task<bool> UpdateFileTag(FileTag fileTag)
         {
             context.Entry(fileTag).State = EntityState.Modified;
-            await context.SaveChangesAsync();
-            return fileTag;
+            var result = await context.SaveChangesAsync();
+
+            return result > 0;
         }
 
-        public async Task<FileTag> DeleteFileTagById(int id)
+        public async Task<bool> DeleteFileTagById(int id)
         {
-            var filetag = await context.FileTags.FindAsync(id);
-            context.FileTags.Remove(filetag);
-            await context.SaveChangesAsync();
-            return filetag;
+            var fileTag = await context.FileTags.FindAsync(id);
+
+            if (fileTag is null)
+            {
+                return false;
+            }
+
+            context.FileTags.Remove(fileTag);
+            var result = await context.SaveChangesAsync();
+            return result > 0;
         }
 
 

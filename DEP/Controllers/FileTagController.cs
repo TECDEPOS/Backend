@@ -79,7 +79,7 @@ namespace DEP.Controllers
             {
                 if (fileTag == null)
                 {
-                    return NotFound("FileTag not given? Dont be a goat!");
+                    return NotFound("Invalid FileTag");
                 }
                 return Ok(await service.UpdateFileTag(fileTag));
             }

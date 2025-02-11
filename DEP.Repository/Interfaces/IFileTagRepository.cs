@@ -18,8 +18,8 @@ namespace DEP.Repository.Interfaces
 
         Task<FileTag> GetFileTagByname(string name);
 
-        Task<FileTag> DeleteFileTagById(int id);
+        Task<bool> DeleteFileTagById(int id);
 
-        Task<FileTag> UpdateFileTag(FileTag fileTag);
+        Task<bool> UpdateFileTag(FileTag fileTag);
     }
 }

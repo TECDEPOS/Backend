@@ -18,17 +18,18 @@ namespace DEP.Repository.Repositories
             return result > 0;
         }
 
-        public async Task<Module> DeleteModule(int id)
+        public async Task<bool> DeleteModule(int id)
         {
-            var module = await context.Modules.FirstOrDefaultAsync(m => m.ModuleId == id);
+            var module = await context.Modules.FindAsync(id);
 
-            if (module != null)
+            if (module is null)
             {
-                context.Modules.Remove(module);
-                await context.SaveChangesAsync();
+                return false;
             }
 
-            return module;
+            context.Modules.Remove(module);
+            var result = await context.SaveChangesAsync();
+            return result > 0;
         }
 
         public async Task<List<Module>> GetModules()
@@ -44,12 +45,12 @@ namespace DEP.Repository.Repositories
         //    return modules;
         //}
 
-        public async Task<Module> UpdateModule(Module module)
+        public async Task<bool> UpdateModule(Module module)
         {
             context.Entry(module).State = EntityState.Modified;
-            await context.SaveChangesAsync();
+            var result = await context.SaveChangesAsync();
 
-            return module;
+            return result > 0;
         }
     }
 }

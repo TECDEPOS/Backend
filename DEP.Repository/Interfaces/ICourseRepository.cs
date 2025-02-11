@@ -10,7 +10,7 @@ namespace DEP.Repository.Interfaces
         Task<List<Course>> GetCoursesByModuleIdAndUserId(int modelId, int userId);
         Task<Course> GetCourseById(int id);
         Task<bool> AddCourse(Course course);
-        Task<Course> UpdateCourse(Course course);
-        Task<Course> DeleteCourse(int id);
+        Task<bool> UpdateCourse(Course course);
+        Task<bool> DeleteCourse(int id);
     }
 }
