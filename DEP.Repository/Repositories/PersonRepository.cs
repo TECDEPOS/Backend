@@ -37,20 +37,25 @@ namespace DEP.Repository.Repositories
             return person;
         }
 
-        public async Task<Person> UpdatePerson(Person person)
+        public async Task<bool> UpdatePerson(Person person)
         {
             context.Entry(person).State = EntityState.Modified;
-            await context.SaveChangesAsync();
-            return person;
+            var result = await context.SaveChangesAsync();
+            return result > 0;
         }
 
-        public async Task<Person> DeletePerson(int id)
+        public async Task<bool> DeletePerson(int id)
         {
-            var PersonToDelete = await context.Persons.FirstOrDefaultAsync(x => x.PersonId == id);
+            var person = await context.Persons.FindAsync(id);
 
-            context.Persons.Remove(PersonToDelete);
-            await context.SaveChangesAsync();
-            return PersonToDelete;
+            if (person is null)
+            {
+                return false;
+            }
+
+            context.Persons.Remove(person);
+            var result = await context.SaveChangesAsync();
+            return result > 0;
         }
 
         public async Task<List<Person>> GetPersonsByName(string name)

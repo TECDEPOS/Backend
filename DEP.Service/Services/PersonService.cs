@@ -26,7 +26,7 @@ namespace DEP.Service.Services
             return await repo.AddPerson(person);
         }
 
-        public async Task<Person> DeletePerson(int id)
+        public async Task<bool> DeletePerson(int id)
         {
             return await repo.DeletePerson(id);
         }
@@ -98,13 +98,13 @@ namespace DEP.Service.Services
             return NewPeople;
         }
 
-        public async Task<Person> UpdatePerson(Person person)
+        public async Task<bool> UpdatePerson(Person person)
         {
-            person.EducationalLeaderId = person.EducationalLeader?.UserId;
-            person.EducationalConsultantId = person.EducationalConsultant?.UserId;
-            person.OperationCoordinatorId = person.OperationCoordinator?.UserId;
-            person.LocationId = person.Location?.LocationId;
-            person.DepartmentId = person.Department?.DepartmentId;
+            //person.EducationalLeaderId = person.EducationalLeader?.UserId;
+            //person.EducationalConsultantId = person.EducationalConsultant?.UserId;
+            //person.OperationCoordinatorId = person.OperationCoordinator?.UserId;
+            //person.LocationId = person.Location?.LocationId;
+            //person.DepartmentId = person.Department?.DepartmentId;
             return await repo.UpdatePerson(person);
         }
     }
