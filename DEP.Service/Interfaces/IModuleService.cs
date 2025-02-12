@@ -8,7 +8,7 @@ namespace DEP.Service.Interfaces
         Task<List<Module>> GetModules();
         Task<List<ModuleWithCourseViewModel>> GetModulesWithCourse();
         Task<bool> AddModule(Module module);
-        Task<Module> UpdateModule(Module module);
-        Task<Module> DeleteModule(int id);
+        Task<bool> UpdateModule(Module module);
+        Task<bool> DeleteModule(int id);
     }
 }

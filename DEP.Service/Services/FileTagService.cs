@@ -20,7 +20,7 @@ namespace DEP.Service.Services
             return repo.AddFileTag(filetag);
         }
 
-        public async Task<FileTag> DeleteFileTag(int id)
+        public async Task<bool> DeleteFileTag(int id)
         {
             return await repo.DeleteFileTagById(id);
         }
@@ -40,7 +40,7 @@ namespace DEP.Service.Services
             return await repo.GetAllFileTag();
         }
 
-        public async Task<FileTag> UpdateFileTag(FileTag filetag)
+        public async Task<bool> UpdateFileTag(FileTag filetag)
         {
             return await repo.UpdateFileTag(filetag);
         }

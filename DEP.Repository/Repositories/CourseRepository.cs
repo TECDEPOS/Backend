@@ -18,18 +18,18 @@ namespace DEP.Repository.Repositories
             return result > 0;
         }
 
-        public async Task<Course> DeleteCourse(int id)
+        public async Task<bool> DeleteCourse(int id)
         {
-            var course = await context.Courses
-                .FirstOrDefaultAsync(x => x.CourseId == id);
+            var course = await context.Courses.FindAsync(id);
 
-            if (course != null)
+            if (course is null)
             {
-                context.Courses.Remove(course);
-                int changes = await context.SaveChangesAsync();
+                return false;
             }
 
-            return course;
+            context.Courses.Remove(course);
+            var result = await context.SaveChangesAsync();
+            return result > 0;
         }
 
         public async Task<List<Course>> GetAllCourses()
@@ -135,12 +135,12 @@ namespace DEP.Repository.Repositories
             return course;
         }
 
-        public async Task<Course> UpdateCourse(Course course)
+        public async Task<bool> UpdateCourse(Course course)
         {
             context.Entry(course).State = EntityState.Modified;
-            await context.SaveChangesAsync();
+            var result = await context.SaveChangesAsync();
 
-            return course;
+            return result > 0;
         }
         
         public async Task<List<Course>> GetCourseWithPerson(int moduleId)

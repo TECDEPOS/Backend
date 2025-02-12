@@ -14,7 +14,7 @@ namespace DEP.Service.Services
             return await repo.AddBook(book);
         }
 
-        public async Task<Book> DeleteBook(int id)
+        public async Task<bool> DeleteBook(int id)
         {
             return await repo.DeleteBook(id);
         }
@@ -29,7 +29,7 @@ namespace DEP.Service.Services
             return await repo.GetBooks();
         }
 
-        public async Task<Book> UpdateBook(Book book)
+        public async Task<bool> UpdateBook(Book book)
         {
             return await repo.UpdateBook(book);
         }

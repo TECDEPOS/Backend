@@ -36,7 +36,7 @@ namespace DEP.Service.Services
             return await repo.AddCourse(course);
         }
 
-        public async Task<Course> DeleteCourse(int id)
+        public async Task<bool> DeleteCourse(int id)
         {
             return await repo.DeleteCourse(id);
         }
@@ -46,7 +46,7 @@ namespace DEP.Service.Services
             return await repo.GetCourseById(id);
         }
 
-        public async Task<Course> UpdateCourse(Course course)
+        public async Task<bool> UpdateCourse(Course course)
         {
             return await repo.UpdateCourse(course);
         }

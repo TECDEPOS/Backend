@@ -29,17 +29,18 @@ namespace DEP.Repository.Repositories
             return result > 0;
         }
 
-        public async Task<Book> DeleteBook(int id)
+        public async Task<bool> DeleteBook(int id)
         {
-            var book = await context.Books.FirstOrDefaultAsync(b => b.BookId == id);
+            var book = await context.Books.FindAsync(id);
 
-            if (book != null)
+            if (book is null)
             {
-                context.Books.Remove(book);
-                await context.SaveChangesAsync();
+                return false;
             }
 
-            return book;
+            context.Books.Remove(book);
+            var result = await context.SaveChangesAsync();
+            return result > 0;
         }
 
         public async Task<Book> GetBook(int id)
@@ -58,12 +59,12 @@ namespace DEP.Repository.Repositories
             return books;
         }
 
-        public async Task<Book> UpdateBook(Book book)
+        public async Task<bool> UpdateBook(Book book)
         {
             context.Entry(book).State = EntityState.Modified;
-            await context.SaveChangesAsync();
+            var result = await context.SaveChangesAsync();
 
-            return book;
+            return result > 0;
         }
     }
 }

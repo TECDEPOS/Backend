@@ -16,7 +16,7 @@ namespace DEP.Service.Services
             return await repo.AddModule(module);
         }
 
-        public async Task<Module> DeleteModule(int id)
+        public async Task<bool> DeleteModule(int id)
         {
             return await repo.DeleteModule(id);
         }
@@ -48,7 +48,7 @@ namespace DEP.Service.Services
             return modules;
         }
 
-        public async Task<Module> UpdateModule(Module module)
+        public async Task<bool> UpdateModule(Module module)
         {
             return await repo.UpdateModule(module);
         }

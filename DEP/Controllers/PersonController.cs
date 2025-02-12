@@ -121,10 +121,6 @@ namespace DEP.Controllers
         {
             try
             {
-                if (person is null)
-                {
-                    return BadRequest("Invalid model.");
-                }
                 return Ok(await service.UpdatePerson(person));
             }
             catch (Exception e)
