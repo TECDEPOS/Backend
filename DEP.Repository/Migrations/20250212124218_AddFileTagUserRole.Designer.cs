@@ -4,6 +4,7 @@ using DEP.Repository.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DEP.Repository.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20250212124218_AddFileTagUserRole")]
+    partial class AddFileTagUserRole
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -160,7 +163,7 @@ namespace DEP.Repository.Migrations
 
                     b.HasKey("FileTagId", "Role");
 
-                    b.ToTable("FileTagUserRoles");
+                    b.ToTable("FileTagUserRole");
                 });
 
             modelBuilder.Entity("DEP.Repository.Models.Location", b =>
@@ -337,9 +340,9 @@ namespace DEP.Repository.Migrations
                         {
                             UserId = 1,
                             Name = "Administrator",
-                            PasswordExpiryDate = new DateTime(2025, 2, 12, 10, 9, 17, 944, DateTimeKind.Local).AddTicks(9995),
-                            PasswordHash = new byte[] { 173, 160, 61, 172, 225, 90, 86, 94, 41, 13, 28, 217, 159, 126, 46, 139, 191, 147, 198, 48, 113, 208, 213, 84, 138, 56, 128, 216, 141, 0, 119, 140, 65, 75, 165, 16, 215, 178, 113, 176, 9, 27, 88, 0, 207, 42, 155, 92, 55, 206, 38, 255, 97, 251, 126, 60, 83, 125, 152, 83, 108, 146, 153, 156 },
-                            PasswordSalt = new byte[] { 214, 55, 144, 11, 188, 241, 29, 108, 168, 125, 59, 58, 233, 138, 4, 65, 163, 4, 90, 180, 250, 68, 79, 177, 17, 36, 44, 159, 57, 199, 247, 36, 205, 227, 44, 224, 74, 174, 180, 202, 224, 138, 159, 225, 54, 60, 192, 104, 73, 110, 80, 82, 255, 70, 238, 205, 66, 165, 134, 5, 114, 182, 204, 20, 46, 206, 37, 90, 176, 93, 191, 54, 226, 126, 157, 143, 22, 209, 179, 196, 183, 46, 115, 194, 102, 238, 2, 159, 102, 26, 150, 26, 68, 151, 134, 136, 107, 150, 236, 150, 38, 46, 144, 135, 41, 35, 50, 167, 14, 84, 156, 177, 75, 75, 85, 240, 252, 255, 30, 223, 110, 125, 97, 199, 182, 30, 93, 97 },
+                            PasswordExpiryDate = new DateTime(2025, 2, 11, 13, 42, 18, 608, DateTimeKind.Local).AddTicks(3129),
+                            PasswordHash = new byte[] { 64, 67, 77, 33, 89, 81, 249, 94, 192, 112, 119, 195, 112, 163, 45, 162, 91, 6, 126, 116, 217, 148, 79, 114, 122, 254, 206, 99, 154, 79, 112, 73, 126, 136, 17, 64, 18, 195, 188, 151, 169, 246, 85, 116, 201, 23, 166, 146, 126, 81, 185, 29, 14, 42, 146, 62, 202, 102, 33, 209, 89, 112, 17, 246 },
+                            PasswordSalt = new byte[] { 102, 27, 145, 136, 11, 92, 248, 116, 86, 19, 207, 137, 46, 57, 80, 169, 5, 91, 86, 43, 49, 249, 17, 10, 178, 43, 75, 116, 76, 200, 92, 55, 183, 172, 104, 80, 26, 13, 57, 227, 214, 152, 17, 104, 192, 175, 65, 190, 171, 106, 19, 217, 131, 70, 252, 114, 182, 11, 40, 197, 165, 36, 172, 195, 213, 182, 167, 65, 158, 200, 186, 109, 90, 106, 55, 249, 209, 34, 73, 167, 74, 245, 176, 208, 87, 17, 129, 151, 240, 204, 137, 39, 200, 214, 188, 220, 44, 125, 8, 33, 26, 182, 175, 31, 122, 191, 35, 81, 166, 29, 155, 190, 255, 14, 13, 248, 121, 92, 158, 151, 205, 218, 155, 159, 61, 191, 121, 166 },
                             RefreshTokenExpiryDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             UserName = "admin",
                             UserRole = 0
