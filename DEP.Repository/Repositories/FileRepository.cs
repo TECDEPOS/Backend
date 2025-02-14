@@ -107,50 +107,20 @@ namespace DEP.Repository.Repositories
 
         public async Task<List<File>> GetFiles(int roleId)
         {
-            var files = await context.Files.Include(x => x.FileTag).Include(x => x.Person).ToListAsync();
-
-            if (roleId == 1)
-            {
-                files = files.Where(x => x.FileTag?.ControllerVisibility == true || x.FileTag == null).ToList();
-            }
-            else if (roleId == 2)
-            {
-                files = files.Where(x => x.FileTag?.EducationLeaderVisibility == true || x.FileTag == null).ToList();
-            }
-            else if (roleId == 3)
-            {
-                files = files.Where(x => x.FileTag?.EducationBossVisibility == true || x.FileTag == null).ToList();
-            }
-            else if (roleId == 4)
-            {
-                files = files.Where(x => x.FileTag?.PKVisibility == true || x.FileTag == null).ToList();
-            }
-            else if (roleId == 5)
-            {
-                files = files.Where(x => x.FileTag?.HRVisibility == true || x.FileTag == null).ToList();
-            }
-            else if (roleId == 6)
-            {
-                files = files.Where(x => x.FileTag?.DKVisibility == true || x.FileTag == null).ToList();
-            }
-            // Administrator
-            else if (roleId == 0)
-            {
-                files.Clear();
-            }
+            var files = await context.Files.Include(x => x.FileTag).ThenInclude(ft => ft.FileTagUserRoles).Include(x => x.Person).ToListAsync();
 
             return files;
         }
 
         public async Task<File> GetFileById(int id)
         {
-            var file = await context.Files.Include(x => x.FileTag).Include(x => x.Person).FirstOrDefaultAsync(x => x.FileId == id);
+            var file = await context.Files.Include(x => x.FileTag).ThenInclude(ft => ft.FileTagUserRoles).Include(x => x.Person).FirstOrDefaultAsync(x => x.FileId == id);
             return file;
         }
 
         public async Task<List<File>> GetFileByName(string name)
         {
-            var file = await context.Files.Include(x => x.FileTag).Include(x => x.Person).Where(x => x.FileName.Contains(name.ToLower())).ToListAsync();
+            var file = await context.Files.Include(x => x.FileTag).ThenInclude(ft => ft.FileTagUserRoles).Include(x => x.Person).Where(x => x.FileName.Contains(name.ToLower())).ToListAsync();
             return file;
         }
 
@@ -162,7 +132,7 @@ namespace DEP.Repository.Repositories
             {
                 await context.SaveChangesAsync();
                 // Getting the full file from DB so FileTag object is included
-                tt = await context.Files.Include(x => x.FileTag).FirstOrDefaultAsync(x => x.FileId == file.FileId);
+                tt = await context.Files.Include(x => x.FileTag).ThenInclude(ft => ft.FileTagUserRoles).FirstOrDefaultAsync(x => x.FileId == file.FileId);
             }
             catch (Exception ex)
             {

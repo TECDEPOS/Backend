@@ -83,6 +83,7 @@ namespace DEP.Repository.Repositories
                 .Include(x => x.Department)
                 .Include(x => x.Files)
                 .ThenInclude(y => y.FileTag)
+                .ThenInclude(ft => ft.FileTagUserRoles)
                 .Include(x => x.PersonCourses)
                 .ThenInclude(x => x.Course)
                 .ThenInclude(y => y.Module)
@@ -93,6 +94,7 @@ namespace DEP.Repository.Repositories
 
             return person;
         }
+
         //public async Task<Person> GetPersonById(int personId, int roleId)
         //{
         //    var person = await context.Persons

@@ -22,6 +22,7 @@ namespace DEP.Repository.Context
         public DbSet<Department> Departments { get; set; }
         public DbSet<Models.File> Files { get; set; }
         public DbSet<FileTag> FileTags { get; set; }
+        public DbSet<FileTagUserRole> FileTagUserRoles { get; set; }
         public DbSet<Location> Locations { get; set; }
         public DbSet<Module> Modules { get; set; }
         public DbSet<Person> Persons { get; set; }
@@ -123,6 +124,16 @@ namespace DEP.Repository.Context
             .HasForeignKey(f => f.FileTagId)
             .OnDelete(DeleteBehavior.SetNull);
 
+            // Configure the composite key for the join entity
+            modelBuilder.Entity<FileTagUserRole>()
+                .HasKey(ftur => new { ftur.FileTagId, ftur.Role });
+
+            // Configure the relationship from FileTagUserRole to FileTag
+            modelBuilder.Entity<FileTagUserRole>()
+                .HasOne(ftur => ftur.FileTag)
+                .WithMany(ft => ft.FileTagUserRoles)
+                .HasForeignKey(ftur => ftur.FileTagId);
+
             var defaultPass = configuration.GetSection("UserSettings:DefaultPassword").Value;
             CreatePasswordHash(defaultPass, out byte[] passwordHash, out byte[] passwordSalt);
 
@@ -136,7 +147,7 @@ namespace DEP.Repository.Context
                 PasswordSalt = passwordSalt,
                 UserRole = 0,
                 PasswordExpiryDate = DateTime.Now.AddDays(-1),
-
+                RefreshTokenExpiryDate = DateTime.Now.AddDays(1),
             });
         }
 
