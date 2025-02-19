@@ -87,6 +87,11 @@ namespace DEP.Service.Services
             return viewModel;
         }
 
+        public async Task<bool> ReassignUser(ReassignUserViewModel model)
+        {
+            return await userRepository.ReassignUser(model);
+        }
+
         public async Task<bool> DeleteUser(int id)
         {
             return await userRepository.DeleteUser(id);

@@ -4,6 +4,7 @@ using DEP.Service.Interfaces;
 using DEP.Service.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace DEP.Controllers
 {
@@ -139,7 +140,13 @@ namespace DEP.Controllers
             });
         }
 
-        [HttpDelete("{id:int}"), Authorize(Roles = "Administrator")]
+        [HttpPost("reassign-user")]
+        public async Task<IActionResult> ReassignUser([FromBody] ReassignUserViewModel model)
+        {
+            return Ok(await service.ReassignUser(model));
+        }
+
+        [HttpDelete("{id:int}")/*, Authorize(Roles = "Administrator")*/]
         public async Task<IActionResult> DeleteUser(int id)
         {
             var userDeleted = await service.DeleteUser(id);
