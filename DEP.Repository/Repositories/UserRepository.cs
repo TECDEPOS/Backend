@@ -205,6 +205,36 @@ namespace DEP.Repository.Repositories
             return true;
         }
 
+        public async Task<bool> ReassignUser(ReassignUserViewModel model)
+        {
+            var personsToUpdate = await context.Persons
+                .Where(p => p.EducationalConsultantId == model.DeletedUserId
+                            || p.EducationalLeaderId == model.DeletedUserId
+                            || p.OperationCoordinatorId == model.DeletedUserId)
+                .ToListAsync();
+
+            foreach (var person in personsToUpdate)
+            {
+                if (person.EducationalConsultantId == model.DeletedUserId)
+                {
+                    person.EducationalConsultantId = model.NewEducationalConsultantId;
+                }
+
+                if (person.EducationalLeaderId == model.DeletedUserId)
+                {
+                    person.EducationalLeaderId = model.NewEducationalLeaderId;
+                }
+
+                if (person.OperationCoordinatorId == model.DeletedUserId)
+                {
+                    person.OperationCoordinatorId = model.NewOperationCoordinatorId;
+                }
+            }
+
+            var result = await context.SaveChangesAsync();
+            return result > 0;
+        }
+
         public async Task<bool> UpdateUser(User user)
         {
             context.Entry(user).State = EntityState.Modified;

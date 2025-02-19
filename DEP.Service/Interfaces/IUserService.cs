@@ -16,6 +16,7 @@ namespace DEP.Service.Interfaces
         Task<List<User>> GetUserByName(string name);
         Task<User> GetUserByUsername(string username);
         Task<AddUserViewModel> AddUser(AddUserViewModel addRequest);
+        Task<bool> ReassignUser(ReassignUserViewModel model);
         Task<bool> UpdateUser(User user);
         Task<bool> DeleteUser(int id);
     }
