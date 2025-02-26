@@ -10,6 +10,8 @@ namespace DEP.Repository.ViewModels
         public string? DepartmentName { get; set; }
         public int? LocationId { get; set; }
         public string? LocationName { get; set; }
+        public int? EducationBossId { get; set; }
+        public string? EducationBossName { get; set; }
         public UserRole UserRole { get; set; }
     }
 }
