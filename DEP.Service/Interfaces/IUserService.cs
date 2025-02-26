@@ -18,6 +18,7 @@ namespace DEP.Service.Interfaces
         Task<AddUserViewModel> AddUser(AddUserViewModel addRequest);
         Task<bool> ReassignUser(ReassignUserViewModel model);
         Task<bool> UpdateUser(User user);
+        Task<bool> UpdateUserFromViewModel(UserViewModel viewModel);
         Task<bool> DeleteUser(int id);
     }
 }

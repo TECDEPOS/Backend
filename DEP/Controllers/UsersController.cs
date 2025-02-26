@@ -160,9 +160,9 @@ namespace DEP.Controllers
         }
 
         [HttpPut, Authorize]
-        public async Task<IActionResult> UpdateUser(User user)
+        public async Task<IActionResult> UpdateUser(UserViewModel viewModel)
         {
-            return Ok(await service.UpdateUser(user));
+            return Ok(await service.UpdateUserFromViewModel(viewModel));
         }
     }
 }
