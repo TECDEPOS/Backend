@@ -44,6 +44,13 @@ namespace DEP.Repository.Repositories
             return result > 0;
         }
 
+        public async Task UpdatePersons(List<Person> persons)
+        {
+            context.Persons.UpdateRange(persons);
+            await context.SaveChangesAsync();
+        }
+
+
         public async Task<bool> DeletePerson(int id)
         {
             var person = await context.Persons.FindAsync(id);
@@ -94,6 +101,16 @@ namespace DEP.Repository.Repositories
 
             return person;
         }
+
+        public async Task<List<Person>> GetPersonsByUserId(int userId)
+        {
+            return await context.Persons
+                .Where(p => p.EducationalConsultantId == userId ||
+                            p.EducationalLeaderId == userId ||
+                            p.OperationCoordinatorId == userId)
+                .ToListAsync();
+        }
+
 
         //public async Task<Person> GetPersonById(int personId, int roleId)
         //{
