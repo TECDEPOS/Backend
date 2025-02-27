@@ -107,6 +107,26 @@ namespace DEP.Service.Services
             return await userRepository.UpdateUser(user);
         }
 
+        //public async Task<bool> UpdateUserFromViewModel(UserViewModel viewModel)
+        //{
+        //    var user = await userRepository.GetUserById(viewModel.UserId);
+
+        //    if (user is null)
+        //    {
+        //        return false;
+        //    }
+
+        //    // Map updated values to existing user
+        //    user.Name = viewModel.Name;
+        //    user.DepartmentId = viewModel.DepartmentId;
+        //    user.EducationBossId = viewModel.EducationBossId;
+        //    user.LocationId = viewModel.LocationId;
+        //    user.UserRole = viewModel.UserRole;
+
+
+        //    return await userRepository.UpdateUser(user);
+        //}
+
         public async Task<bool> UpdateUserFromViewModel(UserViewModel viewModel)
         {
             var user = await userRepository.GetUserById(viewModel.UserId);
@@ -116,6 +136,35 @@ namespace DEP.Service.Services
                 return false;
             }
 
+            // Check if the role is changing
+            bool isRoleChanging = user.UserRole != viewModel.UserRole;
+
+            // Fetch persons where this user is assigned as a role
+            if (isRoleChanging)
+            {
+                var affectedPersons = await personRepository.GetPersonsByUserId(user.UserId);
+
+                foreach (var person in affectedPersons)
+                {
+                    // If user is no longer eligible for a role, set it to null
+                    if (user.UserRole == UserRole.Uddannelsesleder && person.EducationalLeaderId == user.UserId)
+                    {
+                        person.EducationalLeaderId = null;
+                    }
+                    if (user.UserRole == UserRole.Pædagogisk_konsulent && person.EducationalConsultantId == user.UserId)
+                    {
+                        person.EducationalConsultantId = null;
+                    }
+                    if (user.UserRole == UserRole.Driftskoordinator && person.OperationCoordinatorId == user.UserId)
+                    {
+                        person.OperationCoordinatorId = null;
+                    }
+                }
+
+                // Update all affected persons
+                await personRepository.UpdatePersons(affectedPersons);
+            }
+
             // Map updated values to existing user
             user.Name = viewModel.Name;
             user.DepartmentId = viewModel.DepartmentId;
@@ -123,9 +172,9 @@ namespace DEP.Service.Services
             user.LocationId = viewModel.LocationId;
             user.UserRole = viewModel.UserRole;
 
-
             return await userRepository.UpdateUser(user);
         }
+
 
         public async Task<List<EducationBossViewModel>> GetEducationBossesExcel()
         {
