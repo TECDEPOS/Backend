@@ -100,11 +100,6 @@ namespace DEP.Service.Services
 
         public async Task<bool> UpdatePerson(Person person)
         {
-            //person.EducationalLeaderId = person.EducationalLeader?.UserId;
-            //person.EducationalConsultantId = person.EducationalConsultant?.UserId;
-            //person.OperationCoordinatorId = person.OperationCoordinator?.UserId;
-            //person.LocationId = person.Location?.LocationId;
-            //person.DepartmentId = person.Department?.DepartmentId;
             return await repo.UpdatePerson(person);
         }
     }
