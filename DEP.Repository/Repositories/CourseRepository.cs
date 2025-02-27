@@ -38,6 +38,7 @@ namespace DEP.Repository.Repositories
                 .Select(x => new
                 {
                     x.CourseId,
+                    x.CourseNumber,
                     x.ModuleId,
                     x.StartDate,
                     x.EndDate,
@@ -83,6 +84,7 @@ namespace DEP.Repository.Repositories
                 courses.Add(new Course()
                 {
                     CourseId = item.CourseId,
+                    CourseNumber = item.CourseNumber,
                     ModuleId = item.ModuleId,
                     StartDate = item.StartDate,
                     EndDate = item.EndDate,
