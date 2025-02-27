@@ -192,18 +192,13 @@ namespace DEP.Repository.Repositories
             return await context.Users.FirstOrDefaultAsync(x => x.RefreshToken == refreshToken);
         }
 
-        public async Task<bool> AddUser(User addRequest)
+        public async Task<User> AddUser(User addRequest)
         {
             context.Users.Add(addRequest);
-            int result = await context.SaveChangesAsync();
-
-            //Return false if a user was not saved to the DB
-            if (result < 1)
-            {
-                return false;
-            }
-            return true;
+            await context.SaveChangesAsync();
+            return addRequest;
         }
+
 
         public async Task<bool> ReassignUser(ReassignUserViewModel model)
         {
