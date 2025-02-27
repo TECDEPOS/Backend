@@ -107,26 +107,6 @@ namespace DEP.Service.Services
             return await userRepository.UpdateUser(user);
         }
 
-        //public async Task<bool> UpdateUserFromViewModel(UserViewModel viewModel)
-        //{
-        //    var user = await userRepository.GetUserById(viewModel.UserId);
-
-        //    if (user is null)
-        //    {
-        //        return false;
-        //    }
-
-        //    // Map updated values to existing user
-        //    user.Name = viewModel.Name;
-        //    user.DepartmentId = viewModel.DepartmentId;
-        //    user.EducationBossId = viewModel.EducationBossId;
-        //    user.LocationId = viewModel.LocationId;
-        //    user.UserRole = viewModel.UserRole;
-
-
-        //    return await userRepository.UpdateUser(user);
-        //}
-
         public async Task<bool> UpdateUserFromViewModel(UserViewModel viewModel)
         {
             var user = await userRepository.GetUserById(viewModel.UserId);
