@@ -57,15 +57,12 @@ namespace DEP.Service.Services
             return await userRepository.GetUserByUsername(username);
         }
 
-        public async Task<AddUserViewModel> AddUser(AddUserViewModel viewModel)
+        public async Task<UserViewModel> AddUser(AddUserViewModel viewModel)
         {
-            //Gets the default password appsettings.json
             var defaultPass = configuration.GetSection("UserSettings:DefaultPassword").Value;
-
-            //Creates a hash and salt from the provided password
             authService.CreatePasswordHash(defaultPass, out byte[] passwordHash, out byte[] passwordSalt);
 
-            User newUser = new User()
+            User newUser = new User
             {
                 UserName = viewModel.Username,
                 Name = viewModel.Name,
@@ -75,17 +72,25 @@ namespace DEP.Service.Services
                 PasswordHash = passwordHash,
                 PasswordSalt = passwordSalt,
                 UserRole = viewModel.UserRole,
-                PasswordExpiryDate = DateTime.Now.AddDays(-1) //Setting the expired password day to yesterday so first time users log in they're prompted to change it.
+                PasswordExpiryDate = DateTime.Now.AddDays(-1)
             };
 
-            var success = await userRepository.AddUser(newUser);
+            var createdUser = await userRepository.AddUser(newUser);
 
-            if (success == false)
+            return new UserViewModel
             {
-                return null;
-            }
-            return viewModel;
+                UserId = createdUser.UserId,
+                Name = createdUser.Name,
+                LocationId = createdUser.LocationId,
+                LocationName = createdUser.Location?.Name,
+                DepartmentId = createdUser.DepartmentId,
+                DepartmentName = createdUser.Department?.Name,
+                EducationBossId = createdUser.EducationBossId,
+                EducationBossName = createdUser.EducationBoss?.Name,
+                UserRole = createdUser.UserRole
+            };
         }
+
 
         public async Task<bool> ReassignUser(ReassignUserViewModel model)
         {
@@ -101,6 +106,55 @@ namespace DEP.Service.Services
         {
             return await userRepository.UpdateUser(user);
         }
+
+        public async Task<bool> UpdateUserFromViewModel(UserViewModel viewModel)
+        {
+            var user = await userRepository.GetUserById(viewModel.UserId);
+
+            if (user is null)
+            {
+                return false;
+            }
+
+            // Check if the role is changing
+            bool isRoleChanging = user.UserRole != viewModel.UserRole;
+
+            // Fetch persons where this user is assigned as a role
+            if (isRoleChanging)
+            {
+                var affectedPersons = await personRepository.GetPersonsByUserId(user.UserId);
+
+                foreach (var person in affectedPersons)
+                {
+                    // If user is no longer eligible for a role, set it to null
+                    if (user.UserRole == UserRole.Uddannelsesleder && person.EducationalLeaderId == user.UserId)
+                    {
+                        person.EducationalLeaderId = null;
+                    }
+                    if (user.UserRole == UserRole.Pædagogisk_konsulent && person.EducationalConsultantId == user.UserId)
+                    {
+                        person.EducationalConsultantId = null;
+                    }
+                    if (user.UserRole == UserRole.Driftskoordinator && person.OperationCoordinatorId == user.UserId)
+                    {
+                        person.OperationCoordinatorId = null;
+                    }
+                }
+
+                // Update all affected persons
+                await personRepository.UpdatePersons(affectedPersons);
+            }
+
+            // Map updated values to existing user
+            user.Name = viewModel.Name;
+            user.DepartmentId = viewModel.DepartmentId;
+            user.EducationBossId = viewModel.EducationBossId;
+            user.LocationId = viewModel.LocationId;
+            user.UserRole = viewModel.UserRole;
+
+            return await userRepository.UpdateUser(user);
+        }
+
 
         public async Task<List<EducationBossViewModel>> GetEducationBossesExcel()
         {

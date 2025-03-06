@@ -127,24 +127,29 @@ namespace DEP.Controllers
                     Message = "En bruger med det brugernavn findes allerede."
                 });
             }
-            var newUser = await service.AddUser(viewModel);
 
-            if (newUser is null)
+            try
             {
-                return BadRequest(new ApiResponse<object>
+                var newUser = await service.AddUser(viewModel);
+
+                return Ok(new ApiResponse<UserViewModel>
                 {
-                    Success = false,
-                    Message = "Der opstod en fejl, brugeren blev ikke oprettet."
+                    Success = true,
+                    Message = "Bruger oprettet.",
+                    Data = newUser
                 });
             }
-
-            return Ok(new ApiResponse<AddUserViewModel>
+            catch (Exception ex)
             {
-                Success = true,
-                Message = "Bruger oprettet.",
-                Data = newUser
-            });
+                return StatusCode(500, new ApiResponse<object>
+                {
+                    Success = false,
+                    Message = "Der opstod en fejl, brugeren blev ikke oprettet.",
+                    Data = ex.Message
+                });
+            }
         }
+
 
         [HttpPost("reassign-user")]
         public async Task<IActionResult> ReassignUser([FromBody] ReassignUserViewModel model)
@@ -166,9 +171,9 @@ namespace DEP.Controllers
         }
 
         [HttpPut, Authorize]
-        public async Task<IActionResult> UpdateUser(User user)
+        public async Task<IActionResult> UpdateUser(UserViewModel viewModel)
         {
-            return Ok(await service.UpdateUser(user));
+            return Ok(await service.UpdateUserFromViewModel(viewModel));
         }
     }
 }

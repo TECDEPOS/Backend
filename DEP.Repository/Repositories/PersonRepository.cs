@@ -44,6 +44,13 @@ namespace DEP.Repository.Repositories
             return result > 0;
         }
 
+        public async Task UpdatePersons(List<Person> persons)
+        {
+            context.Persons.UpdateRange(persons);
+            await context.SaveChangesAsync();
+        }
+
+
         public async Task<bool> DeletePerson(int id)
         {
             var person = await context.Persons.FindAsync(id);
@@ -95,58 +102,14 @@ namespace DEP.Repository.Repositories
             return person;
         }
 
-        //public async Task<Person> GetPersonById(int personId, int roleId)
-        //{
-        //    var person = await context.Persons
-        //        .Include(x => x.Location)
-        //        .Include(x => x.Department)
-        //        .Include(x => x.Files)
-        //        .ThenInclude(y => y.FileTag)
-        //        .Include(x => x.PersonCourses)
-        //        .ThenInclude(x => x.Course)
-        //        .ThenInclude(y => y.Module)
-        //        .Include(x => x.EducationalConsultant)
-        //        .Include(x => x.EducationalLeader)
-        //        .Include(x => x.OperationCoordinator)
-        //        .FirstOrDefaultAsync(x => x.PersonId == personId);
-
-        //    if (person == null)
-        //    {
-        //        return null;
-        //    }
-
-        //    if (roleId == 1)
-        //    {
-        //        person.Files = person.Files.Where(x => x.FileTag?.ControllerVisibility == true || x.FileTag == null).ToList();
-        //    }
-        //    else if (roleId == 2)
-        //    {
-        //        person.Files = person.Files.Where(x => x.FileTag?.EducationLeaderVisibility == true || x.FileTag == null).ToList();
-        //    }
-        //    else if (roleId == 3)
-        //    {
-        //        person.Files = person.Files.Where(x => x.FileTag?.EducationBossVisibility == true || x.FileTag == null).ToList();
-        //    }
-        //    else if (roleId == 4)
-        //    {
-        //        person.Files = person.Files.Where(x => x.FileTag?.PKVisibility == true || x.FileTag == null).ToList();
-        //    }
-        //    else if (roleId == 5)
-        //    {
-        //        person.Files = person.Files.Where(x => x.FileTag?.HRVisibility == true || x.FileTag == null).ToList();
-        //    }
-        //    else if (roleId == 6)
-        //    {
-        //        person.Files = person.Files.Where(x => x.FileTag?.DKVisibility == true || x.FileTag == null).ToList();
-        //    }
-        //    // Administrator
-        //    else if (roleId == 0)
-        //    {
-        //        person.Files.Clear();
-        //    }
-
-        //    return person;
-        //}
+        public async Task<List<Person>> GetPersonsByUserId(int userId)
+        {
+            return await context.Persons
+                .Where(p => p.EducationalConsultantId == userId ||
+                            p.EducationalLeaderId == userId ||
+                            p.OperationCoordinatorId == userId)
+                .ToListAsync();
+        }
 
         public async Task<List<Person>> GetPersonsByCourseId(int courseId)
         {
