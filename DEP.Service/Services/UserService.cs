@@ -122,31 +122,68 @@ namespace DEP.Service.Services
             return viewModel;
         }
 
-        public async Task<List<EducationLeaderViewModel>> GetEducationLeadersExcel()
+        public async Task<List<EducationBossViewModel>> GetSelctedEducationBossesExcel()
         {
-            var leaders = await userRepository.GetEducationLeadersExcel();
-            var viewModel = new List<EducationLeaderViewModel>();
+            var bosses = await userRepository.GetEducationBossesExcel();
+            var viewModel = new List<EducationBossViewModel>();
 
-            foreach (var leader in leaders)
+            foreach (var boss in bosses)
             {
-                var persons = new List<Person>();
-                var person = await personRepository.GetPersonsExcel((int)leader.UserId);
+                var bossViewModel = new EducationBossViewModel
+                {
+                    UserId = boss.UserId,
+                    Name = boss.Name,
+                    UserRole = boss.UserRole
+                };
 
-                persons.AddRange(person);
+                viewModel.Add(bossViewModel);
+            }
+
+            return viewModel;
+        }
+        
+        public async Task<List<EducationBossViewModel>> GetSelctedEducationBossExcel(int id)
+        {
+            var boss = await userRepository.GetEducationBossByIdExcel(id);
+
+            var viewModel = new EducationBossViewModel();
+
+            // Fetch leaders under this boss
+            foreach (var leader in boss.EducationLeaders)
+            {
+                var persons = await personRepository.GetPersonsExcel(leader.UserId);
 
                 var leaderViewModel = new EducationLeaderViewModel
                 {
                     UserId = leader.UserId,
                     Name = leader.Name,
                     UserRole = leader.UserRole,
-                    EducationBossId = leader.EducationBossId,
-                    Educators = persons.ToList(),
+                    EducationBossId = boss.UserId,
+                    Teachers = persons.ToList()
                 };
 
-                viewModel.Add(leaderViewModel);
+                viewModel.EducationLeaders.Add(leaderViewModel);
             }
 
-            return viewModel;
+            return new List<EducationBossViewModel> { viewModel };
         }
+
+        public async Task<List<EducationLeaderViewModel>> GetSelectedEducationLeaderExcel(int id)
+        {
+            var leader = await userRepository.GetEducationLeaderByIdExcel(id);
+            var persons = await personRepository.GetPersonsExcel(leader.UserId);
+
+            var leaderViewModel = new EducationLeaderViewModel
+            {
+                UserId = leader.UserId,
+                Name = leader.Name,
+                UserRole = leader.UserRole,
+                EducationBossId = leader.EducationBossId,
+                Teachers = persons
+            };
+
+            return new List<EducationLeaderViewModel> { leaderViewModel };
+        }
+
     }
 }

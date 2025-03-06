@@ -35,7 +35,7 @@ namespace DEP.Repository.Context
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             base.OnConfiguring(optionsBuilder);
-            optionsBuilder.UseSqlServer("Data Source=10.0.1.128,1433; Initial Catalog=DEP; TrustServerCertificate=True; User ID=sa; Password=Passw0rd;");
+            optionsBuilder.UseSqlServer("Data Source=(localdb)\\MSSQLLocalDB; Initial Catalog=DEP; Integrated Security=True; TrustServerCertificate=True;");
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

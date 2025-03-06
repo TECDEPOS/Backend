@@ -9,7 +9,8 @@ namespace DEP.Service.Interfaces
         Task<List<User>> GetUsers();
         Task<List<User>> GetUsersByEducationBossId(int id);
         Task<List<EducationBossViewModel>> GetEducationBossesExcel();
-        Task<List<EducationLeaderViewModel>> GetEducationLeadersExcel();
+        Task<List<EducationBossViewModel>> GetSelctedEducationBossExcel(int id);
+        Task<List<EducationLeaderViewModel>> GetSelectedEducationLeaderExcel(int id);
         Task<List<User>> GetUsersByUserRole(UserRole userRole);
         Task<User> GetUserById(int id);
         Task<UserDashboardViewModel?> GetUserDashboardById(int id);

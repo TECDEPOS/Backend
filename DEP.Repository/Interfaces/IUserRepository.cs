@@ -7,7 +7,8 @@ namespace DEP.Repository.Interfaces
     {
         Task<List<User>> GetUsers();
         Task<List<User>> GetEducationBossesExcel();
-        Task<List<User>> GetEducationLeadersExcel();
+        Task<User?> GetEducationBossByIdExcel(int id);
+        Task<User?> GetEducationLeaderByIdExcel(int id);
         Task<List<User>> GetUsersByEducationBossId(int id);
         Task<List<User>> GetUsersByUserRole(UserRole userRole);
         Task<User> GetUserById(int id);

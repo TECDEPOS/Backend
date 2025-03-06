@@ -24,58 +24,63 @@ namespace DEP.Repository.Repositories
                 .ToListAsync();
         }
 
-        public async Task<List<User>> GetEducationLeadersExcel()
+        public async Task<User?> GetEducationLeaderByIdExcel(int id)
         {
-            var result = await context.Users
-                .Where(u => u.UserRole == UserRole.Uddannelsesleder)
-                .Select(el => new
+            return await context.Users
+                .Where(u => u.UserId == id)
+                .Select(el => new User
                 {
                     UserId = el.UserId,
                     Name = el.Name,
-                    UserRole = el.UserRole,
-                    EducationBossId = el.EducationBossId,
+                    UserRole = el.UserRole
                 })
-                .ToListAsync();
-
-            var leaders = new List<User>();
-            foreach (var leader in result)
-            {
-                leaders.Add(new User()
-                {
-                    UserId = leader.UserId,
-                    Name = leader.Name,
-                    UserRole = leader.UserRole,
-                    EducationBossId = leader.EducationBossId,
-                });
-            }
-
-            return leaders;
+                .FirstOrDefaultAsync();
         }
+
 
         public async Task<List<User>> GetEducationBossesExcel()
         {
-            var result = await context.Users
+            return await context.Users
                 .Where(u => u.UserRole == UserRole.Uddannelseschef)
-                .Select(eb => new
+                .Select(eb => new User
                 {
                     UserId = eb.UserId,
                     Name = eb.Name,
                     UserRole = eb.UserRole,
+                    EducationLeaders = eb.EducationLeaders
+                        .Select(el => new User
+                        {
+                            UserId = el.UserId,
+                            Name = el.Name,
+                            UserRole = el.UserRole
+                        })
+                        .ToList()
                 })
                 .ToListAsync();
-
-            var bosses = new List<User>();
-            foreach (var user in result)
-            {
-                bosses.Add(new User()
-                {
-                    UserId = user.UserId,
-                    Name = user.Name,
-                    UserRole = user.UserRole,
-                });
-            }
-            return bosses;
         }
+
+
+        public async Task<User?> GetEducationBossByIdExcel(int id)
+        {
+            return await context.Users
+                .Where(eb => eb.UserId == id)
+                .Select(eb => new User
+                {
+                    UserId = eb.UserId,
+                    Name = eb.Name,
+                    UserRole = eb.UserRole,
+                    EducationLeaders = eb.EducationLeaders
+                        .Select(el => new User
+                        {
+                            UserId = el.UserId,
+                            Name = el.Name,
+                            UserRole = el.UserRole
+                        })
+                        .ToList()
+                })
+                .FirstOrDefaultAsync();
+        }
+
 
         public async Task<List<User>> GetUsersByEducationBossId(int id)
         {

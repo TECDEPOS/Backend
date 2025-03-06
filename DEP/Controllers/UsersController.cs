@@ -33,10 +33,16 @@ namespace DEP.Controllers
             return Ok(await service.GetEducationBossesExcel());
         }
 
-        [HttpGet("educationLeadersExcel")]
-        public async Task<IActionResult> GetEducationLeadersExcel()
+        [HttpGet("educationBossExcel/{id:int}")]
+        public async Task<IActionResult> GetEducationBossExcel(int id)
         {
-            return Ok(await service.GetEducationLeadersExcel());
+            return Ok(await service.GetSelctedEducationBossExcel(id));
+        }
+
+        [HttpGet("educationLeaderExcel/{id:int}")]
+        public async Task<IActionResult> GetEducationLeaderExcel(int id)
+        {
+            return Ok(await service.GetSelectedEducationLeaderExcel(id));
         }
 
         [HttpGet("educationleader/{id:int}"), Authorize]

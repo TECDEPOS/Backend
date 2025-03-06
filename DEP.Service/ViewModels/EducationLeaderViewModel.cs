@@ -18,6 +18,6 @@ namespace DEP.Service.ViewModels
 
         public Department? Department { get; set; }
         public Location? Location { get; set; }
-        public List<Person> Educators { get; set; } = new List<Person>();
+        public List<Person> Teachers { get; set; } = new List<Person>();
     }
 }
